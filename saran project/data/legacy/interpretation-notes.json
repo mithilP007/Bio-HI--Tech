@@ -1,0 +1,257 @@
+[
+  {
+    "index": 0,
+    "text": "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 1,
+    "text": "May reflect reduced hormone production or timing-related variation.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 2,
+    "text": "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 3,
+    "text": "Use age-, sex-, cycle- and pregnancy-specific reference intervals.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 4,
+    "text": "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 5,
+    "text": "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 6,
+    "text": "Follow the laboratory's sample, fasting and timing instructions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 7,
+    "text": "Use the exact assay's report range and clinician interpretation; this is a general educational note.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 8,
+    "text": "Higher LDL/non-HDL/triglycerides may increase cardiovascular risk; interpretation depends on age and overall risk.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 9,
+    "text": "Very low values need context; low HDL can be a risk marker.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 10,
+    "text": "Fasting may be requested for selected situations; follow the ordering clinician/lab instructions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 11,
+    "text": "See the dedicated Lipid Profile Reference Notes sheet. Values are not a diagnosis or a personal treatment target.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 12,
+    "text": "May suggest overactive thyroid or autoimmune activity depending on the test.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 13,
+    "text": "May suggest underactive thyroid for hormone tests; antibody results require context.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 14,
+    "text": "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 15,
+    "text": "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 16,
+    "text": "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 17,
+    "text": "May reflect reduced protein production or other causes depending on the marker.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 18,
+    "text": "Usually blood sample; fasting depends on panel and laboratory.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 19,
+    "text": "Enzyme elevation does not by itself establish a specific liver disease.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 20,
+    "text": "A positive/reactive result may indicate current or past infection depending on the assay.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 21,
+    "text": "A negative result may not exclude very early infection or infection outside the test's detection window.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 22,
+    "text": "Sample type and timing are test-specific; follow collection instructions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 23,
+    "text": "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 24,
+    "text": "Not interpreted as high/low; reports a blood-group type.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 25,
+    "text": "Blood sample; ensure correct patient identification.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 26,
+    "text": "Important for transfusion and pregnancy care; crossmatching is separate.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 27,
+    "text": "May indicate hyperglycaemia, diabetes or impaired glucose regulation; diagnosis requires accepted criteria and sometimes repeat testing.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 28,
+    "text": "May indicate hypoglycaemia or treatment-related low glucose.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 29,
+    "text": "Fasting may be required for FBS/GTT; HbA1c usually does not require fasting.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 30,
+    "text": "Clinical diagnosis should follow current diabetes guidelines; HbA1c can be affected by some anaemias and haemoglobin variants.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 31,
+    "text": "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 32,
+    "text": "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 33,
+    "text": "Blood sample; some tests require special handling; follow lab instructions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 34,
+    "text": "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 35,
+    "text": "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 36,
+    "text": "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 37,
+    "text": "Usually EDTA blood; follow lab instructions.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 38,
+    "text": "Interpret the individual components and age-/sex-specific ranges, not one number alone.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 39,
+    "text": "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 40,
+    "text": "May indicate deficiency or depleted stores, depending on the marker.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 41,
+    "text": "Tell the clinician about supplements; fasting requirements vary.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 42,
+    "text": "Ferritin can rise with inflammation; interpret with other iron studies and clinical history.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 43,
+    "text": "Positive result may indicate pregnancy; rare other causes are possible.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 44,
+    "text": "Negative result may occur if testing is too early.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 45,
+    "text": "Follow kit/lab timing; first-morning urine may help for early testing.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 46,
+    "text": "Repeat or serum testing may be advised if pregnancy is still suspected.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 47,
+    "text": "May indicate infection, blood, protein, glucose or kidney/urinary tract issues.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 48,
+    "text": "Often not meaningful in isolation; depends on the measured component.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 49,
+    "text": "Clean-catch midstream sample may be requested; culture samples need sterile collection.",
+    "label": "Legacy content pending professional review"
+  },
+  {
+    "index": 50,
+    "text": "Hydration, contamination and collection technique can affect results.",
+    "label": "Legacy content pending professional review"
+  }
+]

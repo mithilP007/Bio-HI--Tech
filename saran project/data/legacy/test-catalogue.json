@@ -1,0 +1,5372 @@
+[
+  {
+    "id": "LEG-001",
+    "name": "AMH",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 2150,
+    "discountPrice": 1935,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "AMH"
+    ],
+    "parameters": [
+      {
+        "name": "AMH",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 1.0,
+        "maleHigh": 3.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-002",
+    "name": "ANA",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 750,
+    "discountPrice": 675,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "ANA"
+    ],
+    "parameters": [
+      {
+        "name": "ANA",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-003",
+    "name": "ANA (IFA)",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 900,
+    "discountPrice": 810,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "ANA (IFA)"
+    ],
+    "parameters": [
+      {
+        "name": "ANA (IFA)",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-004",
+    "name": "ANC Profile",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 1480,
+    "discountPrice": 1330,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-005",
+    "name": "APTT",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 380,
+    "discountPrice": 340,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "APTT"
+    ],
+    "parameters": [
+      {
+        "name": "APTT",
+        "dataType": "Numeric",
+        "unit": "sec",
+        "maleLow": 25.0,
+        "maleHigh": 35.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-006",
+    "name": "ASO",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 300,
+    "discountPrice": 270,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "ASO"
+    ],
+    "parameters": [
+      {
+        "name": "ASO",
+        "dataType": "Numeric",
+        "unit": "IU/mL",
+        "maleLow": 0.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-007",
+    "name": "Anti-CCP",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 1350,
+    "discountPrice": 1215,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Anti-CCP"
+    ],
+    "parameters": [
+      {
+        "name": "Anti-CCP",
+        "dataType": "Numeric",
+        "unit": "U/mL",
+        "maleLow": 0.0,
+        "maleHigh": 17.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-008",
+    "name": "Anti-Phospholipid Antibody",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 900,
+    "discountPrice": 810,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Anti-Phospholipid Antibody"
+    ],
+    "parameters": [
+      {
+        "name": "Anti-Phospholipid Antibody",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "notes": [
+      "Higher LDL/non-HDL/triglycerides may increase cardiovascular risk; interpretation depends on age and overall risk.",
+      "Very low values need context; low HDL can be a risk marker.",
+      "Fasting may be requested for selected situations; follow the ordering clinician/lab instructions.",
+      "See the dedicated Lipid Profile Reference Notes sheet. Values are not a diagnosis or a personal treatment target."
+    ]
+  },
+  {
+    "id": "LEG-009",
+    "name": "Anti-TPO",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 800,
+    "discountPrice": 720,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Anti-TPO"
+    ],
+    "parameters": [
+      {
+        "name": "Anti-TPO",
+        "dataType": "Numeric",
+        "unit": "IU/mL",
+        "maleLow": 0.0,
+        "maleHigh": 35.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-010",
+    "name": "Anti-Thyroglobulin Antibody",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 800,
+    "discountPrice": 720,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Anti-Thyroglobulin Antibody"
+    ],
+    "parameters": [
+      {
+        "name": "Anti-Thyroglobulin Antibody",
+        "dataType": "Numeric",
+        "unit": "IU/mL",
+        "maleLow": 0.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-011",
+    "name": "Anti-Thyroid Microsomal Antibody",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 1500,
+    "discountPrice": 1350,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Anti-Thyroid Microsomal Antibody"
+    ],
+    "parameters": [
+      {
+        "name": "Anti-Thyroid Microsomal Antibody",
+        "dataType": "Numeric",
+        "unit": "IU/mL",
+        "maleLow": 0.0,
+        "maleHigh": 35.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-012",
+    "name": "Bicarbonate",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 140,
+    "discountPrice": 125,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Bicarbonate"
+    ],
+    "parameters": [
+      {
+        "name": "Bicarbonate",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 22.0,
+        "maleHigh": 29.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-013",
+    "name": "Bilirubin",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": true,
+    "parameterCount": 2,
+    "parameterNames": [
+      "Total Bilirubin",
+      "Direct Bilirubin"
+    ],
+    "parameters": [
+      {
+        "name": "Total Bilirubin",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.3,
+        "maleHigh": 1.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Direct Bilirubin",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 0.3,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-014",
+    "name": "Bleeding / Clotting Time",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 50,
+    "discountPrice": 45,
+    "isPanel": true,
+    "parameterCount": 2,
+    "parameterNames": [
+      "Bleeding Time",
+      "Clotting Time"
+    ],
+    "parameters": [
+      {
+        "name": "Bleeding Time",
+        "dataType": "Numeric",
+        "unit": "min",
+        "maleLow": 2.0,
+        "maleHigh": 7.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Clotting Time",
+        "dataType": "Numeric",
+        "unit": "min",
+        "maleLow": 5.0,
+        "maleHigh": 10.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-015",
+    "name": "Blood Culture",
+    "department": "MICROBIOLOGY",
+    "normalPrice": 400,
+    "discountPrice": 360,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-016",
+    "name": "Blood Group",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 60,
+    "discountPrice": 55,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      24,
+      24,
+      25,
+      26
+    ],
+    "notes": [
+      "Not interpreted as high/low; reports a blood-group type.",
+      "Not interpreted as high/low; reports a blood-group type.",
+      "Blood sample; ensure correct patient identification.",
+      "Important for transfusion and pregnancy care; crossmatching is separate."
+    ]
+  },
+  {
+    "id": "LEG-017",
+    "name": "Blood Sugar (unspecified)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 50,
+    "discountPrice": 45,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Blood Sugar (unspecified)"
+    ],
+    "parameters": [
+      {
+        "name": "Blood Sugar (unspecified)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 70.0,
+        "maleHigh": 140.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      27,
+      28,
+      29,
+      30
+    ],
+    "notes": [
+      "May indicate hyperglycaemia, diabetes or impaired glucose regulation; diagnosis requires accepted criteria and sometimes repeat testing.",
+      "May indicate hypoglycaemia or treatment-related low glucose.",
+      "Fasting may be required for FBS/GTT; HbA1c usually does not require fasting.",
+      "Clinical diagnosis should follow current diabetes guidelines; HbA1c can be affected by some anaemias and haemoglobin variants."
+    ]
+  },
+  {
+    "id": "LEG-018",
+    "name": "Blood Urea Nitrogen (BUN)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 80,
+    "discountPrice": 70,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Blood Urea Nitrogen (BUN)"
+    ],
+    "parameters": [
+      {
+        "name": "Blood Urea Nitrogen (BUN)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 7.0,
+        "maleHigh": 20.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-019",
+    "name": "CA 15-3",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 750,
+    "discountPrice": 675,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "CA 15-3"
+    ],
+    "parameters": [
+      {
+        "name": "CA 15-3",
+        "dataType": "Numeric",
+        "unit": "U/mL",
+        "maleLow": 0.0,
+        "maleHigh": 30.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-020",
+    "name": "CA 19-9",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 750,
+    "discountPrice": 675,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "CA 19-9"
+    ],
+    "parameters": [
+      {
+        "name": "CA 19-9",
+        "dataType": "Numeric",
+        "unit": "U/mL",
+        "maleLow": 0.0,
+        "maleHigh": 37.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-021",
+    "name": "CA-125",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 680,
+    "discountPrice": 610,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "CA-125"
+    ],
+    "parameters": [
+      {
+        "name": "CA-125",
+        "dataType": "Numeric",
+        "unit": "U/mL",
+        "maleLow": 0.0,
+        "maleHigh": 35.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-022",
+    "name": "CBC / Hemogram",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 280,
+    "discountPrice": 250,
+    "isPanel": true,
+    "parameterCount": 13,
+    "parameterNames": [
+      "Hemoglobin",
+      "Total WBC Count",
+      "RBC Count",
+      "PCV",
+      "MCV",
+      "MCH",
+      "MCHC",
+      "Platelet Count",
+      "Neutrophils",
+      "Lymphocytes",
+      "Eosinophils",
+      "Monocytes",
+      "Basophils"
+    ],
+    "parameters": [
+      {
+        "name": "Hemoglobin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 13.0,
+        "maleHigh": 17.0,
+        "femaleLow": 12.0,
+        "femaleHigh": 15.0,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Total WBC Count",
+        "dataType": "Numeric",
+        "unit": "/cumm",
+        "maleLow": 4000.0,
+        "maleHigh": 11000.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "RBC Count",
+        "dataType": "Numeric",
+        "unit": "million/cumm",
+        "maleLow": 4.5,
+        "maleHigh": 5.5,
+        "femaleLow": 3.8,
+        "femaleHigh": 4.8,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "PCV",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 40.0,
+        "maleHigh": 50.0,
+        "femaleLow": 36.0,
+        "femaleHigh": 46.0,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "MCV",
+        "dataType": "Numeric",
+        "unit": "fL",
+        "maleLow": 83.0,
+        "maleHigh": 101.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "MCH",
+        "dataType": "Numeric",
+        "unit": "pg",
+        "maleLow": 27.0,
+        "maleHigh": 32.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "MCHC",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 31.5,
+        "maleHigh": 34.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Platelet Count",
+        "dataType": "Numeric",
+        "unit": "lakh/cumm",
+        "maleLow": 1.5,
+        "maleHigh": 4.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Neutrophils",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 40.0,
+        "maleHigh": 80.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Lymphocytes",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 20.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Eosinophils",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 1.0,
+        "maleHigh": 6.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Monocytes",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 2.0,
+        "maleHigh": 10.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Basophils",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 0.0,
+        "maleHigh": 1.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-023",
+    "name": "CBC with Peripheral Smear and ESR",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 420,
+    "discountPrice": 380,
+    "isPanel": true,
+    "parameterCount": 15,
+    "parameterNames": [
+      "Hemoglobin",
+      "Total WBC Count",
+      "RBC Count",
+      "PCV",
+      "MCV",
+      "MCH",
+      "MCHC",
+      "Platelet Count",
+      "Neutrophils",
+      "Lymphocytes",
+      "Eosinophils",
+      "Monocytes",
+      "Basophils",
+      "ESR",
+      "Peripheral Smear"
+    ],
+    "parameters": [
+      {
+        "name": "Hemoglobin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 13.0,
+        "maleHigh": 17.0,
+        "femaleLow": 12.0,
+        "femaleHigh": 15.0,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Total WBC Count",
+        "dataType": "Numeric",
+        "unit": "/cumm",
+        "maleLow": 4000.0,
+        "maleHigh": 11000.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "RBC Count",
+        "dataType": "Numeric",
+        "unit": "million/cumm",
+        "maleLow": 4.5,
+        "maleHigh": 5.5,
+        "femaleLow": 3.8,
+        "femaleHigh": 4.8,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "PCV",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 40.0,
+        "maleHigh": 50.0,
+        "femaleLow": 36.0,
+        "femaleHigh": 46.0,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "MCV",
+        "dataType": "Numeric",
+        "unit": "fL",
+        "maleLow": 83.0,
+        "maleHigh": 101.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "MCH",
+        "dataType": "Numeric",
+        "unit": "pg",
+        "maleLow": 27.0,
+        "maleHigh": 32.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "MCHC",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 31.5,
+        "maleHigh": 34.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Platelet Count",
+        "dataType": "Numeric",
+        "unit": "lakh/cumm",
+        "maleLow": 1.5,
+        "maleHigh": 4.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Neutrophils",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 40.0,
+        "maleHigh": 80.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Lymphocytes",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 20.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Eosinophils",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 1.0,
+        "maleHigh": 6.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Monocytes",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 2.0,
+        "maleHigh": 10.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Basophils",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 0.0,
+        "maleHigh": 1.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "ESR",
+        "dataType": "Numeric",
+        "unit": "mm/hr",
+        "maleLow": 0.0,
+        "maleHigh": 15.0,
+        "femaleLow": 0.0,
+        "femaleHigh": 20.0,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Peripheral Smear",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-024",
+    "name": "CK-MB",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 580,
+    "discountPrice": 520,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "CK-MB"
+    ],
+    "parameters": [
+      {
+        "name": "CK-MB",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 0.0,
+        "maleHigh": 25.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-025",
+    "name": "CPK",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 500,
+    "discountPrice": 450,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "CPK"
+    ],
+    "parameters": [
+      {
+        "name": "CPK",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 30.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-026",
+    "name": "CRP",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 360,
+    "discountPrice": 325,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "CRP"
+    ],
+    "parameters": [
+      {
+        "name": "CRP",
+        "dataType": "Numeric",
+        "unit": "mg/L",
+        "maleLow": 0.0,
+        "maleHigh": 6.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-027",
+    "name": "CSF Analysis",
+    "department": "CLINICAL PATHOLOGY",
+    "normalPrice": 450,
+    "discountPrice": 405,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-028",
+    "name": "Calcium",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 140,
+    "discountPrice": 125,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Calcium"
+    ],
+    "parameters": [
+      {
+        "name": "Calcium",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 8.5,
+        "maleHigh": 10.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-029",
+    "name": "Chloride",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 120,
+    "discountPrice": 110,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Chloride"
+    ],
+    "parameters": [
+      {
+        "name": "Chloride",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 98.0,
+        "maleHigh": 107.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-030",
+    "name": "Cholesterol",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Cholesterol"
+    ],
+    "parameters": [
+      {
+        "name": "Cholesterol",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "notes": [
+      "Higher LDL/non-HDL/triglycerides may increase cardiovascular risk; interpretation depends on age and overall risk.",
+      "Very low values need context; low HDL can be a risk marker.",
+      "Fasting may be requested for selected situations; follow the ordering clinician/lab instructions.",
+      "See the dedicated Lipid Profile Reference Notes sheet. Values are not a diagnosis or a personal treatment target."
+    ]
+  },
+  {
+    "id": "LEG-031",
+    "name": "Cortisol",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 660,
+    "discountPrice": 595,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Cortisol"
+    ],
+    "parameters": [
+      {
+        "name": "Cortisol",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 6.0,
+        "maleHigh": 23.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-032",
+    "name": "Creatinine",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 80,
+    "discountPrice": 70,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Creatinine"
+    ],
+    "parameters": [
+      {
+        "name": "Creatinine",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.7,
+        "maleHigh": 1.3,
+        "femaleLow": 0.6,
+        "femaleHigh": 1.1,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-033",
+    "name": "Cryptococcal Antigen",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 2500,
+    "discountPrice": 2250,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Cryptococcal Antigen"
+    ],
+    "parameters": [
+      {
+        "name": "Cryptococcal Antigen",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-034",
+    "name": "DHEA",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 650,
+    "discountPrice": 585,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "DHEA"
+    ],
+    "parameters": [
+      {
+        "name": "DHEA",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 35.0,
+        "maleHigh": 430.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-035",
+    "name": "Dengue IgG",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 980,
+    "discountPrice": 880,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Dengue IgG"
+    ],
+    "parameters": [
+      {
+        "name": "Dengue IgG",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-036",
+    "name": "Dengue IgM",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 1000,
+    "discountPrice": 900,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Dengue IgM"
+    ],
+    "parameters": [
+      {
+        "name": "Dengue IgM",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-037",
+    "name": "Dengue NS1 Antigen",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 600,
+    "discountPrice": 540,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Dengue NS1 Antigen"
+    ],
+    "parameters": [
+      {
+        "name": "Dengue NS1 Antigen",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-038",
+    "name": "ESR",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 60,
+    "discountPrice": 55,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "ESR"
+    ],
+    "parameters": [
+      {
+        "name": "ESR",
+        "dataType": "Numeric",
+        "unit": "mm/hr",
+        "maleLow": 0.0,
+        "maleHigh": 15.0,
+        "femaleLow": 0.0,
+        "femaleHigh": 20.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-039",
+    "name": "Electrolytes",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 600,
+    "discountPrice": 540,
+    "isPanel": true,
+    "parameterCount": 3,
+    "parameterNames": [
+      "Sodium",
+      "Potassium",
+      "Chloride"
+    ],
+    "parameters": [
+      {
+        "name": "Sodium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 135.0,
+        "maleHigh": 145.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Potassium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 3.5,
+        "maleHigh": 5.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Chloride",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 98.0,
+        "maleHigh": 107.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-040",
+    "name": "Electrolytes (Na/K/Cl)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 400,
+    "discountPrice": 360,
+    "isPanel": true,
+    "parameterCount": 3,
+    "parameterNames": [
+      "Sodium",
+      "Potassium",
+      "Chloride"
+    ],
+    "parameters": [
+      {
+        "name": "Sodium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 135.0,
+        "maleHigh": 145.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Potassium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 3.5,
+        "maleHigh": 5.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Chloride",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 98.0,
+        "maleHigh": 107.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-041",
+    "name": "Estradiol (E2)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 500,
+    "discountPrice": 450,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Estradiol (E2)"
+    ],
+    "parameters": [
+      {
+        "name": "Estradiol (E2)",
+        "dataType": "Numeric",
+        "unit": "pg/mL",
+        "maleLow": 10.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-042",
+    "name": "FSH",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 350,
+    "discountPrice": 315,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "FSH"
+    ],
+    "parameters": [
+      {
+        "name": "FSH",
+        "dataType": "Numeric",
+        "unit": "mIU/mL",
+        "maleLow": 1.5,
+        "maleHigh": 12.4,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-043",
+    "name": "Ferritin",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 680,
+    "discountPrice": 610,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Ferritin"
+    ],
+    "parameters": [
+      {
+        "name": "Ferritin",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 30.0,
+        "maleHigh": 400.0,
+        "femaleLow": 13.0,
+        "femaleHigh": 150.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-044",
+    "name": "Fever Panel Comprehensive",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 2000,
+    "discountPrice": 1800,
+    "isPanel": true,
+    "parameterCount": 5,
+    "parameterNames": [
+      "Malaria Parasite",
+      "Dengue NS1 Antigen",
+      "Dengue IgM",
+      "S.Typhi O",
+      "S.Typhi H"
+    ],
+    "parameters": [
+      {
+        "name": "Malaria Parasite",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Dengue NS1 Antigen",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Dengue IgM",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "S.Typhi O",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "S.Typhi H",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-045",
+    "name": "Folic Acid",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 800,
+    "discountPrice": 720,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Folic Acid"
+    ],
+    "parameters": [
+      {
+        "name": "Folic Acid",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 3.0,
+        "maleHigh": 17.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-046",
+    "name": "Free Thyroid Panel (FT3, FT4, TSH)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 900,
+    "discountPrice": 810,
+    "isPanel": true,
+    "parameterCount": 3,
+    "parameterNames": [
+      "FT3",
+      "FT4",
+      "TSH"
+    ],
+    "parameters": [
+      {
+        "name": "FT3",
+        "dataType": "Numeric",
+        "unit": "pg/mL",
+        "maleLow": 2.0,
+        "maleHigh": 4.4,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "FT4",
+        "dataType": "Numeric",
+        "unit": "ng/dL",
+        "maleLow": 0.8,
+        "maleHigh": 1.8,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "TSH",
+        "dataType": "Numeric",
+        "unit": "\u00b5IU/mL",
+        "maleLow": 0.4,
+        "maleHigh": 4.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-047",
+    "name": "G6PD",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 600,
+    "discountPrice": 540,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "G6PD"
+    ],
+    "parameters": [
+      {
+        "name": "G6PD",
+        "dataType": "Numeric",
+        "unit": "U/g Hb",
+        "maleLow": 4.6,
+        "maleHigh": 13.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-048",
+    "name": "GTT",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 420,
+    "discountPrice": 380,
+    "isPanel": true,
+    "parameterCount": 2,
+    "parameterNames": [
+      "Fasting Glucose",
+      "Glucose 2 hr (PP)"
+    ],
+    "parameters": [
+      {
+        "name": "Fasting Glucose",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 70.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Glucose 2 hr (PP)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 70.0,
+        "maleHigh": 140.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      27,
+      28,
+      29,
+      30
+    ],
+    "notes": [
+      "May indicate hyperglycaemia, diabetes or impaired glucose regulation; diagnosis requires accepted criteria and sometimes repeat testing.",
+      "May indicate hypoglycaemia or treatment-related low glucose.",
+      "Fasting may be required for FBS/GTT; HbA1c usually does not require fasting.",
+      "Clinical diagnosis should follow current diabetes guidelines; HbA1c can be affected by some anaemias and haemoglobin variants."
+    ]
+  },
+  {
+    "id": "LEG-049",
+    "name": "Gamma GT",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 500,
+    "discountPrice": 450,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Gamma GT"
+    ],
+    "parameters": [
+      {
+        "name": "Gamma GT",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 8.0,
+        "maleHigh": 61.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-050",
+    "name": "Globulin",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 200,
+    "discountPrice": 180,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Globulin"
+    ],
+    "parameters": [
+      {
+        "name": "Globulin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 2.0,
+        "maleHigh": 3.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-051",
+    "name": "HBsAg",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 200,
+    "discountPrice": 180,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "HBsAg"
+    ],
+    "parameters": [
+      {
+        "name": "HBsAg",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-052",
+    "name": "HCV Antibody",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 500,
+    "discountPrice": 450,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "HCV Antibody"
+    ],
+    "parameters": [
+      {
+        "name": "HCV Antibody",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-053",
+    "name": "HDL Cholesterol",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 180,
+    "discountPrice": 160,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "HDL Cholesterol"
+    ],
+    "parameters": [
+      {
+        "name": "HDL Cholesterol",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 40.0,
+        "maleHigh": 100.0,
+        "femaleLow": 50.0,
+        "femaleHigh": 100.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "notes": [
+      "Higher LDL/non-HDL/triglycerides may increase cardiovascular risk; interpretation depends on age and overall risk.",
+      "Very low values need context; low HDL can be a risk marker.",
+      "Fasting may be requested for selected situations; follow the ordering clinician/lab instructions.",
+      "See the dedicated Lipid Profile Reference Notes sheet. Values are not a diagnosis or a personal treatment target."
+    ]
+  },
+  {
+    "id": "LEG-054",
+    "name": "HGH",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 550,
+    "discountPrice": 495,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "HGH"
+    ],
+    "parameters": [
+      {
+        "name": "HGH",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 0.0,
+        "maleHigh": 5.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-055",
+    "name": "HIV",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 250,
+    "discountPrice": 225,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "HIV"
+    ],
+    "parameters": [
+      {
+        "name": "HIV",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-056",
+    "name": "Hb Variant Analysis",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 1040,
+    "discountPrice": 935,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-057",
+    "name": "HbA1c",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 440,
+    "discountPrice": 395,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "HbA1c"
+    ],
+    "parameters": [
+      {
+        "name": "HbA1c",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 4.0,
+        "maleHigh": 5.6,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      27,
+      28,
+      29,
+      30
+    ],
+    "notes": [
+      "May indicate hyperglycaemia, diabetes or impaired glucose regulation; diagnosis requires accepted criteria and sometimes repeat testing.",
+      "May indicate hypoglycaemia or treatment-related low glucose.",
+      "Fasting may be required for FBS/GTT; HbA1c usually does not require fasting.",
+      "Clinical diagnosis should follow current diabetes guidelines; HbA1c can be affected by some anaemias and haemoglobin variants."
+    ]
+  },
+  {
+    "id": "LEG-058",
+    "name": "Hemoglobin",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 50,
+    "discountPrice": 45,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Hemoglobin"
+    ],
+    "parameters": [
+      {
+        "name": "Hemoglobin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 13.0,
+        "maleHigh": 17.0,
+        "femaleLow": 12.0,
+        "femaleHigh": 15.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-059",
+    "name": "Insulin",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 620,
+    "discountPrice": 560,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Insulin"
+    ],
+    "parameters": [
+      {
+        "name": "Insulin",
+        "dataType": "Numeric",
+        "unit": "\u00b5IU/mL",
+        "maleLow": 2.6,
+        "maleHigh": 24.9,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-060",
+    "name": "Iron",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 300,
+    "discountPrice": 270,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Iron"
+    ],
+    "parameters": [
+      {
+        "name": "Iron",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 65.0,
+        "maleHigh": 175.0,
+        "femaleLow": 50.0,
+        "femaleHigh": 170.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-061",
+    "name": "Kidney / Renal Function Profile",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 660,
+    "discountPrice": 595,
+    "isPanel": true,
+    "parameterCount": 6,
+    "parameterNames": [
+      "Urea",
+      "Creatinine",
+      "Uric Acid",
+      "Blood Urea Nitrogen (BUN)",
+      "Sodium",
+      "Potassium"
+    ],
+    "parameters": [
+      {
+        "name": "Urea",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 15.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Creatinine",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.7,
+        "maleHigh": 1.3,
+        "femaleLow": 0.6,
+        "femaleHigh": 1.1,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Uric Acid",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 3.5,
+        "maleHigh": 7.2,
+        "femaleLow": 2.6,
+        "femaleHigh": 6.0,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Blood Urea Nitrogen (BUN)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 7.0,
+        "maleHigh": 20.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Sodium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 135.0,
+        "maleHigh": 145.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Potassium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 3.5,
+        "maleHigh": 5.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-062",
+    "name": "Kidney Profile",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 280,
+    "discountPrice": 250,
+    "isPanel": true,
+    "parameterCount": 6,
+    "parameterNames": [
+      "Urea",
+      "Creatinine",
+      "Uric Acid",
+      "Blood Urea Nitrogen (BUN)",
+      "Sodium",
+      "Potassium"
+    ],
+    "parameters": [
+      {
+        "name": "Urea",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 15.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Creatinine",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.7,
+        "maleHigh": 1.3,
+        "femaleLow": 0.6,
+        "femaleHigh": 1.1,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Uric Acid",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 3.5,
+        "maleHigh": 7.2,
+        "femaleLow": 2.6,
+        "femaleHigh": 6.0,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Blood Urea Nitrogen (BUN)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 7.0,
+        "maleHigh": 20.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Sodium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 135.0,
+        "maleHigh": 145.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Potassium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 3.5,
+        "maleHigh": 5.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-063",
+    "name": "LDH",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 350,
+    "discountPrice": 315,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "LDH"
+    ],
+    "parameters": [
+      {
+        "name": "LDH",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 140.0,
+        "maleHigh": 280.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-064",
+    "name": "LE Cells",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 550,
+    "discountPrice": 495,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "LE Cells"
+    ],
+    "parameters": [
+      {
+        "name": "LE Cells",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-065",
+    "name": "LH",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 450,
+    "discountPrice": 405,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "LH"
+    ],
+    "parameters": [
+      {
+        "name": "LH",
+        "dataType": "Numeric",
+        "unit": "mIU/mL",
+        "maleLow": 1.7,
+        "maleHigh": 8.6,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-066",
+    "name": "Lipid Profile",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 450,
+    "discountPrice": 405,
+    "isPanel": true,
+    "parameterCount": 6,
+    "parameterNames": [
+      "Cholesterol",
+      "Triglycerides",
+      "HDL Cholesterol",
+      "LDL Cholesterol",
+      "VLDL",
+      "Chol/HDL Ratio"
+    ],
+    "parameters": [
+      {
+        "name": "Cholesterol",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Triglycerides",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 150.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "HDL Cholesterol",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 40.0,
+        "maleHigh": 100.0,
+        "femaleLow": 50.0,
+        "femaleHigh": 100.0,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "LDL Cholesterol",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "VLDL",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 5.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Chol/HDL Ratio",
+        "dataType": "Numeric",
+        "unit": "",
+        "maleLow": 0.0,
+        "maleHigh": 5.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "notes": [
+      "Higher LDL/non-HDL/triglycerides may increase cardiovascular risk; interpretation depends on age and overall risk.",
+      "Very low values need context; low HDL can be a risk marker.",
+      "Fasting may be requested for selected situations; follow the ordering clinician/lab instructions.",
+      "See the dedicated Lipid Profile Reference Notes sheet. Values are not a diagnosis or a personal treatment target."
+    ]
+  },
+  {
+    "id": "LEG-067",
+    "name": "Lipoprotein(a)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 800,
+    "discountPrice": 720,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Lipoprotein(a)"
+    ],
+    "parameters": [
+      {
+        "name": "Lipoprotein(a)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 30.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-068",
+    "name": "Lithium",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 550,
+    "discountPrice": 495,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Lithium"
+    ],
+    "parameters": [
+      {
+        "name": "Lithium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 0.6,
+        "maleHigh": 1.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-069",
+    "name": "Liver Function Test (LFT)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 500,
+    "discountPrice": 450,
+    "isPanel": true,
+    "parameterCount": 10,
+    "parameterNames": [
+      "Total Bilirubin",
+      "Direct Bilirubin",
+      "Indirect Bilirubin",
+      "SGOT / AST",
+      "SGPT / ALT",
+      "Alkaline Phosphatase",
+      "Protein",
+      "Albumin",
+      "Globulin",
+      "A/G Ratio"
+    ],
+    "parameters": [
+      {
+        "name": "Total Bilirubin",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.3,
+        "maleHigh": 1.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Direct Bilirubin",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.0,
+        "maleHigh": 0.3,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Indirect Bilirubin",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.1,
+        "maleHigh": 1.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "SGOT / AST",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 5.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "SGPT / ALT",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 5.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Alkaline Phosphatase",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 44.0,
+        "maleHigh": 147.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Protein",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 6.0,
+        "maleHigh": 8.3,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Albumin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 3.5,
+        "maleHigh": 5.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Globulin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 2.0,
+        "maleHigh": 3.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "A/G Ratio",
+        "dataType": "Numeric",
+        "unit": "",
+        "maleLow": 1.0,
+        "maleHigh": 2.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-070",
+    "name": "Lupus Anticoagulant",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 1300,
+    "discountPrice": 1170,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Lupus Anticoagulant"
+    ],
+    "parameters": [
+      {
+        "name": "Lupus Anticoagulant",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-071",
+    "name": "Magnesium",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 280,
+    "discountPrice": 250,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Magnesium"
+    ],
+    "parameters": [
+      {
+        "name": "Magnesium",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 1.7,
+        "maleHigh": 2.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-072",
+    "name": "Malaria Parasite",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 180,
+    "discountPrice": 160,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Malaria Parasite"
+    ],
+    "parameters": [
+      {
+        "name": "Malaria Parasite",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-073",
+    "name": "Microalbumin",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 250,
+    "discountPrice": 225,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Microalbumin"
+    ],
+    "parameters": [
+      {
+        "name": "Microalbumin",
+        "dataType": "Numeric",
+        "unit": "mg/L",
+        "maleLow": 0.0,
+        "maleHigh": 30.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-074",
+    "name": "Microfilaria",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 130,
+    "discountPrice": 115,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Microfilaria"
+    ],
+    "parameters": [
+      {
+        "name": "Microfilaria",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-075",
+    "name": "PCV",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "PCV"
+    ],
+    "parameters": [
+      {
+        "name": "PCV",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 40.0,
+        "maleHigh": 50.0,
+        "femaleLow": 36.0,
+        "femaleHigh": 46.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-076",
+    "name": "PSA",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 760,
+    "discountPrice": 685,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "PSA"
+    ],
+    "parameters": [
+      {
+        "name": "PSA",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 0.0,
+        "maleHigh": 4.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-077",
+    "name": "PT / Prothrombin Time",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 180,
+    "discountPrice": 160,
+    "isPanel": true,
+    "parameterCount": 2,
+    "parameterNames": [
+      "PT",
+      "INR"
+    ],
+    "parameters": [
+      {
+        "name": "PT",
+        "dataType": "Numeric",
+        "unit": "sec",
+        "maleLow": 11.0,
+        "maleHigh": 13.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "INR",
+        "dataType": "Numeric",
+        "unit": "",
+        "maleLow": 0.8,
+        "maleHigh": 1.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-078",
+    "name": "Phosphorus",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 180,
+    "discountPrice": 160,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Phosphorus"
+    ],
+    "parameters": [
+      {
+        "name": "Phosphorus",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 2.5,
+        "maleHigh": 4.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-079",
+    "name": "Platelet Count",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Platelet Count"
+    ],
+    "parameters": [
+      {
+        "name": "Platelet Count",
+        "dataType": "Numeric",
+        "unit": "lakh/cumm",
+        "maleLow": 1.5,
+        "maleHigh": 4.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-080",
+    "name": "Potassium",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 150,
+    "discountPrice": 135,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Potassium"
+    ],
+    "parameters": [
+      {
+        "name": "Potassium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 3.5,
+        "maleHigh": 5.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-081",
+    "name": "Pregnancy Test",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 150,
+    "discountPrice": 135,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Pregnancy Test"
+    ],
+    "parameters": [
+      {
+        "name": "Pregnancy Test",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      43,
+      44,
+      45,
+      46
+    ],
+    "notes": [
+      "Positive result may indicate pregnancy; rare other causes are possible.",
+      "Negative result may occur if testing is too early.",
+      "Follow kit/lab timing; first-morning urine may help for early testing.",
+      "Repeat or serum testing may be advised if pregnancy is still suspected."
+    ]
+  },
+  {
+    "id": "LEG-082",
+    "name": "Progesterone",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 420,
+    "discountPrice": 380,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Progesterone"
+    ],
+    "parameters": [
+      {
+        "name": "Progesterone",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 0.2,
+        "maleHigh": 1.4,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-083",
+    "name": "Prolactin",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 450,
+    "discountPrice": 405,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Prolactin"
+    ],
+    "parameters": [
+      {
+        "name": "Prolactin",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 4.0,
+        "maleHigh": 15.0,
+        "femaleLow": 4.0,
+        "femaleHigh": 23.0,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "notes": [
+      "May reflect hormone excess, physiological cycle variation, medication effects or endocrine conditions.",
+      "May reflect reduced hormone production or timing-related variation.",
+      "Collection time and menstrual-cycle timing may matter; disclose medicines and pregnancy status.",
+      "Use age-, sex-, cycle- and pregnancy-specific reference intervals."
+    ]
+  },
+  {
+    "id": "LEG-084",
+    "name": "Protein",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 150,
+    "discountPrice": 135,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Protein"
+    ],
+    "parameters": [
+      {
+        "name": "Protein",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 6.0,
+        "maleHigh": 8.3,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-085",
+    "name": "Protein / Creatinine Ratio",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 160,
+    "discountPrice": 145,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Protein / Creatinine Ratio"
+    ],
+    "parameters": [
+      {
+        "name": "Protein / Creatinine Ratio",
+        "dataType": "Numeric",
+        "unit": "",
+        "maleLow": 0.0,
+        "maleHigh": 0.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-086",
+    "name": "Renal Profile",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 250,
+    "discountPrice": 225,
+    "isPanel": true,
+    "parameterCount": 6,
+    "parameterNames": [
+      "Urea",
+      "Creatinine",
+      "Uric Acid",
+      "Blood Urea Nitrogen (BUN)",
+      "Sodium",
+      "Potassium"
+    ],
+    "parameters": [
+      {
+        "name": "Urea",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 15.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Creatinine",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.7,
+        "maleHigh": 1.3,
+        "femaleLow": 0.6,
+        "femaleHigh": 1.1,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Uric Acid",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 3.5,
+        "maleHigh": 7.2,
+        "femaleLow": 2.6,
+        "femaleHigh": 6.0,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Blood Urea Nitrogen (BUN)",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 7.0,
+        "maleHigh": 20.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Sodium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 135.0,
+        "maleHigh": 145.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Potassium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 3.5,
+        "maleHigh": 5.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-087",
+    "name": "Reticulocyte Count",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Reticulocyte Count"
+    ],
+    "parameters": [
+      {
+        "name": "Reticulocyte Count",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 0.5,
+        "maleHigh": 2.5,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      35,
+      36,
+      37,
+      38
+    ],
+    "notes": [
+      "Depends on the parameter; may occur with anaemia, infection, inflammation, dehydration or marrow/platelet disorders.",
+      "May reflect anaemia, low cell counts or other conditions depending on the parameter.",
+      "Usually EDTA blood; follow lab instructions.",
+      "Interpret the individual components and age-/sex-specific ranges, not one number alone."
+    ]
+  },
+  {
+    "id": "LEG-088",
+    "name": "Rheumatoid Factor (RF)",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 270,
+    "discountPrice": 245,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Rheumatoid Factor (RF)"
+    ],
+    "parameters": [
+      {
+        "name": "Rheumatoid Factor (RF)",
+        "dataType": "Numeric",
+        "unit": "IU/mL",
+        "maleLow": 0.0,
+        "maleHigh": 14.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-089",
+    "name": "Rubella",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 900,
+    "discountPrice": 810,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Rubella"
+    ],
+    "parameters": [
+      {
+        "name": "Rubella",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-090",
+    "name": "SGOT / AST",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 120,
+    "discountPrice": 110,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "SGOT / AST"
+    ],
+    "parameters": [
+      {
+        "name": "SGOT / AST",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 5.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-091",
+    "name": "SGPT / ALT",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 120,
+    "discountPrice": 110,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "SGPT / ALT"
+    ],
+    "parameters": [
+      {
+        "name": "SGPT / ALT",
+        "dataType": "Numeric",
+        "unit": "U/L",
+        "maleLow": 5.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-092",
+    "name": "Semen Analysis",
+    "department": "CLINICAL PATHOLOGY",
+    "normalPrice": 250,
+    "discountPrice": 225,
+    "isPanel": true,
+    "parameterCount": 4,
+    "parameterNames": [
+      "Semen Volume",
+      "Sperm Count",
+      "Total Motility",
+      "Normal Morphology"
+    ],
+    "parameters": [
+      {
+        "name": "Semen Volume",
+        "dataType": "Numeric",
+        "unit": "mL",
+        "maleLow": 1.5,
+        "maleHigh": 5.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Sperm Count",
+        "dataType": "Numeric",
+        "unit": "million/mL",
+        "maleLow": 15.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Total Motility",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 40.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Normal Morphology",
+        "dataType": "Numeric",
+        "unit": "%",
+        "maleLow": 4.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-093",
+    "name": "Sickling Test",
+    "department": "HAEMATOLOGY",
+    "normalPrice": 220,
+    "discountPrice": 200,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Sickling Test"
+    ],
+    "parameters": [
+      {
+        "name": "Sickling Test",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-094",
+    "name": "Sodium",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 150,
+    "discountPrice": 135,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Sodium"
+    ],
+    "parameters": [
+      {
+        "name": "Sodium",
+        "dataType": "Numeric",
+        "unit": "mmol/L",
+        "maleLow": 135.0,
+        "maleHigh": 145.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-095",
+    "name": "Sputum Culture",
+    "department": "MICROBIOLOGY",
+    "normalPrice": 800,
+    "discountPrice": 720,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-096",
+    "name": "Sputum Routine",
+    "department": "CLINICAL PATHOLOGY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-097",
+    "name": "Stool Culture",
+    "department": "MICROBIOLOGY",
+    "normalPrice": 550,
+    "discountPrice": 495,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-098",
+    "name": "Stool Routine",
+    "department": "CLINICAL PATHOLOGY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": true,
+    "parameterCount": 5,
+    "parameterNames": [
+      "Colour",
+      "Consistency",
+      "Mucus",
+      "Ova / Cyst",
+      "Occult Blood"
+    ],
+    "parameters": [
+      {
+        "name": "Colour",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Consistency",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Mucus",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Ova / Cyst",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Occult Blood",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-099",
+    "name": "T3",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 300,
+    "discountPrice": 270,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "T3"
+    ],
+    "parameters": [
+      {
+        "name": "T3",
+        "dataType": "Numeric",
+        "unit": "ng/dL",
+        "maleLow": 80.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-100",
+    "name": "T4",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 300,
+    "discountPrice": 270,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "T4"
+    ],
+    "parameters": [
+      {
+        "name": "T4",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 5.1,
+        "maleHigh": 14.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-101",
+    "name": "TSH",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 220,
+    "discountPrice": 200,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "TSH"
+    ],
+    "parameters": [
+      {
+        "name": "TSH",
+        "dataType": "Numeric",
+        "unit": "\u00b5IU/mL",
+        "maleLow": 0.4,
+        "maleHigh": 4.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-102",
+    "name": "Thyroglobulin",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 1250,
+    "discountPrice": 1125,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Thyroglobulin"
+    ],
+    "parameters": [
+      {
+        "name": "Thyroglobulin",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 3.5,
+        "maleHigh": 77.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      16,
+      17,
+      18,
+      19
+    ],
+    "notes": [
+      "May occur with liver-cell injury, bile-duct problems, alcohol/medicine effects or other conditions.",
+      "May reflect reduced protein production or other causes depending on the marker.",
+      "Usually blood sample; fasting depends on panel and laboratory.",
+      "Enzyme elevation does not by itself establish a specific liver disease."
+    ]
+  },
+  {
+    "id": "LEG-103",
+    "name": "Thyroid Profile (T3, T4, TSH)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 550,
+    "discountPrice": 495,
+    "isPanel": true,
+    "parameterCount": 3,
+    "parameterNames": [
+      "T3",
+      "T4",
+      "TSH"
+    ],
+    "parameters": [
+      {
+        "name": "T3",
+        "dataType": "Numeric",
+        "unit": "ng/dL",
+        "maleLow": 80.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "T4",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 5.1,
+        "maleHigh": 14.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "TSH",
+        "dataType": "Numeric",
+        "unit": "\u00b5IU/mL",
+        "maleLow": 0.4,
+        "maleHigh": 4.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-104",
+    "name": "Thyroid Profile (unspecified)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 450,
+    "discountPrice": 405,
+    "isPanel": true,
+    "parameterCount": 3,
+    "parameterNames": [
+      "T3",
+      "T4",
+      "TSH"
+    ],
+    "parameters": [
+      {
+        "name": "T3",
+        "dataType": "Numeric",
+        "unit": "ng/dL",
+        "maleLow": 80.0,
+        "maleHigh": 200.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "T4",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 5.1,
+        "maleHigh": 14.1,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "TSH",
+        "dataType": "Numeric",
+        "unit": "\u00b5IU/mL",
+        "maleLow": 0.4,
+        "maleHigh": 4.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "notes": [
+      "May suggest overactive thyroid or autoimmune activity depending on the test.",
+      "May suggest underactive thyroid for hormone tests; antibody results require context.",
+      "Usually blood sample; tell the clinician about thyroid medicines and supplements.",
+      "Pregnancy and age affect reference intervals; antibody positivity alone is not a complete diagnosis."
+    ]
+  },
+  {
+    "id": "LEG-105",
+    "name": "Total IgE",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 900,
+    "discountPrice": 810,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Total IgE"
+    ],
+    "parameters": [
+      {
+        "name": "Total IgE",
+        "dataType": "Numeric",
+        "unit": "IU/mL",
+        "maleLow": 0.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-106",
+    "name": "Toxoplasma",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 700,
+    "discountPrice": 630,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Toxoplasma"
+    ],
+    "parameters": [
+      {
+        "name": "Toxoplasma",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-107",
+    "name": "Troponin-I",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 1050,
+    "discountPrice": 945,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Troponin-I"
+    ],
+    "parameters": [
+      {
+        "name": "Troponin-I",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 0.0,
+        "maleHigh": 0.04,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 2,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "notes": [
+      "May be associated with the condition being investigated, but false positives and non-disease causes are possible.",
+      "A low/negative result may be normal or may not exclude disease, depending on the assay.",
+      "Follow the laboratory's sample, fasting and timing instructions.",
+      "Use the exact assay's report range and clinician interpretation; this is a general educational note."
+    ]
+  },
+  {
+    "id": "LEG-108",
+    "name": "Urea",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Urea"
+    ],
+    "parameters": [
+      {
+        "name": "Urea",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 15.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-109",
+    "name": "Uric Acid",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 120,
+    "discountPrice": 110,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Uric Acid"
+    ],
+    "parameters": [
+      {
+        "name": "Uric Acid",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 3.5,
+        "maleHigh": 7.2,
+        "femaleLow": 2.6,
+        "femaleHigh": 6.0,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "notes": [
+      "May reflect reduced kidney function, dehydration, medicines or electrolyte disturbance depending on the analyte.",
+      "May reflect overhydration, nutritional/endocrine issues or other causes depending on the analyte.",
+      "Blood sample; some tests require special handling; follow lab instructions.",
+      "Creatinine depends partly on muscle mass; interpret with eGFR and clinical context where appropriate."
+    ]
+  },
+  {
+    "id": "LEG-110",
+    "name": "Urine Culture",
+    "department": "MICROBIOLOGY",
+    "normalPrice": 850,
+    "discountPrice": 765,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Result"
+    ],
+    "parameters": [
+      {
+        "name": "Result",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-111",
+    "name": "Urine Routine",
+    "department": "CLINICAL PATHOLOGY",
+    "normalPrice": 80,
+    "discountPrice": 70,
+    "isPanel": true,
+    "parameterCount": 8,
+    "parameterNames": [
+      "Colour",
+      "Appearance",
+      "Albumin",
+      "Sugar",
+      "pH",
+      "Pus Cells",
+      "RBCs",
+      "Epithelial Cells"
+    ],
+    "parameters": [
+      {
+        "name": "Colour",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Appearance",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Albumin",
+        "dataType": "Numeric",
+        "unit": "g/dL",
+        "maleLow": 3.5,
+        "maleHigh": 5.2,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      },
+      {
+        "name": "Sugar",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "pH",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Pus Cells",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "RBCs",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "Epithelial Cells",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      47,
+      48,
+      49,
+      50
+    ],
+    "notes": [
+      "May indicate infection, blood, protein, glucose or kidney/urinary tract issues.",
+      "Often not meaningful in isolation; depends on the measured component.",
+      "Clean-catch midstream sample may be requested; culture samples need sterile collection.",
+      "Hydration, contamination and collection technique can affect results."
+    ]
+  },
+  {
+    "id": "LEG-112",
+    "name": "VDRL",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 140,
+    "discountPrice": 125,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "VDRL"
+    ],
+    "parameters": [
+      {
+        "name": "VDRL",
+        "dataType": "Qualitative",
+        "qualitativeOptions": [
+          "Negative",
+          "Positive"
+        ],
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  },
+  {
+    "id": "LEG-113",
+    "name": "VLDL",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 100,
+    "discountPrice": 90,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "VLDL"
+    ],
+    "parameters": [
+      {
+        "name": "VLDL",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 5.0,
+        "maleHigh": 40.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "notes": [
+      "Higher LDL/non-HDL/triglycerides may increase cardiovascular risk; interpretation depends on age and overall risk.",
+      "Very low values need context; low HDL can be a risk marker.",
+      "Fasting may be requested for selected situations; follow the ordering clinician/lab instructions.",
+      "See the dedicated Lipid Profile Reference Notes sheet. Values are not a diagnosis or a personal treatment target."
+    ]
+  },
+  {
+    "id": "LEG-114",
+    "name": "Vitamin A",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 2500,
+    "discountPrice": 2250,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Vitamin A"
+    ],
+    "parameters": [
+      {
+        "name": "Vitamin A",
+        "dataType": "Numeric",
+        "unit": "\u00b5g/dL",
+        "maleLow": 20.0,
+        "maleHigh": 60.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-115",
+    "name": "Vitamin B12",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 900,
+    "discountPrice": 810,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Vitamin B12"
+    ],
+    "parameters": [
+      {
+        "name": "Vitamin B12",
+        "dataType": "Numeric",
+        "unit": "pg/mL",
+        "maleLow": 200.0,
+        "maleHigh": 900.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-116",
+    "name": "Vitamin C",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 2500,
+    "discountPrice": 2250,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Vitamin C"
+    ],
+    "parameters": [
+      {
+        "name": "Vitamin C",
+        "dataType": "Numeric",
+        "unit": "mg/dL",
+        "maleLow": 0.4,
+        "maleHigh": 2.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-117",
+    "name": "Vitamin D (25-OH)",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 1500,
+    "discountPrice": 1350,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Vitamin D (25-OH)"
+    ],
+    "parameters": [
+      {
+        "name": "Vitamin D (25-OH)",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 30.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-118",
+    "name": "Vitamin D + B12 Panel",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 1820,
+    "discountPrice": 1640,
+    "isPanel": true,
+    "parameterCount": 2,
+    "parameterNames": [
+      "Vitamin D (25-OH)",
+      "Vitamin B12"
+    ],
+    "parameters": [
+      {
+        "name": "Vitamin D (25-OH)",
+        "dataType": "Numeric",
+        "unit": "ng/mL",
+        "maleLow": 30.0,
+        "maleHigh": 100.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      },
+      {
+        "name": "Vitamin B12",
+        "dataType": "Numeric",
+        "unit": "pg/mL",
+        "maleLow": 200.0,
+        "maleHigh": 900.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 0,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-119",
+    "name": "Vitamin E",
+    "department": "BIOCHEMISTRY",
+    "normalPrice": 2250,
+    "discountPrice": 2025,
+    "isPanel": false,
+    "parameterCount": 1,
+    "parameterNames": [
+      "Vitamin E"
+    ],
+    "parameters": [
+      {
+        "name": "Vitamin E",
+        "dataType": "Numeric",
+        "unit": "mg/L",
+        "maleLow": 5.5,
+        "maleHigh": 17.0,
+        "femaleLow": null,
+        "femaleHigh": null,
+        "precision": 1,
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      39,
+      40,
+      41,
+      42
+    ],
+    "notes": [
+      "May reflect excess supplementation, inflammation (for ferritin) or other causes.",
+      "May indicate deficiency or depleted stores, depending on the marker.",
+      "Tell the clinician about supplements; fasting requirements vary.",
+      "Ferritin can rise with inflammation; interpret with other iron studies and clinical history."
+    ]
+  },
+  {
+    "id": "LEG-120",
+    "name": "Widal",
+    "department": "SEROLOGY / IMMUNOLOGY",
+    "normalPrice": 140,
+    "discountPrice": 125,
+    "isPanel": true,
+    "parameterCount": 4,
+    "parameterNames": [
+      "S.Typhi O",
+      "S.Typhi H",
+      "S.Paratyphi AH",
+      "S.Paratyphi BH"
+    ],
+    "parameters": [
+      {
+        "name": "S.Typhi O",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "S.Typhi H",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "S.Paratyphi AH",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      },
+      {
+        "name": "S.Paratyphi BH",
+        "dataType": "Text",
+        "unit": "",
+        "isVerified": false
+      }
+    ],
+    "noteIndices": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "notes": [
+      "A positive/reactive result may indicate current or past infection depending on the assay.",
+      "A negative result may not exclude very early infection or infection outside the test's detection window.",
+      "Sample type and timing are test-specific; follow collection instructions.",
+      "Confirmatory testing and clinical correlation may be required; screening tests are not always definitive."
+    ]
+  }
+]

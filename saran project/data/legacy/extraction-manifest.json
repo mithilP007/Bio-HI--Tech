@@ -1,0 +1,29 @@
+{
+  "extractionDate": "2026-11-21T12:07:00Z",
+  "sourceFile": "legacy_reference/BIO_HI_TECH_Lab_App/index.html",
+  "sourceHashSha256": "2ee47da26632fbb12d68a3f6074bbb10ab5a190d418bd943eb169d90218488a9",
+  "counts": {
+    "tests": 120,
+    "parameterSpecificationsInS": 120,
+    "panelDefinitionsInRG": 22,
+    "interpretationNotesInNU": 51,
+    "uniqueTestsWithNotes": 120
+  },
+  "validation": {
+    "all120TestsAccountedFor": true,
+    "duplicateTestNames": 0,
+    "allPricesAccountedFor": true,
+    "unmatchedDefaultParametersCount": 9,
+    "unmatchedDefaultTests": [
+      "ANC Profile",
+      "Blood Culture",
+      "Blood Group",
+      "CSF Analysis",
+      "Hb Variant Analysis",
+      "Sputum Culture",
+      "Sputum Routine",
+      "Stool Culture",
+      "Urine Culture"
+    ]
+  }
+}

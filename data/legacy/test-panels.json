@@ -1,0 +1,159 @@
+{
+  "CBC / Hemogram": [
+    "Hemoglobin",
+    "Total WBC Count",
+    "RBC Count",
+    "PCV",
+    "MCV",
+    "MCH",
+    "MCHC",
+    "Platelet Count",
+    "Neutrophils",
+    "Lymphocytes",
+    "Eosinophils",
+    "Monocytes",
+    "Basophils"
+  ],
+  "CBC with Peripheral Smear and ESR": [
+    "Hemoglobin",
+    "Total WBC Count",
+    "RBC Count",
+    "PCV",
+    "MCV",
+    "MCH",
+    "MCHC",
+    "Platelet Count",
+    "Neutrophils",
+    "Lymphocytes",
+    "Eosinophils",
+    "Monocytes",
+    "Basophils",
+    "ESR",
+    "Peripheral Smear"
+  ],
+  "Lipid Profile": [
+    "Cholesterol",
+    "Triglycerides",
+    "HDL Cholesterol",
+    "LDL Cholesterol",
+    "VLDL",
+    "Chol/HDL Ratio"
+  ],
+  "Liver Function Test (LFT)": [
+    "Total Bilirubin",
+    "Direct Bilirubin",
+    "Indirect Bilirubin",
+    "SGOT / AST",
+    "SGPT / ALT",
+    "Alkaline Phosphatase",
+    "Protein",
+    "Albumin",
+    "Globulin",
+    "A/G Ratio"
+  ],
+  "Bilirubin": [
+    "Total Bilirubin",
+    "Direct Bilirubin"
+  ],
+  "Kidney / Renal Function Profile": [
+    "Urea",
+    "Creatinine",
+    "Uric Acid",
+    "Blood Urea Nitrogen (BUN)",
+    "Sodium",
+    "Potassium"
+  ],
+  "Kidney Profile": [
+    "Urea",
+    "Creatinine",
+    "Uric Acid",
+    "Blood Urea Nitrogen (BUN)",
+    "Sodium",
+    "Potassium"
+  ],
+  "Renal Profile": [
+    "Urea",
+    "Creatinine",
+    "Uric Acid",
+    "Blood Urea Nitrogen (BUN)",
+    "Sodium",
+    "Potassium"
+  ],
+  "Electrolytes": [
+    "Sodium",
+    "Potassium",
+    "Chloride"
+  ],
+  "Electrolytes (Na/K/Cl)": [
+    "Sodium",
+    "Potassium",
+    "Chloride"
+  ],
+  "Thyroid Profile (T3, T4, TSH)": [
+    "T3",
+    "T4",
+    "TSH"
+  ],
+  "Thyroid Profile (unspecified)": [
+    "T3",
+    "T4",
+    "TSH"
+  ],
+  "Free Thyroid Panel (FT3, FT4, TSH)": [
+    "FT3",
+    "FT4",
+    "TSH"
+  ],
+  "GTT": [
+    "Fasting Glucose",
+    "Glucose 2 hr (PP)"
+  ],
+  "PT / Prothrombin Time": [
+    "PT",
+    "INR"
+  ],
+  "Bleeding / Clotting Time": [
+    "Bleeding Time",
+    "Clotting Time"
+  ],
+  "Vitamin D + B12 Panel": [
+    "Vitamin D (25-OH)",
+    "Vitamin B12"
+  ],
+  "Semen Analysis": [
+    "Semen Volume",
+    "Sperm Count",
+    "Total Motility",
+    "Normal Morphology"
+  ],
+  "Widal": [
+    "S.Typhi O",
+    "S.Typhi H",
+    "S.Paratyphi AH",
+    "S.Paratyphi BH"
+  ],
+  "Fever Panel Comprehensive": [
+    "Malaria Parasite",
+    "Dengue NS1 Antigen",
+    "Dengue IgM",
+    "S.Typhi O",
+    "S.Typhi H"
+  ],
+  "Urine Routine": [
+    "Colour",
+    "Appearance",
+    "Albumin",
+    "Sugar",
+    "pH",
+    "Pus Cells",
+    "RBCs",
+    "Epithelial Cells"
+  ],
+  "Stool Routine": [
+    "Colour",
+    "Consistency",
+    "Mucus",
+    "Ova / Cyst",
+    "Occult Blood"
+  ]
+}
