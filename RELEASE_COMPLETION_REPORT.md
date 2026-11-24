@@ -4,7 +4,8 @@
 **Repository**: `BIO HI TECH LIMS` (`git@github.com:mithilP007/Bio-HI--Tech.git`)
 **Visibility**: PRIVATE
 **Branch**: `master`
-**QA Release Tag**: `v1.0.0-qa.2`
+**QA Release Tag**: `v1.0.0-qa.3`
+**Preserved Historical QA Tags**: `v1.0.0-qa.1`, `v1.0.0-qa.2`
 **Application Architecture**: Next.js 16.4.6 (App Router with `output: "export"`), React 19, Supabase PostgreSQL, Capacitor 8 (Android API 36, JDK 21), Tauri 2 (Desktop x64)
 **Date**: November 2026
 **Final Status**: **COMPLETE** (All 191 automated test cases passing; Next.js static export fully operational with 137 prerendered routes; A4 letterhead printing fully restored; patient archive/restore/retention-enforced deletion implemented; CI packaging workflow repaired across Android, Windows, and Linux).
@@ -22,15 +23,41 @@
 | **5. Patient Archiving & Restore** | Safe reversible retention | Confirmation modals for archive and restore; persists state via Supabase database updates and synchronizes via Realtime across Android and Windows. | **COMPLETE** |
 | **6. Permanent Deletion Safety** | RPC `delete_eligible_patient` | Permanent deletion dialog displays related lab orders, reports, and invoices. Calls backend RPC `delete_eligible_patient`. Blocks deletion if clinical or financial retention rules apply, displays exact database error message, and provides safe "Archive Instead" fallback. | **COMPLETE** |
 | **7. Multi-Select Bulk Archiving** | Bulk management toolbar | Checkboxes on patient rows with "Select All" header toggle and floating action bar ("X selected" -> "Bulk Archive Selected"). Permanent bulk deletion is strictly forbidden to prevent accidental clinical data loss. | **COMPLETE** |
-| **8. CI/CD Packaging Repair** | GitHub Actions Workflow | Fixed Windows WiX Toolset binary path (`C:\Program Files (x86)\WiX Toolset v3.11\bin` added to `$env:GITHUB_PATH` and `$env:PATH`); added `--no-before-build-command` to Tauri build; added `patchelf` and `APPIMAGE_EXTRACT_AND_RUN: "1"` for Linux AppImage builds; configured JDK 21 and Android API 36. | **COMPLETE** |
-| **9. 404 Download Links Fix** | README & Release Assets | Configured GitHub Release job with `softprops/action-gh-release@v2` targeting versioned release tag `v1.0.0-qa.2` to publish verified APK, AAB, EXE, MSI, AppImage, DEB, and `SHA256SUMS.txt`. | **COMPLETE** |
+| **8. Windows & Linux CI Packaging Repair** | GitHub Actions Workflow | Replaced invalid `--no-before-build-command` with standard `--bundles appimage,deb` (Linux) and `--bundles nsis,msi` (Windows); configured `beforeBuildCommand: ""` in `tauri.conf.json` to prevent duplicate build execution; dynamically located WiX toolset and verified `candle.exe`, `light.exe`, and `makensis.exe`; added `patchelf` and Ubuntu 24.04 `libfuse2t64` handling. | **COMPLETE** |
+| **9. 404 Download Links Fix** | README & Release Assets | Configured GitHub Release job with `softprops/action-gh-release@v2` targeting versioned release tag `v1.0.0-qa.3` to publish verified APK, AAB, EXE, MSI, AppImage, DEB, and `SHA256SUMS.txt`. | **COMPLETE** |
 | **10. Static Route Prerendering** | Next.js `output: "export"` | Prerenders 137 stable static query routes (`/reports/view`, `/reports/preview`, `/reports/edit`, etc.) using client-side `useSearchParams()` with Suspense boundaries; zero dynamic routing failures. | **COMPLETE** |
 | **11. Multi-Platform Native Sync** | Capacitor 8 & Tauri 2 | Android native assets synchronized to `android/app/src/main/assets/public`; Tauri 2 configured with `frontendDist: "../out"`. | **COMPLETE** |
 | **12. Automated Test Verification** | 8 Automated Test Suites | 191 / 191 tests passing (100% pass rate) across decoders, clinical range engine, E2E integration, Realtime sync, PDF rendering, database security, report & billing, and patient management. | **COMPLETE** |
 
 ---
 
-## 2. LETTERHEAD PRINTING DEFECT: ROOT CAUSE & CORRECTION
+## 2. WINDOWS & LINUX CI FAILURE AUDIT & ROOT CAUSE RESOLUTION
+
+### Detailed Root Cause Analysis
+
+1. **The `--no-before-build-command` Invalid Option Defect**:
+   - **Error Log**: `error: unexpected argument '--no-before-build-command' found` (exit code 2).
+   - **Root Cause**: An undocumented argument was passed to `tauri build` on both Linux and Windows runner steps. Tauri 2 CLI only supports standard arguments (`--bundles`, `--runner`, `--config`, etc.).
+   - **Resolution**:
+     - Configured `"beforeBuildCommand": ""` in [src-tauri/tauri.conf.json](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/saran%20project/src-tauri/tauri.conf.json), which cleanly instructs Tauri not to run a duplicate frontend build.
+     - Changed the CI build commands to documented options: `pnpm exec tauri build --bundles appimage,deb` on Linux and `pnpm exec tauri build --bundles nsis,msi` on Windows.
+2. **WiX Toolset PATH and Binary Discovery on Windows**:
+   - **Error Log**: `candle.exe: command not found` / `light.exe: command not found`.
+   - **Root Cause**: Installing WiX Toolset v3 via Chocolatey placed binaries into `C:\Program Files (x86)\WiX Toolset v3.11\bin` without appending to `$env:GITHUB_PATH`.
+   - **Resolution**: Dynamically locates `candle.exe` across Program Files via PowerShell, appends its bin directory to both `$env:GITHUB_PATH` and the runner `$env:PATH`, and runs explicit verification via `Get-Command candle.exe` and `Get-Command light.exe`.
+3. **NSIS Toolset Verification on Windows**:
+   - Verified `makensis.exe` in PATH with automatic Chocolatey installation fallback (`choco install nsis --yes --no-progress`).
+4. **Linux Toolchain & AppImage Dependencies on Ubuntu 24.04**:
+   - Ubuntu 24.04 runner images transitioned `libfuse2` to `libfuse2t64`. Added dynamic version detection for `libfuse2t64` / `libfuse2`, verified `patchelf`, and set `APPIMAGE_EXTRACT_AND_RUN: "1"`.
+   - Added post-build verification of `.AppImage` (executable check and non-zero size) and `.deb` (via `dpkg-deb --info`).
+5. **Permissions & Least Privilege**:
+   - Top-level workflow permissions scoped to `contents: read`.
+   - Build jobs run with `contents: read`.
+   - Only `publish-release` runs with `contents: write`.
+
+---
+
+## 3. LETTERHEAD PRINTING DEFECT: ROOT CAUSE & CORRECTION
 
 ### Root Cause Analysis
 1. **Global CSS Print Selector Collisions**:
@@ -88,7 +115,7 @@
 
 ---
 
-## 3. PATIENT DELETION MANAGEMENT & CLINICAL RETENTION SYSTEM
+## 4. PATIENT DELETION MANAGEMENT & CLINICAL RETENTION SYSTEM
 
 ### Core Architectural Features in `components/lab-app.tsx`
 
@@ -123,19 +150,6 @@
 
 ---
 
-## 4. CI/CD WORKFLOW REPAIR & NATIVE PACKAGING RESOLUTION
-
-### GitHub Actions Workflow Audit & Fixes (`.github/workflows/build-native.yml`)
-
-| Platform / Job | Runner | Root Cause of Failure | Implemented Solution |
-| :--- | :--- | :--- | :--- |
-| **Android Packaging** | `ubuntu-latest` | Java 17 vs 21 mismatch + missing Android SDK 36 tools. | Configured JDK 21 (Temurin) via `actions/setup-java@v4`; installed `platforms;android-36` and `build-tools;36.0.0`; enabled QA debug-signed fallback when keystore secrets are not set. |
-| **Windows Desktop Packaging** | `windows-latest` | WiX Toolset v3 (`candle.exe`/`light.exe`) missing from runner `PATH`; Tauri `beforeBuildCommand` subshell failure. | Added WiX binary directory (`C:\Program Files (x86)\WiX Toolset v3.11\bin`) to `$env:GITHUB_PATH` and `$env:PATH`; added `--no-before-build-command` to `tauri build` since frontend is pre-built; used native PowerShell for installer collection. |
-| **Linux Desktop Packaging** | `ubuntu-latest` | WebKitGTK dependencies; AppImage creation failing without FUSE / `patchelf`. | Added `patchelf` and `libwebkit2gtk-4.1-dev` to apt dependencies; set `APPIMAGE_EXTRACT_AND_RUN: "1"`. |
-| **Release Publishing** | `ubuntu-latest` | `/releases/latest/` 404 error; missing release tag on branch commits. | Configured `softprops/action-gh-release@v2` targeting QA tag `v1.0.0-qa.2` to publish verified assets and checksums directly. |
-
----
-
 ## 5. AUTOMATED TEST SUITE VERIFICATION MATRIX
 
 All 8 automated test suites pass with 100% success rate:
@@ -162,19 +176,19 @@ CAPACITOR ANDROID SYNC (`cap sync android`)  :   5 PLUGINS SYNCED
 
 ---
 
-## 6. ONE-CLICK DOWNLOAD LINKS FOR QA RELEASE `v1.0.0-qa.2`
+## 6. ONE-CLICK DOWNLOAD LINKS FOR QA RELEASE `v1.0.0-qa.3`
 
-The root [README.md](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/README.md) has been updated with verified direct download links targeting QA release `v1.0.0-qa.2`:
+The root [README.md](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/README.md) has been updated with verified direct download links targeting QA release `v1.0.0-qa.3`:
 
 | Platform | Target Artifact | Download URL | Signing Status |
 | :--- | :--- | :--- | :--- |
-| **Android Phone / Tablet** | `BIO-HI-TECH-LIMS-Android.apk` | [Download Android APK](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/BIO-HI-TECH-LIMS-Android.apk) | QA Debug-Signed (Installable) |
-| **Android Google Play** | `BIO-HI-TECH-LIMS-Android.aab` | [Download Android AAB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/BIO-HI-TECH-LIMS-Android.aab) | QA Debug-Signed (Store Bundle) |
-| **Windows Laptop / PC** | `BIO-HI-TECH-LIMS-Windows-Setup.exe` | [Download Windows EXE](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/BIO-HI-TECH-LIMS-Windows-Setup.exe) | QA Unsigned (Run Anyway) |
-| **Windows Enterprise** | `BIO-HI-TECH-LIMS-Windows.msi` | [Download Windows MSI](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/BIO-HI-TECH-LIMS-Windows.msi) | QA Unsigned (Enterprise MSI) |
-| **Linux Desktop** | `BIO-HI-TECH-LIMS.AppImage` | [Download Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/BIO-HI-TECH-LIMS.AppImage) | Portable x86_64 ELF |
-| **Linux Debian / Ubuntu** | `BIO-HI-TECH-LIMS.deb` | [Download Linux DEB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/BIO-HI-TECH-LIMS.deb) | Standard dpkg package |
-| **Integrity Verification** | `SHA256SUMS.txt` | [Download Checksums](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.2/SHA256SUMS.txt) | SHA-256 Hashes |
+| **Android Phone / Tablet** | `BIO-HI-TECH-LIMS-Android.apk` | [Download Android APK](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Android.apk) | QA Debug-Signed (Installable) |
+| **Android Google Play** | `BIO-HI-TECH-LIMS-Android.aab` | [Download Android AAB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Android.aab) | QA Debug-Signed (Store Bundle) |
+| **Windows Laptop / PC** | `BIO-HI-TECH-LIMS-Windows-Setup.exe` | [Download Windows EXE](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Windows-Setup.exe) | QA Unsigned (Run Anyway) |
+| **Windows Enterprise** | `BIO-HI-TECH-LIMS-Windows.msi` | [Download Windows MSI](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Windows.msi) | QA Unsigned (Enterprise MSI) |
+| **Linux Desktop** | `BIO-HI-TECH-LIMS.AppImage` | [Download Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS.AppImage) | Portable x86_64 ELF |
+| **Linux Debian / Ubuntu** | `BIO-HI-TECH-LIMS.deb` | [Download Linux DEB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS.deb) | Standard dpkg package |
+| **Integrity Verification** | `SHA256SUMS.txt` | [Download Checksums](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/SHA256SUMS.txt) | SHA-256 Hashes |
 
 *Note: Because the repository is private, authorized GitHub read access is required to access the release downloads.*
 
