@@ -15,8 +15,8 @@ import { evaluateResult } from '@/lib/clinical-engine'
 import { labProfile } from '@/lib/app-settings'
 import { AnalyticsPage } from '@/components/analytics-page'
 import { downloadReportPdf } from '@/lib/pdf-export'
-import { Activity, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Bell, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, ClipboardList, CreditCard, FlaskConical, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, Settings, SlidersHorizontal, Users, X, ChartNoAxesCombined, FilePlus2, FileText, LogOut, UserRound, Check, Printer, Download, PanelLeftClose, PanelLeftOpen, Eye, EyeOff, LockKeyhole, Mail, KeyRound, ShieldCheck } from 'lucide-react'
-import { getAuthState, subscribeAuth, initializeAuth, signInOwner, signOutOwner, sendPasswordReset, updateUserPassword, type AuthState } from '@/lib/auth-service'
+import { Activity, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Bell, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, ClipboardList, CreditCard, FlaskConical, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, Settings, SlidersHorizontal, Users, X, ChartNoAxesCombined, FilePlus2, FileText, LogOut, UserRound, Check, Printer, Download, PanelLeftClose, PanelLeftOpen, Eye, EyeOff, LockKeyhole, Mail, KeyRound, ShieldCheck, PhoneCall, MessageSquare, MapPin } from 'lucide-react'
+import { getAuthState, subscribeAuth, initializeAuth, signInOwner, registerOwnerAccount, signOutOwner, sendPasswordReset, updateUserPassword, type AuthState } from '@/lib/auth-service'
 import { patients, reports, tests, activities, type TestParameter } from '@/lib/demo-data'
 
 const navigation = [
@@ -109,9 +109,66 @@ export function LabApp() {
 
 function PageHead({eyebrow, title, subtitle, action}: {eyebrow?: string; title: string; subtitle?: string; action?: React.ReactNode}) { return <div className="page-head"><div>{eyebrow && <div className="eyebrow">{eyebrow}</div>}<h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>{action && <div className="page-actions">{action}</div>}</div> }
 function Button({children, href, onClick, secondary=false}: {children: React.ReactNode; href?: string; onClick?: () => void; secondary?: boolean}) { return href ? <Link href={href} className={`button ${secondary ? 'button-secondary' : 'button-primary'}`}>{children}</Link> : <button className={`button ${secondary ? 'button-secondary' : 'button-primary'}`} onClick={onClick}>{children}</button> }
+function LabOfficeContactBanner() {
+  return (
+    <footer className="lab-office-banner" aria-label="Laboratory Office & Contact Details">
+      <div className="lab-banner-wave" aria-hidden="true">
+        <svg viewBox="0 0 1200 48" preserveAspectRatio="none">
+          <path d="M0,0 C380,45 780,45 1200,0 L1200,48 L0,48 Z" fill="#08796e" />
+          <path d="M0,0 C400,38 720,38 1200,0 L1200,6 C720,44 400,44 0,6 Z" fill="#f5b800" />
+        </svg>
+      </div>
+      <div className="lab-banner-inner">
+        <div className="lab-banner-col lab-banner-col-left">
+          <a href="tel:04212351981" className="lab-banner-link" title="Call office landline">
+            <span className="banner-icon-circle">
+              <PhoneCall size={16} />
+            </span>
+            <span className="banner-text-bold">0421 2351981</span>
+          </a>
+
+          <div className="lab-banner-phones" title="WhatsApp & Mobile Numbers">
+            <span className="banner-icon-circle whatsapp-circle">
+              <MessageSquare size={16} />
+            </span>
+            <div className="whatsapp-links">
+              <a href="https://wa.me/918098790981" target="_blank" rel="noopener noreferrer" className="banner-text-bold">
+                80987 90981
+              </a>
+              <span className="banner-slash">\</span>
+              <a href="https://wa.me/919952588981" target="_blank" rel="noopener noreferrer" className="banner-text-bold">
+                99525 88981
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="lab-banner-col lab-banner-col-right">
+          <div className="lab-banner-address" title="Laboratory Address">
+            <span className="banner-icon-circle location-circle">
+              <MapPin size={18} />
+            </span>
+            <div className="address-lines">
+              <span className="address-street">#3/120, Tirupur Road</span>
+              <span className="address-area">Peumanallur - 641 666. Tirupur District</span>
+            </div>
+          </div>
+
+          <a href="mailto:biohitech2018@gmail.com" className="lab-banner-link" title="Official Email">
+            <span className="banner-icon-circle email-circle">
+              <Mail size={16} />
+            </span>
+            <span className="banner-text-bold banner-email">biohitech2018@gmail.com</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
 function Dashboard({onAction}: {onAction:(s:string)=>void}) {
  const todayKey=new Date().toDateString();const activePatients=patients.filter(patient=>!patient.is_archived);const todayPatients=activePatients.filter(patient=>new Date(patient.date).toDateString()===todayKey).length;const todayReports=reports.filter(report=>new Date(report.date).toDateString()===todayKey).length;const outstanding=reports.reduce((sum,report)=>sum+report.amount-(report.payment==='Paid'?report.amount:report.payment.startsWith('Partial · ')?Number(report.payment.split('·')[1]?.trim())||0:0),0);const todayCollected=paymentLedger.filter(payment=>new Date(payment.date).toDateString()===todayKey).reduce((sum,payment)=>sum+payment.amount,0);const stats=[{label:'Total patients',value:String(activePatients.length),change:'Active patient roster',positive:true,icon:Users,href:'/patients'},{label:'Today’s registrations',value:String(todayPatients),change:'Registered today',positive:true,icon:Activity,href:'/patients?date=today'},{label:'Reports generated today',value:String(todayReports),change:'Live clinical reports',positive:true,icon:ClipboardList,href:'/reports?date=today'},{label:'Reports in progress',value:String(reports.filter(report=>report.status==='Draft').length),change:'Continue a draft',positive:false,icon:FileText,href:'/reports?status=draft'},{label:'Today’s collections',value:money(todayCollected),change:'Recorded today',positive:true,icon:CreditCard,href:'/billing?date=today'},{label:'Outstanding payments',value:money(outstanding),change:'Open balances',positive:false,icon:CreditCard,href:'/billing?status=outstanding'}];
- return <><PageHead eyebrow={new Intl.DateTimeFormat('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date()).toUpperCase()} title={`Good morning, ${labProfile.ownerName}`} subtitle="Here’s what’s happening at your laboratory today." action={<Button href="/reports/new"><Plus size={17}/> Create report</Button>}/><div className="stats-grid">{stats.map(({label,value,change,positive,icon:Icon,href})=><Link href={href} className="stat-card stat-card-link" key={label}><div className="stat-top"><span>{label}</span><span className="stat-icon"><Icon size={17}/></span></div><strong className="stat-value">{value}</strong><div className={`stat-change ${positive?'is-positive':''}`}>{positive?<ArrowUpRight size={14}/>:<span className="mini-dot"/>}{change}</div></Link>)}</div><section className="panel dashboard-quick-actions" aria-label="Quick actions"><Link href="/patients/new"><Plus size={15}/> Register patient</Link><Link href="/reports/new"><FilePlus2 size={15}/> Create report</Link><Link href="/billing/new"><CreditCard size={15}/> Record payment</Link><Link href="/tests/new"><FlaskConical size={15}/> Add new test</Link></section><div className="dashboard-grid"><section className="panel recent-panel"><div className="panel-head"><div><h2>Recent patients</h2><p>Latest registrations at your lab</p></div><Link className="text-link" href="/patients">View all <ArrowRight size={15}/></Link></div><div className="table-wrap">{activePatients.length>0?<table><thead><tr><th>Patient</th><th>Patient ID</th><th>Registered</th><th>Reports</th><th/></tr></thead><tbody>{activePatients.slice(0,5).map(p=><tr key={p.id}><td><div className="person"><span className="person-avatar">{p.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</span><span><strong>{p.name}</strong><small>{p.phone}</small></span></div></td><td className="mono">{p.id}</td><td>{p.date}</td><td>{p.reports}</td><td><Link className="row-link" href={`/patients/${p.id}`} aria-label={`View ${p.name}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table>:<EmptyState title="No patients registered yet" detail="Register your first patient to begin tracking laboratory records and tests." action={<Button href="/patients/new"><Plus size={16}/> Register patient</Button>}/>}</div></section><section className="panel activity-panel"><div className="panel-head"><div><h2>Recent activity</h2><p>Updates from your laboratory</p></div><button className="icon-button" aria-label="More activity options" onClick={()=>onAction('Showing the latest activity.') }><MoreHorizontal size={19}/></button></div><div className="activity-list">{activities.length>0?activities.map((a,i)=><div className="activity-item" key={a.text}><span className={`activity-icon activity-${i}`}><a.icon size={15}/></span><div><p>{a.text}</p><small>{a.detail} <span>·</span> {a.time}</small></div></div>):<p style={{padding:'24px 16px',color:'#839491',fontSize:'11px',textAlign:'center'}}>No recent activity recorded.</p>}</div><Link href="/notifications" className="activity-footer">View all activity <ArrowRight size={14}/></Link></section></div><section className="panel reports-panel"><div className="panel-head"><div><h2>Reports in progress</h2><p>Recent reports that need your attention</p></div><Link className="text-link" href="/reports">All reports <ArrowRight size={15}/></Link></div><div className="table-wrap">{reports.filter(report=>report.status==='Draft').length>0?<table><thead><tr><th>Report no.</th><th>Patient</th><th>Tests</th><th>Report date</th><th>Amount</th><th>Status</th><th/></tr></thead><tbody>{reports.filter(report=>report.status==='Draft').slice(0,4).map(r=><tr key={r.id}><td className="mono">{r.id}</td><td>{r.patient}</td><td>{r.tests} tests</td><td>{r.date}</td><td>{money(r.amount)}</td><td><span className={`status-pill ${r.status==='Issued'?'status-issued':'status-draft'}`}><i/>{r.status}</span></td><td><Link className="row-link" href={`/reports/${r.id}`} aria-label={`Open report ${r.id}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table>:<EmptyState title="No draft reports" detail="All laboratory reports are finalized or ready for issuance." action={<Button href="/reports/new"><Plus size={16}/> Create report</Button>}/>}</div></section></>
+ return <><PageHead eyebrow={new Intl.DateTimeFormat('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date()).toUpperCase()} title={`Good morning, ${labProfile.ownerName}`} subtitle="Here’s what’s happening at your laboratory today." action={<Button href="/reports/new"><Plus size={17}/> Create report</Button>}/><div className="stats-grid">{stats.map(({label,value,change,positive,icon:Icon,href})=><Link href={href} className="stat-card stat-card-link" key={label}><div className="stat-top"><span>{label}</span><span className="stat-icon"><Icon size={17}/></span></div><strong className="stat-value">{value}</strong><div className={`stat-change ${positive?'is-positive':''}`}>{positive?<ArrowUpRight size={14}/>:<span className="mini-dot"/>}{change}</div></Link>)}</div><section className="panel dashboard-quick-actions" aria-label="Quick actions"><Link href="/patients/new"><Plus size={15}/> Register patient</Link><Link href="/reports/new"><FilePlus2 size={15}/> Create report</Link><Link href="/billing/new"><CreditCard size={15}/> Record payment</Link><Link href="/tests/new"><FlaskConical size={15}/> Add new test</Link></section><div className="dashboard-grid"><section className="panel recent-panel"><div className="panel-head"><div><h2>Recent patients</h2><p>Latest registrations at your lab</p></div><Link className="text-link" href="/patients">View all <ArrowRight size={15}/></Link></div><div className="table-wrap">{activePatients.length>0?<table><thead><tr><th>Patient</th><th>Patient ID</th><th>Registered</th><th>Reports</th><th/></tr></thead><tbody>{activePatients.slice(0,5).map(p=><tr key={p.id}><td><div className="person"><span className="person-avatar">{p.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</span><span><strong>{p.name}</strong><small>{p.phone}</small></span></div></td><td className="mono">{p.id}</td><td>{p.date}</td><td>{p.reports}</td><td><Link className="row-link" href={`/patients/${p.id}`} aria-label={`View ${p.name}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table>:<EmptyState title="No patients registered yet" detail="Register your first patient to begin tracking laboratory records and tests." action={<Button href="/patients/new"><Plus size={16}/> Register patient</Button>}/>}</div></section><section className="panel activity-panel"><div className="panel-head"><div><h2>Recent activity</h2><p>Updates from your laboratory</p></div><button className="icon-button" aria-label="More activity options" onClick={()=>onAction('Showing the latest activity.') }><MoreHorizontal size={19}/></button></div><div className="activity-list">{activities.length>0?activities.map((a,i)=><div className="activity-item" key={a.text}><span className={`activity-icon activity-${i}`}><a.icon size={15}/></span><div><p>{a.text}</p><small>{a.detail} <span>·</span> {a.time}</small></div></div>):<p style={{padding:'24px 16px',color:'#839491',fontSize:'11px',textAlign:'center'}}>No recent activity recorded.</p>}</div><Link href="/notifications" className="activity-footer">View all activity <ArrowRight size={14}/></Link></section></div><section className="panel reports-panel"><div className="panel-head"><div><h2>Reports in progress</h2><p>Recent reports that need your attention</p></div><Link className="text-link" href="/reports">All reports <ArrowRight size={15}/></Link></div><div className="table-wrap">{reports.filter(report=>report.status==='Draft').length>0?<table><thead><tr><th>Report no.</th><th>Patient</th><th>Tests</th><th>Report date</th><th>Amount</th><th>Status</th><th/></tr></thead><tbody>{reports.filter(report=>report.status==='Draft').slice(0,4).map(r=><tr key={r.id}><td className="mono">{r.id}</td><td>{r.patient}</td><td>{r.tests} tests</td><td>{r.date}</td><td>{money(r.amount)}</td><td><span className={`status-pill ${r.status==='Issued'?'status-issued':'status-draft'}`}><i/>{r.status}</span></td><td><Link className="row-link" href={`/reports/${r.id}`} aria-label={`Open report ${r.id}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table>:<EmptyState title="No draft reports" detail="All laboratory reports are finalized or ready for issuance." action={<Button href="/reports/new"><Plus size={16}/> Create report</Button>}/>}</div></section><LabOfficeContactBanner /></>
 }
 function Patients({search,setSearch,rows,onAction}:{search:string;setSearch:(s:string)=>void;rows:typeof patients;onAction:(s:string)=>void}) { const searchParams=useSearchParams();const [page,setPage]=useState(1);const [filter,setFilter]=useState(searchParams.get('date')==='today'?'Registered today':'Active patients');const filteredRows=rows.filter(patient=>{if(filter==='Active patients')return !patient.is_archived;if(filter==='Archived patients')return !!patient.is_archived;if(filter==='All patients')return true;if(patient.is_archived)return false;const date=new Date(patient.date);const now=new Date();if(filter==='Registered today')return date.toDateString()===now.toDateString();if(filter==='Registered this month')return date.getFullYear()===now.getFullYear()&&date.getMonth()===now.getMonth();return date>=new Date(now.getTime()-7*24*60*60*1000)});return <><PageHead eyebrow="PATIENT MANAGEMENT" title="Patients" subtitle={`${filteredRows.length} patient records on file.`} action={<Button href="/patients/new"><Plus size={17}/> Register patient</Button>}/><section className="panel listing-panel"><div className="list-toolbar"><label className="inline-search"><Search size={16}/><input aria-label="Search patients" placeholder="Search name, ID or phone…" value={search} onChange={e=>{setSearch(e.target.value);setPage(1)}}/><button aria-label="Clear search" onClick={()=>{setSearch('');setPage(1)}}><X size={14}/></button></label><select aria-label="Filter patients" value={filter} onChange={e=>{setFilter(e.target.value);setPage(1)}}><option>Active patients</option><option>Archived patients</option><option>All patients</option><option>Registered today</option><option>Registered this month</option><option>Registered this week</option></select></div>{filteredRows.length ? <><div className="table-wrap"><table><thead><tr><th>Patient</th><th>Patient ID</th><th>Age / gender</th><th>Phone</th><th>Referring doctor</th><th>Status</th><th>Registered</th><th/></tr></thead><tbody>{filteredRows.slice((page-1)*7,page*7).map(p=><tr key={p.id}><td><div className="person"><span className="person-avatar">{p.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</span><strong>{p.name}</strong></div></td><td className="mono">{p.id}</td><td>{p.age} yrs · {p.gender}</td><td>{p.phone}</td><td>{p.doctor}</td><td><span className={`status-pill ${p.is_archived?'status-draft':'status-issued'}`}><i/>{p.is_archived?'Archived':'Active'}</span></td><td>{p.date}</td><td><div className="row-actions"><Link href={`/patients/${p.id}`}>View</Link><Link href={`/patients/${p.id}/edit`}>Edit</Link></div></td></tr>)}</tbody></table></div><div className="pagination"><span>Showing {(page-1)*7+1}–{Math.min(page*7,filteredRows.length)} of {filteredRows.length} patients</span><div><button aria-label="Previous page" disabled={page===1} onClick={()=>setPage(page-1)}><ChevronLeft size={16}/></button><span className="page-number">{page}</span><button aria-label="Next page" disabled={page*7>=filteredRows.length} onClick={()=>setPage(page+1)}><ChevronRight size={16}/></button></div></div></> : <EmptyState title={search?'No patients found':filter==='Archived patients'?'No archived patients':'No patients registered yet'} detail={search?'Try a different name, patient ID or phone number.':filter==='Archived patients'?'Inactive patient records archived by the owner will appear here.':'Add your first patient to begin tracking laboratory records.'} action={!search&&filter!=='Archived patients'&&<Button href="/patients/new"><Plus size={16}/> Register patient</Button>}/>}</section></> }
 function Reports({rows,search,setSearch,onAction}:{rows:typeof reports;search:string;setSearch:(s:string)=>void;onAction:(s:string)=>void}) {const searchParams=useSearchParams();const [statusFilter,setStatusFilter]=useState(searchParams.get('status')==='draft'?'Draft':'All statuses');const [dateRange,setDateRange]=useState(searchParams.get('date')==='today'?'Today':'All dates');const filteredRows=rows.filter(report=>{if(statusFilter!=='All statuses'&&report.status!==statusFilter)return false;if(dateRange==='All dates')return true;const date=new Date(report.date);const now=new Date();if(dateRange==='Today')return date.toDateString()===now.toDateString();if(dateRange==='This month')return date.getFullYear()===now.getFullYear()&&date.getMonth()===now.getMonth();return date>=new Date(now.getTime()-7*24*60*60*1000)});return <><PageHead eyebrow="REPORT MANAGEMENT" title="Saved reports" subtitle={`${rows.length} reports on file.`} action={<Button href="/reports/new"><Plus size={17}/> New report</Button>}/><section className="panel listing-panel"><div className="list-toolbar"><label className="inline-search"><Search size={16}/><input aria-label="Search reports" placeholder="Search report, patient or ID…" value={search} onChange={e=>setSearch(e.target.value)}/></label><select aria-label="Filter report status" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option>All statuses</option><option>Issued</option><option>Draft</option></select><select aria-label="Date range" value={dateRange} onChange={e=>setDateRange(e.target.value)}><option>All dates</option><option>Today</option><option>Last 7 days</option><option>This month</option></select></div>{filteredRows.length>0?<><div className="table-wrap"><table><thead><tr><th>Report no.</th><th>Patient</th><th>Patient ID</th><th>Report date</th><th>Tests</th><th>Amount</th><th>Payment</th><th>Status</th><th/></tr></thead><tbody>{filteredRows.map(r=><tr key={r.id}><td className="mono">{r.id}</td><td>{r.patient}</td><td className="mono">{r.patientId}</td><td>{r.date}</td><td>{r.tests}</td><td>{money(r.amount)}</td><td><span className={`status-pill ${r.payment==='Paid'?'status-issued':'status-draft'}`}><i/>{r.payment}</span></td><td><span className={`status-pill ${r.status==='Issued'?'status-issued':'status-draft'}`}><i/>{r.status}</span></td><td><Link className="row-link" href={`/reports/${r.id}`} aria-label={`View report ${r.id}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table></div><div className="pagination"><span>Showing {filteredRows.length} reports</span><div><button aria-label="Previous page" disabled><ChevronLeft size={16}/></button><span className="page-number">1</span><button aria-label="Next page" disabled><ChevronRight size={16}/></button></div></div></>:<EmptyState title={search?'No reports found':'No reports created yet'} detail={search?'Try a different report number, patient name or ID.':'Create your first laboratory report to get started.'} action={!search&&<Button href="/reports/new"><Plus size={16}/> New report</Button>}/>}</section></>}
@@ -124,10 +181,12 @@ function LegacyAnalyticsPage(){return <><PageHead eyebrow="BUSINESS OVERVIEW" ti
 function LegacySettingsPage({path,onAction}:{path:string;onAction:(s:string)=>void}) {const [active,setActive]=useState(path.endsWith('security')?'Security':'Laboratory profile');const sections=['Laboratory profile','Branding & logo','Report configuration','Signatures','Billing settings','Test settings','Security','Preferences'];return <><PageHead eyebrow="CONFIGURATION" title={path.endsWith('security')?'Security settings':'Settings'} subtitle="Manage laboratory preferences and report presentation."/><div className="settings-layout"><aside className="panel settings-nav">{sections.map(s=><button key={s} className={(active===s||(path.endsWith('security')&&s==='Security'))?'settings-active':''} onClick={()=>{setActive(s);if(s==='Security')history.pushState({},'', '/settings/security');else if(path.endsWith('security'))history.pushState({},'', '/settings')}}>{s}</button>)}</aside><section className="panel settings-content"><div className="settings-title"><h2>{active}</h2><p>{active==='Security'?'Security controls are a UI preview only. Authentication is not connected.':'This information appears on your laboratory documents.'}</p></div>{active==='Security'?<><div className="settings-row"><div><strong>Owner account</strong><p>dr.arun@biohitech.example</p></div><span className="status-pill status-draft"><i/>Prototype</span></div><div className="settings-row"><div><strong>Multi-factor authentication</strong><p>Configure a second verification step for sign-in.</p></div><button className="button button-secondary" onClick={()=>onAction('MFA settings require an authentication backend.')}>Configure</button></div><div className="settings-row"><div><strong>Active sessions</strong><p>Session management will be available after authentication setup.</p></div><button className="button button-secondary" onClick={()=>onAction('No real sessions are tracked in the prototype.')}>View sessions</button></div></>:<><div className="fields-grid"><Field label="Laboratory name"><input defaultValue="BIO HI TECH"/></Field><Field label="Contact phone"><input defaultValue="+91 22 4567 8900"/></Field><Field label="Email address"><input defaultValue="care@biohitech.example"/></Field><Field label="Registration number"><input placeholder="Enter registration number"/></Field><Field label="Laboratory address" wide><textarea rows={3} defaultValue="Ground Floor, Health Plaza, Mumbai, Maharashtra"/></Field><Field label="Report footer text" wide><input placeholder="Thank you for choosing BIO HI TECH"/></Field><Field label="Default report format"><select><option>A4 portrait</option><option>Letter portrait</option></select></Field><Field label="Currency"><select><option>INR — Indian Rupee</option></select></Field></div><div className="settings-save"><span>Settings are not saved to a backend in this demo.</span><Button onClick={()=>onAction('Settings saved for this demo session only.')}>Save changes</Button></div></>}</section></div></>}
 function Notifications({onAction}:{onAction:(s:string)=>void}){useSyncExternalStore(subscribeDemoData,getDemoDataVersion,()=>0);const unread=demoNotifications.filter(notification=>!notification.read).length;return <><PageHead eyebrow="ACTIVITY" title="Notifications" subtitle={`${demoNotifications.length} activity events · ${unread} unread.`} action={<button className="button button-secondary" disabled={!unread} onClick={()=>{markAllNotificationsRead();onAction('All notifications marked as read.')}}>Mark all read</button>}/><section className="panel notification-list">{demoNotifications.length?demoNotifications.map((notification,index)=><div className={`notification-row ${notification.read?'notification-read':'notification-unread'}`} key={notification.id}><span className={`activity-icon activity-${index%4}`}><Bell size={16}/></span><div><strong>{notification.text}</strong><p>{notification.detail} · {notification.time}</p></div><Link className="text-link" href={notification.href} onClick={()=>markNotificationRead(notification.id)}>View</Link><button className="text-link" disabled={notification.read} onClick={()=>{markNotificationRead(notification.id);onAction('Notification marked as read.')}}>{notification.read?'Read':'Mark read'}</button></div>):<EmptyState title="No notifications yet" detail="New patient, report, catalogue and payment activity will appear here."/>}</section></>}
 function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:()=>void}) {
-  const [mode, setMode] = useState<'login' | 'forgot' | 'reset'>(forgot ? 'forgot' : 'login')
+  const [mode, setMode] = useState<'login' | 'forgot' | 'reset' | 'register'>(forgot ? 'forgot' : 'login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [fullName, setFullName] = useState('Dr. Arun Kumar')
+  const [designation, setDesignation] = useState('Chief Pathologist & Lab Director')
   const [showPassword, setShowPassword] = useState(false)
   const [rememberDevice, setRememberDevice] = useState(true)
   const [busy, setBusy] = useState(false)
@@ -168,6 +227,38 @@ function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:(
     } catch (err: any) {
       setBusy(false)
       setErrorMsg(err?.message || 'Unable to connect to authentication service.')
+    }
+  }
+
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!email.trim() || !email.includes('@')) {
+      setErrorMsg('Please enter a valid owner email address.')
+      return
+    }
+    if (password.length < 8) {
+      setErrorMsg('Password must be at least 8 characters long.')
+      return
+    }
+    if (password !== confirmPassword) {
+      setErrorMsg('Passwords do not match.')
+      return
+    }
+    setBusy(true)
+    setErrorMsg('')
+    setSuccessMsg('')
+    try {
+      const res = await registerOwnerAccount(email, password, fullName, designation)
+      setBusy(false)
+      if (res.success) {
+        setSuccessMsg(res.message || 'Account successfully registered!')
+        onAuthenticated?.()
+      } else {
+        setErrorMsg(res.error || 'Failed to register account.')
+      }
+    } catch (err: any) {
+      setBusy(false)
+      setErrorMsg(err?.message || 'Error creating owner account.')
     }
   }
 
@@ -232,16 +323,30 @@ function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:(
 
         <div className="auth-heading">
           <span className="auth-eyebrow">
-            {mode === 'forgot' ? 'ACCOUNT RECOVERY' : mode === 'reset' ? 'VERIFIED RECOVERY' : 'DAILY OWNER LOGIN'}
+            {mode === 'forgot'
+              ? 'ACCOUNT RECOVERY'
+              : mode === 'reset'
+              ? 'VERIFIED RECOVERY'
+              : mode === 'register'
+              ? 'OWNER REGISTRATION'
+              : 'DAILY OWNER LOGIN'}
           </span>
           <h1>
-            {mode === 'forgot' ? 'Reset Master Password' : mode === 'reset' ? 'Set New Password' : 'Sign In to Workspace'}
+            {mode === 'forgot'
+              ? 'Reset Master Password'
+              : mode === 'reset'
+              ? 'Set New Password'
+              : mode === 'register'
+              ? 'Register Owner Account'
+              : 'Sign In to Workspace'}
           </h1>
           <p>
             {mode === 'forgot'
               ? 'Enter your registered owner email to receive a verified recovery link.'
               : mode === 'reset'
               ? 'Enter your new laboratory master password to complete recovery.'
+              : mode === 'register'
+              ? 'Create your laboratory owner account to unlock the diagnostic workspace.'
               : 'Enter your owner credentials to unlock the laboratory system.'}
           </p>
         </div>
@@ -261,6 +366,50 @@ function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:(
 
         {mode === 'login' && (
           <form onSubmit={handleLogin} className="auth-form">
+            <div className="demo-credentials-banner" role="region" aria-label="Demo login credentials">
+              <div className="demo-cred-row">
+                <span className="demo-tag">DEMO ACCESS</span>
+                <span className="demo-hint">Pre-configured testing credentials</span>
+              </div>
+              <div className="demo-cred-details">
+                <span><strong>Username:</strong> <code>owner@biohitech.com</code></span>
+                <span><strong>Password:</strong> <code>BioHiTech2026!Master</code></span>
+              </div>
+              <div className="demo-actions-row">
+                <button
+                  type="button"
+                  className="demo-fill-btn"
+                  onClick={() => {
+                    setEmail('owner@biohitech.com')
+                    setPassword('BioHiTech2026!Master')
+                    setErrorMsg('')
+                  }}
+                >
+                  Auto-Fill Demo
+                </button>
+                <button
+                  type="button"
+                  className="demo-instant-btn"
+                  disabled={busy}
+                  onClick={async () => {
+                    setEmail('owner@biohitech.com')
+                    setPassword('BioHiTech2026!Master')
+                    setBusy(true)
+                    setErrorMsg('')
+                    const res = await signInOwner('owner@biohitech.com', 'BioHiTech2026!Master', true)
+                    setBusy(false)
+                    if (res.success) {
+                      onAuthenticated?.()
+                    } else {
+                      setErrorMsg(res.error || 'Demo sign in failed.')
+                    }
+                  }}
+                >
+                  ⚡ Instant Demo Sign In
+                </button>
+              </div>
+            </div>
+
             <Field label="Owner username or email">
               <span className="auth-input-icon">
                 <Mail size={17} />
@@ -309,7 +458,7 @@ function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:(
               {busy ? 'Verifying credentials…' : 'Sign In to Workspace'}
             </button>
 
-            <div className="auth-links" style={{ textAlign: 'center' }}>
+            <div className="auth-links" style={{ display: 'flex', justifyContent: 'center', gap: '14px', alignItems: 'center', marginTop: '16px' }}>
               <button
                 type="button"
                 className="auth-nav-btn"
@@ -320,6 +469,101 @@ function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:(
                 }}
               >
                 Forgot password?
+              </button>
+              <span style={{ color: '#cbd5e1' }}>•</span>
+              <button
+                type="button"
+                className="auth-nav-btn auth-reg-link"
+                onClick={() => {
+                  setMode('register')
+                  setErrorMsg('')
+                  setSuccessMsg('')
+                }}
+              >
+                Don't have an account? Register
+              </button>
+            </div>
+          </form>
+        )}
+
+        {mode === 'register' && (
+          <form onSubmit={handleRegister} className="auth-form">
+            <Field label="Full Name">
+              <span className="auth-input-icon">
+                <UserRound size={17} />
+                <input
+                  required
+                  type="text"
+                  value={fullName}
+                  onChange={e => setFullName(e.target.value)}
+                  placeholder="e.g. Dr. Arun Kumar"
+                />
+              </span>
+            </Field>
+
+            <Field label="Owner Email">
+              <span className="auth-input-icon">
+                <Mail size={17} />
+                <input
+                  required
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="e.g. owner@biohitech.com"
+                />
+              </span>
+            </Field>
+
+            <Field label="Master Password (min 8 characters)">
+              <span className="auth-input-icon">
+                <LockKeyhole size={17} />
+                <input
+                  required
+                  type={showPassword ? 'text' : 'password'}
+                  minLength={8}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Choose master password"
+                />
+                <button
+                  type="button"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+                </button>
+              </span>
+            </Field>
+
+            <Field label="Confirm Master Password">
+              <span className="auth-input-icon">
+                <LockKeyhole size={17} />
+                <input
+                  required
+                  type={showPassword ? 'text' : 'password'}
+                  minLength={8}
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm master password"
+                />
+              </span>
+            </Field>
+
+            <button className="button auth-submit" type="submit" disabled={busy}>
+              {busy ? 'Creating account…' : 'Create & Unlock Workspace'}
+            </button>
+
+            <div className="auth-links" style={{ textAlign: 'center', marginTop: '16px' }}>
+              <button
+                type="button"
+                className="auth-nav-btn"
+                onClick={() => {
+                  setMode('login')
+                  setErrorMsg('')
+                  setSuccessMsg('')
+                }}
+              >
+                ← Back to Sign In
               </button>
             </div>
           </form>

@@ -295,6 +295,63 @@ export async function signInOwner(
 }
 
 /**
+ * Registers / provisions a laboratory owner account.
+ */
+export async function registerOwnerAccount(
+  email: string,
+  password: string,
+  fullName: string = 'Dr. Arun Kumar',
+  designation: string = 'Chief Pathologist & Lab Director'
+): Promise<{ success: boolean; message?: string; error?: string }> {
+  const cleanEmail = email.trim().toLowerCase();
+  if (!cleanEmail || !cleanEmail.includes('@')) {
+    return { success: false, error: 'Please enter a valid laboratory owner email address.' };
+  }
+  if (password.length < 8) {
+    return { success: false, error: 'Password must be at least 8 characters long.' };
+  }
+
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase.rpc('register_owner_account', {
+        p_email: cleanEmail,
+        p_password: password,
+        p_full_name: fullName,
+        p_designation: designation,
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      if (data && data.success === false) {
+        return { success: false, error: data.error || 'Failed to register account.' };
+      }
+
+      // Auto sign-in after successful registration
+      const loginRes = await signInOwner(cleanEmail, password, true);
+      if (loginRes.success) {
+        return { success: true, message: 'Account registered and logged in successfully!' };
+      }
+
+      return { success: true, message: 'Account registered successfully. Please sign in.' };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Error communicating with database.' };
+    }
+  }
+
+  // Standalone offline fallback
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('bio_hitech_owner_email', cleanEmail);
+    localStorage.setItem('bio_hitech_owner_pwd', password);
+    const loginRes = await signInOwner(cleanEmail, password, true);
+    return { success: true, message: 'Account registered successfully.' };
+  }
+
+  return { success: false, error: 'Unable to register account.' };
+}
+
+/**
  * Requests a verified password recovery email using Supabase Auth.
  * Implements rate limiting and anti-enumeration response masking.
  */

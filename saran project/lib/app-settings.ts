@@ -1,11 +1,12 @@
 export const labProfile = {
   laboratoryName: 'BIO HI TECH',
-  address: 'Ground Floor, Health Plaza, Mumbai, Maharashtra',
-  phone: '+91 22 4567 8900',
-  email: 'care@biohitech.example',
+  address: '#3/120, Tirupur Road, Peumanallur - 641 666. Tirupur District',
+  phone: '0421 2351981',
+  whatsapp: '80987 90981 \\ 99525 88981',
+  email: 'biohitech2018@gmail.com',
   registrationNumber: '',
-  ownerName: 'Arun Mehta',
-  ownerDesignation: 'Laboratory owner',
+  ownerName: 'Dr. Arun Kumar',
+  ownerDesignation: 'Chief Pathologist & Lab Director',
 }
 
 export interface SignatureConfig {

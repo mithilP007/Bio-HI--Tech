@@ -661,4 +661,261 @@ button { cursor: pointer; }
   color: #334155;
 }
 
+/* ==============================================================================
+   LABORATORY OFFICE CONTACT DETAILS BANNER (MATCHING EXACT IMAGE 2)
+   ============================================================================== */
+.lab-office-banner {
+  margin-top: 36px;
+  background: #08796e;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(8, 121, 110, 0.18);
+  position: relative;
+}
+
+.lab-banner-wave {
+  width: 100%;
+  height: 22px;
+  line-height: 0;
+  background: transparent;
+}
+
+.lab-banner-wave svg {
+  width: 100%;
+  height: 22px;
+  display: block;
+}
+
+.lab-banner-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px 22px;
+  gap: 24px;
+  color: #ffffff;
+  flex-wrap: wrap;
+}
+
+.lab-banner-col {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.lab-banner-link,
+.lab-banner-phones,
+.lab-banner-address {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.lab-banner-link:hover {
+  color: #fed7aa;
+}
+
+.banner-icon-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.banner-icon-circle.whatsapp-circle {
+  background: #25d366;
+  color: #ffffff;
+}
+
+.banner-icon-circle.location-circle {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.banner-icon-circle.email-circle {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.banner-text-bold {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+}
+
+.whatsapp-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.whatsapp-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+}
+
+.whatsapp-links a:hover {
+  color: #fed7aa;
+  text-decoration: underline;
+}
+
+.banner-slash {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.address-lines {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.address-street {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.address-area {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.banner-email {
+  font-size: 13.5px;
+}
+
+@media (max-width: 860px) {
+  .lab-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px 22px;
+    gap: 16px;
+  }
+  .lab-banner-col {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+}
+
+/* ==============================================================================
+   DEMO CREDENTIALS BANNER (LOGIN SCREEN)
+   ============================================================================== */
+.demo-credentials-banner {
+  background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+  border: 1px solid #99f6e4;
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.demo-cred-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.demo-tag {
+  background: #0d9488;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.demo-hint {
+  font-size: 9.5px;
+  color: #0f766e;
+  font-weight: 500;
+}
+
+.demo-cred-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  color: #134e4a;
+}
+
+.demo-cred-details code {
+  background: rgba(13, 148, 136, 0.12);
+  color: #042f2e;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.demo-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.demo-fill-btn {
+  flex: 1;
+  padding: 7px 10px;
+  background: #ffffff;
+  border: 1px solid #0d9488;
+  border-radius: 4px;
+  color: #0f766e;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.demo-fill-btn:hover {
+  background: #f0fdfa;
+  border-color: #042f2e;
+}
+
+.demo-instant-btn {
+  flex: 1;
+  padding: 7px 10px;
+  background: #0d9488;
+  border: 1px solid #0f766e;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.demo-instant-btn:hover {
+  background: #0f766e;
+}
+
+.auth-reg-link {
+  color: #0d9488 !important;
+  font-weight: 700 !important;
+}
+
+.auth-reg-link:hover {
+  color: #042f2e !important;
+}
+
 
