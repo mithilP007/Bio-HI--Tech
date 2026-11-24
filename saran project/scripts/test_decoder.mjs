@@ -156,25 +156,25 @@ async function runTests() {
   let qrPass = 0;
 
   for (const id of testReportIds) {
-    // Demonstration opaque verification token URL as specified
-    const tokenUrl = `https://biohitech.example/verify/DEMO-${id}`;
-    const qrRaster = await rasterizeQr(tokenUrl);
+    // Structured opaque accession identifier without fake verification endpoints
+    const qrIdentifier = `BIO-HI-TECH-LIMS:REPORT:DEMO-${id}`;
+    const qrRaster = await rasterizeQr(qrIdentifier);
     const decodedQr = (jsQR.default || jsQR)(qrRaster.data, qrRaster.width, qrRaster.height);
 
     if (decodedQr && decodedQr.data) {
-      const match = decodedQr.data === tokenUrl;
+      const match = decodedQr.data === qrIdentifier;
       // Strict PII Verification: No names, phone numbers, or medical test results in token
       const containsPhone = /\+91|\d{10}/.test(decodedQr.data);
       const containsName = /Ananya|Sharma|Rohan|Desai|Priya|Nair/i.test(decodedQr.data);
       const containsResults = /Hemoglobin|Glucose|Bilirubin/i.test(decodedQr.data);
       const piiSafe = !containsPhone && !containsName && !containsResults;
 
-      console.log(`[QR CODE]  Encoded:  ${tokenUrl}`);
+      console.log(`[QR CODE]  Encoded:  ${qrIdentifier}`);
       console.log(`           Decoded:  ${decodedQr.data}`);
       console.log(`           Match:    ${match ? 'PASS ✓' : 'FAIL ✗'} | PII Safe (No names/phones/results): ${piiSafe ? 'SAFE ✓' : 'LEAK ✗'}`);
       if (match && piiSafe) qrPass++;
     } else {
-      console.error(`[QR CODE]  Failed to decode QR for "${tokenUrl}"`);
+      console.error(`[QR CODE]  Failed to decode QR for "${qrIdentifier}"`);
     }
   }
   console.log(`Result: ${qrPass}/${testReportIds.length} QR Codes Decoded Successfully & PII Clean.\n`);

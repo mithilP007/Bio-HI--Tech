@@ -72,8 +72,8 @@ The printable A4 report component ([report-print-sheet.tsx](file:///home/mithil/
    - Preprinted pad mode toggles off the image banner and maintains an exact `45mm` top margin allowance.
 2. **Patient & Sample Demographics**:
    - Patient Name, Patient ID, Age / Gender, Registered Date, Sample Collection Date & Time, Sample Specimen Type, Reported Date, and Referring Doctor.
-3. **Genuine Verification QR Code & Code 128 Barcode**:
-   - Authentic SVG QR code encoding the verification URL (`https://biohitech.example/verify/<ID>`), safe from patient PII leakage.
+3. **Genuine Accession QR Code & Code 128 Barcode**:
+   - Structured non-PII report accession identifier (`BIO-HI-TECH-LIMS:REPORT:<ID>`) replacing earlier placeholder endpoints (`biohitech.example`), labeled correctly as `Accession QR`.
    - Code 128 barcode rendering the patient and report accession number.
 4. **Clinical Test-Results Table (5-Column Format)**:
    - Columns: `TEST / PARAMETER | RESULT | UNITS | REFERENCE INTERVAL | INTERPRETATION`.
@@ -165,27 +165,37 @@ Each platform build job computes SHA-256 checksums (`SHA256SUMS.txt`) and upload
 
 ---
 
-## 8. ROOT README ONE-CLICK DOWNLOAD DELIVERY
+## 8. ROOT README ONE-CLICK DOWNLOAD DELIVERY & 404 DEFECT RESOLUTION
 
-A prominent download section has been integrated into the root [README.md](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/README.md) for direct laboratory owner access:
+### Investigation of Earlier 404 Download Errors
+- **Reported Issue**: Clicking Windows MSI (or `/releases/latest/download/...`) returned GitHub HTTP 404.
+- **Root Cause Confirmed**:
+  1. **Actions Artifacts vs Release Assets**: Previous commits only uploaded build outputs to GitHub Actions (`upload-artifact@v4`). GitHub Actions artifacts are stored in Actions runs (retention: 90 days) and do NOT populate `/releases/` endpoints.
+  2. **No Published Release Existed**: GitHub has zero git tags (`git tag -l` returned empty). The workflow's `publish-release` job was configured with `if: startsWith(github.ref, 'refs/tags/v')`, which never executed on branch commits (`master`).
+  3. **GitHub API Limitation**: GitHub's `/releases/latest/` endpoint exclusively returns published *non-prerelease* releases. QA prereleases are not served by `/releases/latest/download/`.
+- **Resolution**:
+  1. Updated `.github/workflows/build-native.yml` to support automated QA prereleases and production releases via `softprops/action-gh-release@v2`.
+  2. Established first versioned QA channel: `v1.0.0-qa.1`.
+  3. Updated root [README.md](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/README.md) to use version-specific release asset URLs (`/releases/download/v1.0.0-qa.1/<file>`) and linked the official [QA Prerelease v1.0.0-qa.1 Page](https://github.com/mithilP007/Bio-HI--Tech/releases/tag/v1.0.0-qa.1).
 
 ### Download Links Configured in [README.md](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/README.md)
 
-1. **Android Phone**:
-   - Package: `BIO-HI-TECH-LIMS-Android.apk`
-   - Release URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS-Android.apk`
+1. **Android Phone & Tablet (QA Build)**:
+   - Package: `BIO-HI-TECH-LIMS-Android.apk` (Universal ARM64/x86_64, Android API 24–36, QA Debug-Signed)
+   - Asset URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Android.apk`
+   - Bundle URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Android.aab`
    - Installation: Download APK -> Open on phone -> Allow installation from trusted source -> Launch app -> Sign in.
-2. **Windows Laptop**:
-   - Standard Setup: `BIO-HI-TECH-LIMS-Windows-Setup.exe`
-     - Release URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS-Windows-Setup.exe`
+2. **Windows Laptop & Desktop (QA Unsigned)**:
+   - Setup EXE: `BIO-HI-TECH-LIMS-Windows-Setup.exe`
+     - Asset URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Windows-Setup.exe`
    - Enterprise MSI: `BIO-HI-TECH-LIMS-Windows.msi`
-     - Release URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS-Windows.msi`
+     - Asset URL: `https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Windows.msi`
    - SmartScreen Notice: Unsigned installers trigger Windows Defender SmartScreen ("Unknown Publisher"). Click **"More info" -> "Run anyway"**.
-3. **Linux Desktop**:
-   - AppImage: `https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS.AppImage`
-   - DEB: `https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS.deb`
+3. **Linux Desktop (Ubuntu / Debian x86_64)**:
+   - AppImage: `https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS.AppImage`
+   - DEB: `https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS.deb`
 4. **Direct GitHub Actions Fallback**:
-   - Laboratory owners and team members with repository access can download build artifacts directly from the latest workflow run:
+   - Laboratory owners and team members with repository access can download raw build artifacts directly from individual CI/CD runs:
      [GitHub Actions Native Packages Workflow](https://github.com/mithilP007/Bio-HI--Tech/actions/workflows/build-native.yml)
 
 ---

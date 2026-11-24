@@ -4,51 +4,59 @@ A secure, private diagnostic laboratory management application with Next.js 16.4
 
 ---
 
-# BIO HI TECH LIMS — Download Applications
+# BIO HI TECH LIMS — DOWNLOAD APPLICATIONS
 
-Direct installer packages built automatically by the multi-platform CI/CD pipeline.
+> [!WARNING]
+> ### QA INSTALLERS — FOR CONTROLLED TESTING ONLY (Channel: `v1.0.0-qa.1`)
+> - **Android APK:** Debug-signed for immediate installation and testing on authorized Android devices. Permanent Google Play production signing remains pending laboratory owner keystore configuration.
+> - **Windows Installers:** Unsigned binaries compiled directly from source. When launching, Windows Defender SmartScreen will prompt with *"Unknown Publisher"*; click **"More info" -> "Run anyway"**.
+> - **Private Repository Requirement:** To download release assets or view Actions workflows, you must be signed into your authorized GitHub account with repository read permissions.
 
-> [!NOTE]
-> **Repository Access Requirement:** This repository is strictly private. To download build artifacts from GitHub Actions runs, ensure you are signed into your authorized GitHub account with repository read permissions.
+Direct installation packages are available from the official [QA Prerelease v1.0.0-qa.1](https://github.com/mithilP007/Bio-HI--Tech/releases/tag/v1.0.0-qa.1):
 
 ---
 
-### 1. Android Phone & Tablet
+### 1. Android Phone & Tablet (QA Build)
 
-**[Download Android Application (APK)](https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS-Android.apk)**<br/>
-*(Package: `BIO-HI-TECH-LIMS-Android.apk` · Architecture: Universal ARM64/x86_64 · Android API 24–36)*
+* **[Download Android Application (APK)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Android.apk)**<br/>
+  *(Package: `BIO-HI-TECH-LIMS-Android.apk` · Universal ARM64/x86_64 · Android API 24–36 · Status: QA Debug-Signed)*
+* **[Download Android App Bundle (AAB)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Android.aab)**<br/>
+  *(Package: `BIO-HI-TECH-LIMS-Android.aab` · Google Play Format)*
 
-#### Installation Instructions:
-1. Tap the download link on your Android phone or transfer the `.apk` via USB/Google Drive.
-2. Open the downloaded `BIO-HI-TECH-LIMS-Android.apk` file in your phone's File Manager or Downloads.
-3. If prompted with *"For your security, your phone is not allowed to install unknown apps from this source"*, tap **Settings** and enable **Allow from this source**.
+#### Android Installation Instructions:
+1. Tap the download link on your Android device or transfer the `.apk` file to your device.
+2. Open the downloaded `BIO-HI-TECH-LIMS-Android.apk` file in your device's File Manager or Downloads.
+3. If prompted with *"For your security, your phone is not allowed to install unknown apps from this source"*, tap **Settings** and toggle **Allow from this source**.
 4. Tap **Install**, then tap **Open**.
 5. Sign in using the authorized laboratory owner credentials (`owner@biohitech.com`).
 
 ---
 
-### 2. Windows 10 & 11 (Laptop / Desktop)
+### 2. Windows 10 & 11 Laptop / Desktop (QA Unsigned)
 
-* **[Download Windows Setup (Recommended EXE)](https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS-Windows-Setup.exe)** (`BIO-HI-TECH-LIMS-Windows-Setup.exe`)
-* **[Download Enterprise MSI Installer](https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS-Windows.msi)** (`BIO-HI-TECH-LIMS-Windows.msi`)
+* **[Download Windows Setup (Recommended EXE)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Windows-Setup.exe)**<br/>
+  *(Package: `BIO-HI-TECH-LIMS-Windows-Setup.exe` · NSIS Installer · Status: QA Unsigned)*
+* **[Download Enterprise MSI Installer](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS-Windows.msi)**<br/>
+  *(Package: `BIO-HI-TECH-LIMS-Windows.msi` · WiX MSI Installer · Status: QA Unsigned)*
 
-#### Installation Instructions:
-1. Download `BIO-HI-TECH-LIMS-Windows-Setup.exe` (or the `.msi` package).
+#### Windows Installation Instructions:
+1. Download `BIO-HI-TECH-LIMS-Windows-Setup.exe` (or `BIO-HI-TECH-LIMS-Windows.msi`).
 2. Double-click the downloaded file to run the installer.
-3. **If Windows Defender SmartScreen displays *"Windows protected your PC / Unknown Publisher"***:
+3. **When Windows Defender SmartScreen displays *"Windows protected your PC / Unknown Publisher"***:
    - Click **More info**.
    - Click **Run anyway**. *(This prompt appears because the application is built without an expensive third-party EV/OV commercial code-signing certificate; the binary is 100% genuine and compiled directly from source).*
-4. Follow the setup wizard prompts to complete installation.
-5. Launch **BIO HI TECH** from your Start Menu or Desktop shortcut.
+4. Complete the installation wizard and launch **BIO HI TECH** from your Start Menu.
 
 ---
 
-### 3. Linux Desktop (Ubuntu / Debian)
+### 3. Linux Desktop (Ubuntu / Debian x86_64)
 
-* **[Download Standalone Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS.AppImage)** (`BIO-HI-TECH-LIMS.AppImage`)
-* **[Download Debian Package](https://github.com/mithilP007/Bio-HI--Tech/releases/latest/download/BIO-HI-TECH-LIMS.deb)** (`BIO-HI-TECH-LIMS.deb`)
+* **[Download Standalone Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS.AppImage)**<br/>
+  *(Package: `BIO-HI-TECH-LIMS.AppImage` · Portable Executable)*
+* **[Download Debian Package](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.1/BIO-HI-TECH-LIMS.deb)**<br/>
+  *(Package: `BIO-HI-TECH-LIMS.deb` · Debian/Ubuntu Package)*
 
-#### Installation Instructions:
+#### Linux Installation Instructions:
 * **AppImage:** Make executable and run:
   ```bash
   chmod +x BIO-HI-TECH-LIMS.AppImage
@@ -61,19 +69,18 @@ Direct installer packages built automatically by the multi-platform CI/CD pipeli
 
 ---
 
-### 4. Build Artifacts Fallback (Direct CI Runs)
+### 4. Build Artifacts Fallback (Direct GitHub Actions Runs)
 
-If a formal versioned GitHub Release tag (`v1.0.0`) has not yet been published, or if you wish to download the bleeding-edge build from the latest commit:
+If you wish to download the raw build artifacts directly from individual CI/CD runs:
 
-👉 **[View Latest Successful Build Artifacts on GitHub Actions](https://github.com/mithilP007/Bio-HI--Tech/actions/workflows/build-native.yml)**
+👉 **[View Latest Native Packages Workflow on GitHub Actions](https://github.com/mithilP007/Bio-HI--Tech/actions/workflows/build-native.yml)**
 
-1. Navigate to the link above.
+1. Navigate to the link above (requires GitHub login with repository access).
 2. Click the most recent workflow run with a green checkmark.
-3. Scroll to the **Artifacts** section at the bottom of the summary page.
-4. Download the desired platform package:
-   - `BIO-HI-TECH-LIMS-ANDROID` (Contains `BIO-HI-TECH-LIMS-Android.apk`, `.aab`, `SHA256SUMS.txt`, `SIGNING_STATUS.txt`)
-   - `BIO-HI-TECH-LIMS-WINDOWS` (Contains `BIO-HI-TECH-LIMS-Windows-Setup.exe`, `.msi`, `SHA256SUMS.txt`, `SIGNING_STATUS.txt`)
-   - `BIO-HI-TECH-LIMS-LINUX` (Contains `BIO-HI-TECH-LIMS.AppImage`, `.deb`, `SHA256SUMS.txt`)
+3. Scroll down to the **Artifacts** section to download individual platform zip archives:
+   - `BIO-HI-TECH-LIMS-ANDROID`
+   - `BIO-HI-TECH-LIMS-WINDOWS`
+   - `BIO-HI-TECH-LIMS-LINUX`
 
 *(Note: GitHub Actions artifacts are retained for 90 days according to standard repository retention policy).*
 

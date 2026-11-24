@@ -84,7 +84,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          ENFORCE_SIGNING: ${{ github.event.inputs.require_signing || (startsWith(github.ref, 'refs/tags/v') && 'true') || 'false' }}
+          ENFORCE_SIGNING: ${{ (github.event.inputs.require_signing == 'true' || (startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-qa'))) && 'true' || 'false' }}
         run: |
           cd android
           mkdir -p "${{ github.workspace }}/release/android"
@@ -276,7 +276,7 @@ jobs:
         env:
           WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
-          ENFORCE_SIGNING: ${{ github.event.inputs.require_signing || (startsWith(github.ref, 'refs/tags/v') && 'true') || 'false' }}
+          ENFORCE_SIGNING: ${{ (github.event.inputs.require_signing == 'true' || (startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-qa'))) && 'true' || 'false' }}
         run: |
           $releaseDir = Join-Path $env:GITHUB_WORKSPACE "release/windows"
           New-Item -ItemType Directory -Force -Path $releaseDir | Out-Null
@@ -373,13 +373,15 @@ jobs:
           if-no-files-found: error
 
   # =========================================================================
-  # 4. OFFICIAL GITHUB RELEASE CREATION (Triggered on tags v*)
+  # 4. GITHUB RELEASE CREATION (Triggered on tags v*)
   # =========================================================================
   publish-release:
-    name: Publish Official GitHub Release
+    name: Publish GitHub Release (QA & Production)
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-android, build-linux, build-windows]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -402,21 +404,131 @@ jobs:
           name: BIO-HI-TECH-LIMS-WINDOWS
           path: release-all/windows
 
-      - name: Collate Release Assets & Generate Unified Checksums
+      - name: Collate, Verify Binaries & Generate Checksums
         run: |
           mkdir -p release-bundle
-          find release-all/ -type f \( -name "*.apk" -o -name "*.aab" -o -name "*.AppImage" -o -name "*.deb" -o -name "*.exe" -o -name "*.msi" \) -exec cp {} release-bundle/ \;
+
+          # Copy and standardize Android binaries
+          find release-all/android/ -type f -name "*.apk" -exec cp {} release-bundle/BIO-HI-TECH-LIMS-Android.apk \;
+          find release-all/android/ -type f -name "*.aab" -exec cp {} release-bundle/BIO-HI-TECH-LIMS-Android.aab \;
           cp release-all/android/SIGNING_STATUS.txt release-bundle/SIGNING_STATUS_ANDROID.txt 2>/dev/null || true
+
+          # Copy and standardize Windows binaries
+          find release-all/windows/ -type f -name "*Setup*.exe" -exec cp {} release-bundle/BIO-HI-TECH-LIMS-Windows-Setup.exe \;
+          [ ! -f release-bundle/BIO-HI-TECH-LIMS-Windows-Setup.exe ] && find release-all/windows/ -type f -name "*.exe" -exec cp {} release-bundle/BIO-HI-TECH-LIMS-Windows-Setup.exe \;
+          find release-all/windows/ -type f -name "*.msi" -exec cp {} release-bundle/BIO-HI-TECH-LIMS-Windows.msi \;
           cp release-all/windows/SIGNING_STATUS.txt release-bundle/SIGNING_STATUS_WINDOWS.txt 2>/dev/null || true
+
+          # Copy and standardize Linux binaries
+          find release-all/linux/ -type f -name "*.AppImage" -exec cp {} release-bundle/BIO-HI-TECH-LIMS.AppImage \;
+          find release-all/linux/ -type f -name "*.deb" -exec cp {} release-bundle/BIO-HI-TECH-LIMS.deb \;
+
+          # Verify each binary exists and is non-empty
+          echo "=== Verifying Generated Binary Packages ==="
+          MISSING_BINARIES=0
+          for pkg in BIO-HI-TECH-LIMS-Android.apk BIO-HI-TECH-LIMS-Android.aab BIO-HI-TECH-LIMS-Windows-Setup.exe BIO-HI-TECH-LIMS-Windows.msi BIO-HI-TECH-LIMS.AppImage BIO-HI-TECH-LIMS.deb; do
+            if [ -s "release-bundle/$pkg" ]; then
+              pkg_size=$(stat -c%s "release-bundle/$pkg")
+              echo "✓ Found: $pkg ($pkg_size bytes)"
+            else
+              echo "::error::Missing or empty release package: $pkg"
+              MISSING_BINARIES=1
+            fi
+          done
+
+          if [ "$MISSING_BINARIES" -ne 0 ]; then
+            echo "::error::One or more required platform binary packages are missing!"
+            exit 1
+          fi
+
+          # Production signing verification: If production release (not QA tag), enforce signing
+          if [[ "${{ github.ref_name }}" != *"-qa"* ]]; then
+            echo "=== Validating Production Signing Safeguards ==="
+            if ! grep -q "STATUS=SIGNED" release-bundle/SIGNING_STATUS_ANDROID.txt 2>/dev/null; then
+              echo "::error::CRITICAL: Production release rejected! Android binary was not signed with permanent production key."
+              exit 1
+            fi
+            if ! grep -q "STATUS=SIGNED" release-bundle/SIGNING_STATUS_WINDOWS.txt 2>/dev/null; then
+              echo "::error::CRITICAL: Production release rejected! Windows binary was not signed with Authenticode certificate."
+              exit 1
+            fi
+          fi
+
+          # Generate SHA256 checksums
           cd release-bundle
-          sha256sum * > SHA256SUMS.txt
+          sha256sum BIO-HI-TECH-LIMS* > SHA256SUMS.txt
+          echo "=== SHA-256 Checksums ==="
           cat SHA256SUMS.txt
 
-      - name: Create GitHub Release v1.0.0
+      - name: Generate Release Notes
+        run: |
+          IS_QA="false"
+          if [[ "${{ github.ref_name }}" == *"-qa"* ]]; then
+            IS_QA="true"
+          fi
+
+          cat << 'EOF' > release-bundle/RELEASE_NOTES.md
+          ## BIO HI TECH LIMS — Native Application Installers
+
+          EOF
+
+          if [ "$IS_QA" = "true" ]; then
+            cat << 'EOF' >> release-bundle/RELEASE_NOTES.md
+          > [!IMPORTANT]
+          > **QA TEST INSTALLERS — CONTROLLED TESTING ONLY**
+          > - **Android APK:** Debug-signed for immediate installation testing without production signing keys.
+          > - **Windows Installer:** Unsigned installer for test deployment. Click **"More info" -> "Run anyway"** on Windows Defender SmartScreen.
+          > - **Permanent Production Release:** Will be issued upon configuration of official commercial signing keys.
+
+          EOF
+          else
+            cat << 'EOF' >> release-bundle/RELEASE_NOTES.md
+          > [!NOTE]
+          > **PRODUCTION RELEASE**
+          > Verified production-signed installation packages.
+
+          EOF
+          fi
+
+          cat << 'EOF' >> release-bundle/RELEASE_NOTES.md
+          ### Available Packages:
+
+          | Platform | Package File | Description |
+          | :--- | :--- | :--- |
+          | **Android Phone** | `BIO-HI-TECH-LIMS-Android.apk` | Native Android APK (Universal ARM64/x86_64) |
+          | **Android Play Store** | `BIO-HI-TECH-LIMS-Android.aab` | Android App Bundle |
+          | **Windows Setup** | `BIO-HI-TECH-LIMS-Windows-Setup.exe` | NSIS Full Setup Installer (Windows 10/11 x64) |
+          | **Windows Enterprise** | `BIO-HI-TECH-LIMS-Windows.msi` | Enterprise WiX MSI Installer |
+          | **Linux Standalone** | `BIO-HI-TECH-LIMS.AppImage` | Portable Linux Desktop executable |
+          | **Linux Debian/Ubuntu** | `BIO-HI-TECH-LIMS.deb` | Debian Package (`dpkg -i`) |
+
+          ### SHA-256 Checksums:
+          ```text
+          EOF
+          cat release-bundle/SHA256SUMS.txt >> release-bundle/RELEASE_NOTES.md
+          cat << 'EOF' >> release-bundle/RELEASE_NOTES.md
+          ```
+
+          ### Installation Instructions:
+          - **Android:** Download `.apk` -> Open file -> Enable *"Allow from this source"* if prompted -> Install -> Launch & sign in.
+          - **Windows:** Download `.exe` or `.msi` -> Launch installer -> If Windows Defender SmartScreen displays *"Unknown Publisher"*, click **More info** -> **Run anyway** -> Follow setup wizard.
+          - **Linux:** `chmod +x BIO-HI-TECH-LIMS.AppImage && ./BIO-HI-TECH-LIMS.AppImage` or `sudo apt install ./BIO-HI-TECH-LIMS.deb`.
+          EOF
+
+      - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release-bundle/*
-          name: "BIO HI TECH LIMS v1.0.0 — Production Release"
+          files: |
+            release-bundle/BIO-HI-TECH-LIMS-Android.apk
+            release-bundle/BIO-HI-TECH-LIMS-Android.aab
+            release-bundle/BIO-HI-TECH-LIMS-Windows-Setup.exe
+            release-bundle/BIO-HI-TECH-LIMS-Windows.msi
+            release-bundle/BIO-HI-TECH-LIMS.AppImage
+            release-bundle/BIO-HI-TECH-LIMS.deb
+            release-bundle/SHA256SUMS.txt
+            release-bundle/SIGNING_STATUS_ANDROID.txt
+            release-bundle/SIGNING_STATUS_WINDOWS.txt
+          name: ${{ contains(github.ref_name, '-qa') && format('BIO HI TECH LIMS {0} — QA INSTALLERS (Controlled Testing)', github.ref_name) || format('BIO HI TECH LIMS {0} — Production Release', github.ref_name) }}
+          prerelease: ${{ contains(github.ref_name, '-qa') }}
           draft: false
-          prerelease: false
-          generate_release_notes: true
+          body_path: release-bundle/RELEASE_NOTES.md

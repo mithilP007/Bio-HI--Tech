@@ -65,21 +65,21 @@ export function ReportPrintSheet({
     }
   }, [propPatient, report.patientId, report.patient, report.date, dataVersion])
 
-  // Opaque verification token without patient PII
-  const verificationUrl = useMemo(
-    () => `https://biohitech.example/verify/${report.id}`,
+  // Structured non-PII report accession identifier (no fake online verification endpoints)
+  const reportQrContent = useMemo(
+    () => `BIO-HI-TECH-LIMS:REPORT:${report.id}`,
     [report.id]
   )
 
   useEffect(() => {
     let active = true
-    generateQrCodeSvg(verificationUrl).then((svg) => {
+    generateQrCodeSvg(reportQrContent).then((svg) => {
       if (active) setQrSvg(svg)
     })
     return () => {
       active = false
     }
-  }, [verificationUrl])
+  }, [reportQrContent])
 
   // Barcode encoding report/patient number
   const barcodeSvg = useMemo(
@@ -387,10 +387,10 @@ export function ReportPrintSheet({
                       <td rowSpan={5} className="qr-cell">
                         <div
                           className="qr-container"
-                          aria-label="Report Verification QR Code"
+                          aria-label="Report Accession QR Code"
                           dangerouslySetInnerHTML={{ __html: qrSvg }}
                         />
-                        <span className="qr-caption">Scan to verify</span>
+                        <span className="qr-caption">Accession QR</span>
                       </td>
                       <td className="lbl">Registered Date</td>
                       <td className="val">: <strong>{report.date}</strong></td>
