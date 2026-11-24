@@ -7,20 +7,20 @@ A secure, private diagnostic laboratory management application with Next.js 16.4
 # BIO HI TECH LIMS — DOWNLOAD APPLICATIONS
 
 > [!WARNING]
-> ### QA INSTALLERS — FOR CONTROLLED TESTING ONLY (Channel: `v1.0.0-qa.3`)
+> ### QA INSTALLERS — FOR CONTROLLED TESTING ONLY (Channel: `v1.0.0-qa.4`)
 > - **Android APK:** Debug-signed for immediate installation and testing on authorized Android devices. Permanent Google Play production signing remains pending laboratory owner keystore configuration.
 > - **Windows Installers:** Unsigned binaries compiled directly from source. When launching, Windows Defender SmartScreen will prompt with *"Unknown Publisher"*; click **"More info" -> "Run anyway"**.
 > - **Private Repository Requirement:** To download release assets or view Actions workflows, you must be signed into your authorized GitHub account with repository read permissions.
 
-Direct installation packages are available from the official [QA Prerelease v1.0.0-qa.3](https://github.com/mithilP007/Bio-HI--Tech/releases/tag/v1.0.0-qa.3):
+Direct installation packages are available from the official [QA Prerelease v1.0.0-qa.4](https://github.com/mithilP007/Bio-HI--Tech/releases/tag/v1.0.0-qa.4):
 
 ---
 
 ### 1. Android Phone & Tablet (QA Build)
 
-* **[Download Android Application (APK)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Android.apk)**<br/>
+* **[Download Android Application (APK)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Android.apk)**<br/>
   *(Package: `BIO-HI-TECH-LIMS-Android.apk` · Universal ARM64/x86_64 · Android API 24–36 · Status: QA Debug-Signed)*
-* **[Download Android App Bundle (AAB)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Android.aab)**<br/>
+* **[Download Android App Bundle (AAB)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Android.aab)**<br/>
   *(Package: `BIO-HI-TECH-LIMS-Android.aab` · Google Play Store Format)*
 
 #### Android Installation Instructions:
@@ -34,9 +34,9 @@ Direct installation packages are available from the official [QA Prerelease v1.0
 
 ### 2. Windows 10 & 11 Laptop / Desktop (QA Unsigned)
 
-* **[Download Windows Setup (Recommended EXE)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Windows-Setup.exe)**<br/>
+* **[Download Windows Setup (Recommended EXE)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Windows-Setup.exe)**<br/>
   *(Package: `BIO-HI-TECH-LIMS-Windows-Setup.exe` · NSIS Installer · Status: QA Unsigned)*
-* **[Download Enterprise MSI Installer](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS-Windows.msi)**<br/>
+* **[Download Enterprise MSI Installer](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Windows.msi)**<br/>
   *(Package: `BIO-HI-TECH-LIMS-Windows.msi` · WiX MSI Installer · Status: QA Unsigned)*
 
 #### Windows Installation Instructions:
@@ -51,9 +51,9 @@ Direct installation packages are available from the official [QA Prerelease v1.0
 
 ### 3. Linux Desktop (Ubuntu / Debian x86_64)
 
-* **[Download Standalone Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS.AppImage)**<br/>
+* **[Download Standalone Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS.AppImage)**<br/>
   *(Package: `BIO-HI-TECH-LIMS.AppImage` · Portable Executable)*
-* **[Download Debian Package](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/BIO-HI-TECH-LIMS.deb)**<br/>
+* **[Download Debian Package](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS.deb)**<br/>
   *(Package: `BIO-HI-TECH-LIMS.deb` · Debian/Ubuntu Package)*
 
 #### Linux Installation Instructions:
@@ -71,7 +71,7 @@ Direct installation packages are available from the official [QA Prerelease v1.0
 
 ### 4. Package Integrity Verification (SHA-256)
 
-* **[Download Package Checksums (SHA256SUMS.txt)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.3/SHA256SUMS.txt)**<br/>
+* **[Download Package Checksums (SHA256SUMS.txt)](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/SHA256SUMS.txt)**<br/>
   *(Cryptographic SHA-256 hashes generated automatically during the build process to verify download integrity).*
 
 ---

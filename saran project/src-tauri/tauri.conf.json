@@ -29,7 +29,7 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "category": "Healthcare",
+    "category": "Healthcare and Fitness",
     "shortDescription": "BIO HI TECH Private Laboratory Management System",
     "longDescription": "Professional diagnostic laboratory information management system for patient records, reports, test catalogue, and billing.",
     "copyright": "Copyright 2026 BIO HI TECH",
