@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { Download, Printer } from 'lucide-react'
 import { labProfile, appPreferences, defaultSignatures } from '@/lib/app-settings'
 import { patients, reports, tests } from '@/lib/demo-data'
 import { generateCode128Svg } from '@/lib/barcode-128'
 import { generateQrCodeSvg } from '@/lib/qr-generator'
 import { evaluateResult } from '@/lib/clinical-engine'
+import { downloadReportPdf } from '@/lib/pdf-export'
 
 type Report = typeof reports[number]
 
@@ -46,7 +48,7 @@ export function ReportPrintSheet({
 
   // Opaque verification token without patient PII
   const verificationUrl = useMemo(
-    () => `https://biohitech.example/verify/DEMO-${report.id}`,
+    () => `https://biohitech.example/verify/${report.id}`,
     [report.id]
   )
 
@@ -221,6 +223,26 @@ export function ReportPrintSheet({
                 onClick={() => setMode('without-letterhead')}
               >
                 Without Letterhead (Preprinted Pad)
+              </button>
+            </div>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+              <button
+                type="button"
+                className="mode-btn"
+                style={{ background: '#08796e', color: '#fff', borderColor: '#065f57', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                onClick={async () => {
+                  await downloadReportPdf(report.id, { filename: `BIO_HI_TECH_Report_${report.id}.pdf` })
+                }}
+              >
+                <Download size={14} /> Download PDF
+              </button>
+              <button
+                type="button"
+                className="mode-btn"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                onClick={() => window.print()}
+              >
+                <Printer size={14} /> Print
               </button>
             </div>
           </div>

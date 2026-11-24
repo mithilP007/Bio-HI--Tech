@@ -17,6 +17,9 @@ saran project/android/app/build/
 saran project/android/build/
 *.keystore
 *.jks
+*.pfx
+*.p12
+*.base64
 
 # Tauri / Rust build outputs
 saran project/src-tauri/target/

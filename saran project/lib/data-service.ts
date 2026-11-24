@@ -447,8 +447,13 @@ export async function syncDeletePatient(id: string): Promise<boolean> {
     throw new Error('Internet connection required to delete patients.');
   }
 
-  const { error } = await supabase.rpc('delete_eligible_patient', { p_id: id });
+  const { data, error } = await supabase.rpc('delete_eligible_patient', { p_id: id });
   if (error) throw error;
+
+  const res = data as { success?: boolean; message?: string; blocked?: boolean } | null;
+  if (res && res.success === false) {
+    throw new Error(res.message || 'Permanent deletion blocked: Patient has historical clinical or financial records that must be retained.');
+  }
 
   const index = localPatients.findIndex((p) => p.id === id);
   if (index >= 0) {

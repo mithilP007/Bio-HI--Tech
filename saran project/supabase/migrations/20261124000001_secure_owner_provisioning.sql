@@ -1,11 +1,11 @@
 -- ==============================================================================
--- BIO HI TECH LIMS — SECURE OWNER AUTHENTICATION & PRODUCTION RECOVERY GATE
--- Migration: 20261124000002_secure_owner_recovery.sql
--- Description: Revokes insecure client bootstrap RPCs and security questions;
+-- BIO HI TECH LIMS — SECURE OWNER PRE-PROVISIONING & RECOVERY GATEWAY
+-- Migration: 20261124000001_secure_owner_provisioning.sql
+-- Description: Revokes any legacy insecure client bootstrap RPCs;
 -- enforces server-side pre-provisioned owner access and Supabase verified email recovery.
 -- ==============================================================================
 
--- 1. Drop and revoke insecure client bootstrap and security question RPCs
+-- 1. Ensure any legacy insecure client bootstrap or security-question RPCs are dropped
 DROP FUNCTION IF EXISTS public.setup_initial_owner_account(text, text, text, text, text);
 DROP FUNCTION IF EXISTS public.reset_owner_password_via_security_question(text, text, text);
 DROP FUNCTION IF EXISTS public.get_owner_security_question(text);
