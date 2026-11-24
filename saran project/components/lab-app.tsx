@@ -15,7 +15,7 @@ import { evaluateResult } from '@/lib/clinical-engine'
 import { labProfile } from '@/lib/app-settings'
 import { AnalyticsPage } from '@/components/analytics-page'
 import { downloadReportPdf } from '@/lib/pdf-export'
-import { Activity, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Bell, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, ClipboardList, CreditCard, FlaskConical, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, Settings, SlidersHorizontal, Users, X, ChartNoAxesCombined, FilePlus2, FileText, LogOut, UserRound, Check, Printer, Download, PanelLeftClose, PanelLeftOpen, Eye, EyeOff, LockKeyhole, Mail, KeyRound, ShieldCheck, PhoneCall, MessageSquare, MapPin } from 'lucide-react'
+import { Activity, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Bell, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, ClipboardList, CreditCard, FlaskConical, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, Settings, SlidersHorizontal, Users, X, ChartNoAxesCombined, FilePlus2, FileText, LogOut, UserRound, Check, Printer, Download, PanelLeftClose, PanelLeftOpen, Eye, EyeOff, LockKeyhole, Mail, KeyRound, ShieldCheck, PhoneCall, MessageSquare, MapPin, Trash2, Archive, RotateCcw, AlertTriangle } from 'lucide-react'
 import { getAuthState, subscribeAuth, initializeAuth, signInOwner, registerOwnerAccount, signOutOwner, sendPasswordReset, updateUserPassword, type AuthState } from '@/lib/auth-service'
 import { patients, reports, tests, activities, type TestParameter } from '@/lib/demo-data'
 
@@ -129,7 +129,7 @@ export function LabApp() {
 }
 
 function PageHead({eyebrow, title, subtitle, action}: {eyebrow?: string; title: string; subtitle?: string; action?: React.ReactNode}) { return <div className="page-head"><div>{eyebrow && <div className="eyebrow">{eyebrow}</div>}<h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>{action && <div className="page-actions">{action}</div>}</div> }
-function Button({children, href, onClick, secondary=false}: {children: React.ReactNode; href?: string; onClick?: () => void; secondary?: boolean}) { return href ? <Link href={href} className={`button ${secondary ? 'button-secondary' : 'button-primary'}`}>{children}</Link> : <button className={`button ${secondary ? 'button-secondary' : 'button-primary'}`} onClick={onClick}>{children}</button> }
+function Button({children, href, onClick, secondary=false, style}: {children: React.ReactNode; href?: string; onClick?: () => void; secondary?: boolean; style?: React.CSSProperties}) { return href ? <Link href={href} style={style} className={`button ${secondary ? 'button-secondary' : 'button-primary'}`}>{children}</Link> : <button style={style} className={`button ${secondary ? 'button-secondary' : 'button-primary'}`} onClick={onClick}>{children}</button> }
 function LabOfficeContactBanner() {
   return (
     <footer className="lab-office-banner" aria-label="Laboratory Office & Contact Details">
@@ -191,7 +191,422 @@ function Dashboard({onAction}: {onAction:(s:string)=>void}) {
  const todayKey=new Date().toDateString();const activePatients=patients.filter(patient=>!patient.is_archived);const todayPatients=activePatients.filter(patient=>new Date(patient.date).toDateString()===todayKey).length;const todayReports=reports.filter(report=>new Date(report.date).toDateString()===todayKey).length;const outstanding=reports.reduce((sum,report)=>sum+report.amount-(report.payment==='Paid'?report.amount:report.payment.startsWith('Partial · ')?Number(report.payment.split('·')[1]?.trim())||0:0),0);const todayCollected=paymentLedger.filter(payment=>new Date(payment.date).toDateString()===todayKey).reduce((sum,payment)=>sum+payment.amount,0);const stats=[{label:'Total patients',value:String(activePatients.length),change:'Active patient roster',positive:true,icon:Users,href:'/patients'},{label:'Today’s registrations',value:String(todayPatients),change:'Registered today',positive:true,icon:Activity,href:'/patients?date=today'},{label:'Reports generated today',value:String(todayReports),change:'Live clinical reports',positive:true,icon:ClipboardList,href:'/reports?date=today'},{label:'Reports in progress',value:String(reports.filter(report=>report.status==='Draft').length),change:'Continue a draft',positive:false,icon:FileText,href:'/reports?status=draft'},{label:'Today’s collections',value:money(todayCollected),change:'Recorded today',positive:true,icon:CreditCard,href:'/billing?date=today'},{label:'Outstanding payments',value:money(outstanding),change:'Open balances',positive:false,icon:CreditCard,href:'/billing?status=outstanding'}];
  return <><PageHead eyebrow={new Intl.DateTimeFormat('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date()).toUpperCase()} title={`Good morning, ${labProfile.ownerName}`} subtitle="Here’s what’s happening at your laboratory today." action={<Button href="/reports/new"><Plus size={17}/> Create report</Button>}/><div className="stats-grid">{stats.map(({label,value,change,positive,icon:Icon,href})=><Link href={href} className="stat-card stat-card-link" key={label}><div className="stat-top"><span>{label}</span><span className="stat-icon"><Icon size={17}/></span></div><strong className="stat-value">{value}</strong><div className={`stat-change ${positive?'is-positive':''}`}>{positive?<ArrowUpRight size={14}/>:<span className="mini-dot"/>}{change}</div></Link>)}</div><section className="panel dashboard-quick-actions" aria-label="Quick actions"><Link href="/patients/new"><Plus size={15}/> Register patient</Link><Link href="/reports/new"><FilePlus2 size={15}/> Create report</Link><Link href="/billing/new"><CreditCard size={15}/> Record payment</Link><Link href="/tests/new"><FlaskConical size={15}/> Add new test</Link></section><div className="dashboard-grid"><section className="panel recent-panel"><div className="panel-head"><div><h2>Recent patients</h2><p>Latest registrations at your lab</p></div><Link className="text-link" href="/patients">View all <ArrowRight size={15}/></Link></div><div className="table-wrap">{activePatients.length>0?<table><thead><tr><th>Patient</th><th>Patient ID</th><th>Registered</th><th>Reports</th><th/></tr></thead><tbody>{activePatients.slice(0,5).map(p=><tr key={p.id}><td><div className="person"><span className="person-avatar">{p.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</span><span><strong>{p.name}</strong><small>{p.phone}</small></span></div></td><td className="mono">{p.id}</td><td>{p.date}</td><td>{p.reports}</td><td><Link className="row-link" href={`/patients/view?id=${p.id}`} aria-label={`View ${p.name}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table>:<EmptyState title="No patients registered yet" detail="Register your first patient to begin tracking laboratory records and tests." action={<Button href="/patients/new"><Plus size={16}/> Register patient</Button>}/>}</div></section><section className="panel activity-panel"><div className="panel-head"><div><h2>Recent activity</h2><p>Updates from your laboratory</p></div><button className="icon-button" aria-label="More activity options" onClick={()=>onAction('Showing the latest activity.') }><MoreHorizontal size={19}/></button></div><div className="activity-list">{activities.length>0?activities.map((a,i)=><div className="activity-item" key={a.text}><span className={`activity-icon activity-${i}`}><a.icon size={15}/></span><div><p>{a.text}</p><small>{a.detail} <span>·</span> {a.time}</small></div></div>):<p style={{padding:'24px 16px',color:'#839491',fontSize:'11px',textAlign:'center'}}>No recent activity recorded.</p>}</div><Link href="/notifications" className="activity-footer">View all activity <ArrowRight size={14}/></Link></section></div><section className="panel reports-panel"><div className="panel-head"><div><h2>Reports in progress</h2><p>Recent reports that need your attention</p></div><Link className="text-link" href="/reports">All reports <ArrowRight size={15}/></Link></div><div className="table-wrap">{reports.filter(report=>report.status==='Draft').length>0?<table><thead><tr><th>Report no.</th><th>Patient</th><th>Tests</th><th>Report date</th><th>Amount</th><th>Status</th><th/></tr></thead><tbody>{reports.filter(report=>report.status==='Draft').slice(0,4).map(r=><tr key={r.id}><td className="mono">{r.id}</td><td>{r.patient}</td><td>{r.tests} tests</td><td>{r.date}</td><td>{money(r.amount)}</td><td><span className={`status-pill ${r.status==='Issued'?'status-issued':'status-draft'}`}><i/>{r.status}</span></td><td><Link className="row-link" href={`/reports/view?id=${r.id}`} aria-label={`Open report ${r.id}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table>:<EmptyState title="No draft reports" detail="All laboratory reports are finalized or ready for issuance." action={<Button href="/reports/new"><Plus size={16}/> Create report</Button>}/>}</div></section><LabOfficeContactBanner /></>
 }
-function Patients({search,setSearch,rows,onAction}:{search:string;setSearch:(s:string)=>void;rows:typeof patients;onAction:(s:string)=>void}) { const searchParams=useSearchParams();const [page,setPage]=useState(1);const [filter,setFilter]=useState(searchParams.get('date')==='today'?'Registered today':'Active patients');const filteredRows=rows.filter(patient=>{if(filter==='Active patients')return !patient.is_archived;if(filter==='Archived patients')return !!patient.is_archived;if(filter==='All patients')return true;if(patient.is_archived)return false;const date=new Date(patient.date);const now=new Date();if(filter==='Registered today')return date.toDateString()===now.toDateString();if(filter==='Registered this month')return date.getFullYear()===now.getFullYear()&&date.getMonth()===now.getMonth();return date>=new Date(now.getTime()-7*24*60*60*1000)});return <><PageHead eyebrow="PATIENT MANAGEMENT" title="Patients" subtitle={`${filteredRows.length} patient records on file.`} action={<Button href="/patients/new"><Plus size={17}/> Register patient</Button>}/><section className="panel listing-panel"><div className="list-toolbar"><label className="inline-search"><Search size={16}/><input aria-label="Search patients" placeholder="Search name, ID or phone…" value={search} onChange={e=>{setSearch(e.target.value);setPage(1)}}/><button aria-label="Clear search" onClick={()=>{setSearch('');setPage(1)}}><X size={14}/></button></label><select aria-label="Filter patients" value={filter} onChange={e=>{setFilter(e.target.value);setPage(1)}}><option>Active patients</option><option>Archived patients</option><option>All patients</option><option>Registered today</option><option>Registered this month</option><option>Registered this week</option></select></div>{filteredRows.length ? <><div className="table-wrap"><table><thead><tr><th>Patient</th><th>Patient ID</th><th>Age / gender</th><th>Phone</th><th>Referring doctor</th><th>Status</th><th>Registered</th><th/></tr></thead><tbody>{filteredRows.slice((page-1)*7,page*7).map(p=><tr key={p.id}><td><div className="person"><span className="person-avatar">{p.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</span><strong>{p.name}</strong></div></td><td className="mono">{p.id}</td><td>{p.age} yrs · {p.gender}</td><td>{p.phone}</td><td>{p.doctor}</td><td><span className={`status-pill ${p.is_archived?'status-draft':'status-issued'}`}><i/>{p.is_archived?'Archived':'Active'}</span></td><td>{p.date}</td><td><div className="row-actions"><Link href={`/patients/view?id=${p.id}`}>View</Link><Link href={`/patients/edit?id=${p.id}`}>Edit</Link></div></td></tr>)}</tbody></table></div><div className="pagination"><span>Showing {(page-1)*7+1}–{Math.min(page*7,filteredRows.length)} of {filteredRows.length} patients</span><div><button aria-label="Previous page" disabled={page===1} onClick={()=>setPage(page-1)}><ChevronLeft size={16}/></button><span className="page-number">{page}</span><button aria-label="Next page" disabled={page*7>=filteredRows.length} onClick={()=>setPage(page+1)}><ChevronRight size={16}/></button></div></div></> : <EmptyState title={search?'No patients found':filter==='Archived patients'?'No archived patients':'No patients registered yet'} detail={search?'Try a different name, patient ID or phone number.':filter==='Archived patients'?'Inactive patient records archived by the owner will appear here.':'Add your first patient to begin tracking laboratory records.'} action={!search&&filter!=='Archived patients'&&<Button href="/patients/new"><Plus size={16}/> Register patient</Button>}/>}</section></> }
+function Patients({search,setSearch,rows,onAction}:{search:string;setSearch:(s:string)=>void;rows:typeof patients;onAction:(s:string)=>void}) {
+  const searchParams=useSearchParams();
+  const [page,setPage]=useState(1);
+  const [filter,setFilter]=useState(searchParams.get('date')==='today'?'Registered today':'Active patients');
+  const [selectedPatientIds, setSelectedPatientIds]=useState<Set<string>>(new Set());
+  const [activeModal, setActiveModal]=useState<
+    | { type: 'archive'; patient: typeof patients[number] }
+    | { type: 'restore'; patient: typeof patients[number] }
+    | { type: 'delete'; patient: typeof patients[number]; linkedReports: number; linkedPayments: number; error?: string }
+    | { type: 'bulk-archive'; count: number }
+    | null
+  >(null);
+
+  const filteredRows=rows.filter(patient=>{
+    if(filter==='Active patients')return !patient.is_archived;
+    if(filter==='Archived patients')return !!patient.is_archived;
+    if(filter==='All patients')return true;
+    if(patient.is_archived)return false;
+    const date=new Date(patient.date);
+    const now=new Date();
+    if(filter==='Registered today')return date.toDateString()===now.toDateString();
+    if(filter==='Registered this month')return date.getFullYear()===now.getFullYear()&&date.getMonth()===now.getMonth();
+    return date>=new Date(now.getTime()-7*24*60*60*1000);
+  });
+
+  const pagedRows = filteredRows.slice((page-1)*7, page*7);
+  const allPageSelected = pagedRows.length > 0 && pagedRows.every(p => selectedPatientIds.has(p.id));
+
+  const toggleSelectAll = () => {
+    const next = new Set(selectedPatientIds);
+    if (allPageSelected) {
+      pagedRows.forEach(p => next.delete(p.id));
+    } else {
+      pagedRows.forEach(p => next.add(p.id));
+    }
+    setSelectedPatientIds(next);
+  };
+
+  const toggleSelectPatient = (id: string) => {
+    const next = new Set(selectedPatientIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedPatientIds(next);
+  };
+
+  return (
+    <>
+      <PageHead
+        eyebrow="PATIENT MANAGEMENT"
+        title="Patients"
+        subtitle={`${filteredRows.length} patient records on file (${rows.filter(p => !p.is_archived).length} active, ${rows.filter(p => !!p.is_archived).length} archived).`}
+        action={<Button href="/patients/new"><Plus size={17}/> Register patient</Button>}
+      />
+
+      <section className="panel listing-panel">
+        {selectedPatientIds.size > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#e6f4f2', borderRadius: '8px', marginBottom: '14px', border: '1px solid #b2dfdb' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#004d40', fontWeight: 600 }}>
+              <Check size={16} /> {selectedPatientIds.size} patient{selectedPatientIds.size > 1 ? 's' : ''} selected
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button
+                type="button"
+                className="button button-secondary"
+                style={{ fontSize: '12px', padding: '6px 12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                onClick={() => setActiveModal({ type: 'bulk-archive', count: selectedPatientIds.size })}
+              >
+                <Archive size={14} /> Bulk Archive Selected
+              </button>
+              <button
+                type="button"
+                className="button button-text"
+                style={{ fontSize: '12px', padding: '6px 10px', color: '#555' }}
+                onClick={() => setSelectedPatientIds(new Set())}
+              >
+                Clear selection
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="list-toolbar">
+          <label className="inline-search">
+            <Search size={16}/>
+            <input
+              aria-label="Search patients"
+              placeholder="Search name, ID or phone…"
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+            />
+            <button aria-label="Clear search" onClick={() => { setSearch(''); setPage(1); }}>
+              <X size={14}/>
+            </button>
+          </label>
+          <select aria-label="Filter patients" value={filter} onChange={e => { setFilter(e.target.value); setPage(1); }}>
+            <option>Active patients</option>
+            <option>Archived patients</option>
+            <option>All patients</option>
+            <option>Registered today</option>
+            <option>Registered this month</option>
+            <option>Registered this week</option>
+          </select>
+        </div>
+
+        {filteredRows.length ? (
+          <>
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style={{ width: '40px', textAlign: 'center' }}>
+                      <input
+                        type="checkbox"
+                        aria-label="Select all patients on this page"
+                        checked={allPageSelected}
+                        onChange={toggleSelectAll}
+                      />
+                    </th>
+                    <th>Patient</th>
+                    <th>Patient ID</th>
+                    <th>Age / gender</th>
+                    <th>Phone</th>
+                    <th>Referring doctor</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pagedRows.map(p => {
+                    const isArchived = !!p.is_archived;
+                    return (
+                      <tr key={p.id} style={{ background: selectedPatientIds.has(p.id) ? 'rgba(8, 121, 110, 0.04)' : undefined }}>
+                        <td style={{ textAlign: 'center' }}>
+                          <input
+                            type="checkbox"
+                            aria-label={`Select patient ${p.name}`}
+                            checked={selectedPatientIds.has(p.id)}
+                            onChange={() => toggleSelectPatient(p.id)}
+                          />
+                        </td>
+                        <td>
+                          <div className="person">
+                            <span className="person-avatar">{p.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</span>
+                            <strong>{p.name}</strong>
+                          </div>
+                        </td>
+                        <td className="mono">{p.id}</td>
+                        <td>{p.age} yrs · {p.gender}</td>
+                        <td>{p.phone}</td>
+                        <td>{p.doctor}</td>
+                        <td>
+                          <span className={`status-pill ${isArchived ? 'status-draft' : 'status-issued'}`}>
+                            <i/>{isArchived ? 'Archived' : 'Active'}
+                          </span>
+                        </td>
+                        <td>{p.date}</td>
+                        <td>
+                          <div className="row-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px' }}>
+                            <Link href={`/patients/view?id=${p.id}`} className="button button-text" style={{ padding: '4px 6px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '3px' }} title="View details">
+                              <Eye size={12}/> View
+                            </Link>
+                            <Link href={`/patients/edit?id=${p.id}`} className="button button-text" style={{ padding: '4px 6px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '3px' }} title="Edit profile">
+                              <Settings size={12}/> Edit
+                            </Link>
+                            {isArchived ? (
+                              <button
+                                type="button"
+                                className="button button-text"
+                                style={{ padding: '4px 6px', fontSize: '11px', color: '#08796e', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                                onClick={() => setActiveModal({ type: 'restore', patient: p })}
+                                title="Restore to active roster"
+                              >
+                                <RotateCcw size={12}/> Restore
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                className="button button-text"
+                                style={{ padding: '4px 6px', fontSize: '11px', color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                                onClick={() => setActiveModal({ type: 'archive', patient: p })}
+                                title="Archive patient"
+                              >
+                                <Archive size={12}/> Archive
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              className="button button-text"
+                              style={{ padding: '4px 6px', fontSize: '11px', color: '#dc2626', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                              onClick={() => {
+                                const linkedR = reports.filter(r => r.patientId === p.id).length;
+                                const linkedP = paymentLedger.filter(pl => pl.patientId === p.id).length;
+                                setActiveModal({ type: 'delete', patient: p, linkedReports: linkedR, linkedPayments: linkedP });
+                              }}
+                              title="Delete patient"
+                            >
+                              <Trash2 size={12}/> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="pagination">
+              <span>Showing {(page-1)*7+1}–{Math.min(page*7,filteredRows.length)} of {filteredRows.length} patients</span>
+              <div>
+                <button aria-label="Previous page" disabled={page===1} onClick={()=>setPage(page-1)}><ChevronLeft size={16}/></button>
+                <span className="page-number">{page}</span>
+                <button aria-label="Next page" disabled={page*7>=filteredRows.length} onClick={()=>setPage(page+1)}><ChevronRight size={16}/></button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <EmptyState
+            title={search ? 'No patients found' : filter === 'Archived patients' ? 'No archived patients' : 'No patients registered yet'}
+            detail={search ? 'Try a different name, patient ID or phone number.' : filter === 'Archived patients' ? 'Inactive patient records archived by the owner will appear here.' : 'Add your first patient to begin tracking laboratory records.'}
+            action={!search && filter !== 'Archived patients' && <Button href="/patients/new"><Plus size={16}/> Register patient</Button>}
+          />
+        )}
+      </section>
+
+      {/* Archive Confirmation Modal */}
+      {activeModal?.type === 'archive' && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setActiveModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '480px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#e0f2fe', color: '#0284c7', padding: '8px', borderRadius: '8px' }}><Archive size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Archive Patient</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Move to archived roster</p>
+              </div>
+            </div>
+            <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+              Are you sure you want to archive <strong>{activeModal.patient.name}</strong> (<code>{activeModal.patient.id}</code>)?
+            </p>
+            <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px', border: '1px solid #e2e8f0', margin: '12px 0', fontSize: '12px', color: '#475569', lineHeight: '1.6' }}>
+              ✓ Patient will be removed from daily active listings.<br />
+              ✓ Associated lab orders, test reports, and invoices are <strong>fully preserved</strong>.<br />
+              ✓ You can restore this patient anytime from the <em>Archived patients</em> filter.
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+              <button className="button button-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+              <button className="button button-primary" onClick={async () => {
+                try {
+                  await syncArchivePatient(activeModal.patient.id);
+                  onAction(`Patient ${activeModal.patient.name} archived successfully.`);
+                  setActiveModal(null);
+                } catch (err) {
+                  alert(err instanceof Error ? err.message : 'Failed to archive patient.');
+                }
+              }}>Confirm Archive</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Archive Confirmation Modal */}
+      {activeModal?.type === 'bulk-archive' && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setActiveModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '480px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#e0f2fe', color: '#0284c7', padding: '8px', borderRadius: '8px' }}><Archive size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Bulk Archive Patients</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Archive {activeModal.count} selected patient records</p>
+              </div>
+            </div>
+            <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+              Archive <strong>{activeModal.count} selected patients</strong>? They will be removed from active rosters while preserving all clinical orders, reports, invoices, and audit logs.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+              <button className="button button-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+              <button className="button button-primary" onClick={async () => {
+                const ids = Array.from(selectedPatientIds);
+                let count = 0;
+                for (const id of ids) {
+                  try {
+                    await syncArchivePatient(id);
+                    count++;
+                  } catch (e) {
+                    console.error('Failed to archive patient', id, e);
+                  }
+                }
+                setSelectedPatientIds(new Set());
+                onAction(`${count} patient(s) archived successfully.`);
+                setActiveModal(null);
+              }}>Confirm Bulk Archive</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Restore Confirmation Modal */}
+      {activeModal?.type === 'restore' && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setActiveModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '480px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#ecfdf5', color: '#059669', padding: '8px', borderRadius: '8px' }}><RotateCcw size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Restore Patient</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Return to active patient roster</p>
+              </div>
+            </div>
+            <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+              Restore <strong>{activeModal.patient.name}</strong> (<code>{activeModal.patient.id}</code>) to the active patient roster?
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+              <button className="button button-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+              <button className="button button-primary" onClick={async () => {
+                try {
+                  await syncRestorePatient(activeModal.patient.id);
+                  onAction(`Patient ${activeModal.patient.name} restored to active roster.`);
+                  setActiveModal(null);
+                } catch (err) {
+                  alert(err instanceof Error ? err.message : 'Failed to restore patient.');
+                }
+              }}>Confirm Restore</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Controlled Permanent Deletion Modal */}
+      {activeModal?.type === 'delete' && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setActiveModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '520px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#fee2e2', color: '#dc2626', padding: '8px', borderRadius: '8px' }}><Trash2 size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: '#991b1b' }}>Permanent Patient Deletion</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Controlled Clinical Retention Check</p>
+              </div>
+            </div>
+
+            <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '14px', fontSize: '13px' }}>
+              <div><strong>Patient:</strong> {activeModal.patient.name}</div>
+              <div><strong>Patient ID:</strong> <code>{activeModal.patient.id}</code></div>
+              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #e2e8f0', display: 'flex', gap: '16px' }}>
+                <div>Associated Reports: <strong>{activeModal.linkedReports}</strong></div>
+                <div>Associated Payments: <strong>{activeModal.linkedPayments}</strong></div>
+              </div>
+            </div>
+
+            {activeModal.error ? (
+              <div style={{ background: '#fff1f2', border: '1px solid #fecdd3', color: '#9f1239', padding: '12px', borderRadius: '8px', fontSize: '12px', lineHeight: '1.5', marginBottom: '14px' }}>
+                <strong>Deletion Blocked by Retention Policy:</strong><br />
+                {activeModal.error}
+                <div style={{ marginTop: '8px', fontSize: '12px', color: '#4c0519' }}>
+                  Clinical regulations require preserving historical orders, reports, and invoices. Use <strong>Archive</strong> instead to safely hide this patient while maintaining compliant audit records.
+                </div>
+              </div>
+            ) : activeModal.linkedReports > 0 || activeModal.linkedPayments > 0 ? (
+              <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', color: '#92400e', padding: '12px', borderRadius: '8px', fontSize: '12px', lineHeight: '1.5', marginBottom: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, marginBottom: '4px' }}>
+                  <AlertTriangle size={15} /> Clinical Retention Warning
+                </div>
+                This patient has <strong>{activeModal.linkedReports} linked report(s)</strong> and <strong>{activeModal.linkedPayments} payment record(s)</strong>.
+                Under laboratory retention regulations, patients with historical clinical or billing records cannot be permanently purged from the database.
+                <div style={{ marginTop: '6px', color: '#78350f' }}>
+                  We recommend using <strong>Archive</strong> instead.
+                </div>
+              </div>
+            ) : (
+              <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#475569' }}>
+                This patient has <strong>0 linked reports</strong> and <strong>0 payments</strong>. This record is eligible for permanent removal.
+                <br /><strong style={{ color: '#dc2626' }}>Warning: This action cannot be undone.</strong>
+              </p>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '16px' }}>
+              <button className="button button-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+
+              <button
+                className="button button-secondary"
+                style={{ borderColor: '#08796e', color: '#08796e' }}
+                onClick={async () => {
+                  try {
+                    await syncArchivePatient(activeModal.patient.id);
+                    onAction(`Patient ${activeModal.patient.name} archived safely.`);
+                    setActiveModal(null);
+                  } catch (err) {
+                    alert(err instanceof Error ? err.message : 'Failed to archive patient.');
+                  }
+                }}
+              >
+                <Archive size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> Archive Instead
+              </button>
+
+              <button
+                className="button"
+                style={{ background: '#dc2626', color: '#fff', borderColor: '#b91c1c' }}
+                onClick={async () => {
+                  try {
+                    await syncDeletePatient(activeModal.patient.id);
+                    onAction(`Patient ${activeModal.patient.name} permanently deleted.`);
+                    setActiveModal(null);
+                  } catch (err) {
+                    const msg = err instanceof Error ? err.message : 'Permanent deletion rejected by database.';
+                    setActiveModal({ ...activeModal, error: msg });
+                  }
+                }}
+              >
+                <Trash2 size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> Confirm Permanent Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 function Reports({rows,search,setSearch,onAction}:{rows:typeof reports;search:string;setSearch:(s:string)=>void;onAction:(s:string)=>void}) {const searchParams=useSearchParams();const [statusFilter,setStatusFilter]=useState(searchParams.get('status')==='draft'?'Draft':'All statuses');const [dateRange,setDateRange]=useState(searchParams.get('date')==='today'?'Today':'All dates');const filteredRows=rows.filter(report=>{if(statusFilter!=='All statuses'&&report.status!==statusFilter)return false;if(dateRange==='All dates')return true;const date=new Date(report.date);const now=new Date();if(dateRange==='Today')return date.toDateString()===now.toDateString();if(dateRange==='This month')return date.getFullYear()===now.getFullYear()&&date.getMonth()===now.getMonth();return date>=new Date(now.getTime()-7*24*60*60*1000)});return <><PageHead eyebrow="REPORT MANAGEMENT" title="Saved reports" subtitle={`${rows.length} reports on file.`} action={<Button href="/reports/new"><Plus size={17}/> New report</Button>}/><section className="panel listing-panel"><div className="list-toolbar"><label className="inline-search"><Search size={16}/><input aria-label="Search reports" placeholder="Search report, patient or ID…" value={search} onChange={e=>setSearch(e.target.value)}/></label><select aria-label="Filter report status" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option>All statuses</option><option>Issued</option><option>Draft</option></select><select aria-label="Date range" value={dateRange} onChange={e=>setDateRange(e.target.value)}><option>All dates</option><option>Today</option><option>Last 7 days</option><option>This month</option></select></div>{filteredRows.length>0?<><div className="table-wrap"><table><thead><tr><th>Report no.</th><th>Patient</th><th>Patient ID</th><th>Report date</th><th>Tests</th><th>Amount</th><th>Payment</th><th>Status</th><th/></tr></thead><tbody>{filteredRows.map(r=><tr key={r.id}><td className="mono">{r.id}</td><td>{r.patient}</td><td className="mono">{r.patientId}</td><td>{r.date}</td><td>{r.tests}</td><td>{money(r.amount)}</td><td><span className={`status-pill ${r.payment==='Paid'?'status-issued':'status-draft'}`}><i/>{r.payment}</span></td><td><span className={`status-pill ${r.status==='Issued'?'status-issued':'status-draft'}`}><i/>{r.status}</span></td><td><Link className="row-link" href={`/reports/view?id=${r.id}`} aria-label={`View report ${r.id}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table></div><div className="pagination"><span>Showing {filteredRows.length} reports</span><div><button aria-label="Previous page" disabled><ChevronLeft size={16}/></button><span className="page-number">1</span><button aria-label="Next page" disabled><ChevronRight size={16}/></button></div></div></>:<EmptyState title={search?'No reports found':'No reports created yet'} detail={search?'Try a different report number, patient name or ID.':'Create your first laboratory report to get started.'} action={!search&&<Button href="/reports/new"><Plus size={16}/> New report</Button>}/>}</section></>}
 function Catalogue({search,setSearch,onAction}:{search:string;setSearch:(s:string)=>void;onAction:(s:string)=>void}) {const [category,setCategory]=useState('All tests');const [statusFilter,setStatusFilter]=useState('Any status');const [priceFilter,setPriceFilter]=useState('Any price');const cats=['All tests','Biochemistry','Clinical Pathology','Haematology','Microbiology','Serology / Immunology'];const filtered=tests.filter(t=>(`${t.name} ${t.category}`.toLowerCase().includes(search.toLowerCase()))&&(category==='All tests'||t.category===category)&&(statusFilter==='Any status'||(statusFilter==='Active'?t.active!==false:t.active===false))&&(priceFilter==='Any price'||priceFilter==='Under ₹500'&&t.offer<500||priceFilter==='₹500–₹1,000'&&t.offer>=500&&t.offer<=1000||priceFilter==='Over ₹1,000'&&t.offer>1000));return <><PageHead eyebrow="LABORATORY SETUP" title="Test catalogue" subtitle="Manage the tests and pricing available at your laboratory." action={<Button href="/tests/new"><Plus size={17}/> Add new test</Button>}/><div className="catalogue-layout"><aside className="category-panel panel"><h3>Categories</h3>{cats.map(c=><button key={c} className={category===c?'category-active':''} onClick={()=>setCategory(c)}>{c}<span>{c==='All tests'?tests.length:tests.filter(t=>t.category===c).length}</span></button>)}</aside><section className="panel listing-panel catalogue-table"><div className="list-toolbar"><label className="inline-search"><Search size={16}/><input aria-label="Search test catalogue" placeholder="Search tests…" value={search} onChange={e=>setSearch(e.target.value)}/></label><select aria-label="Filter catalogue status" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option>Any status</option><option>Active</option><option>Inactive</option></select><select aria-label="Filter catalogue price" value={priceFilter} onChange={e=>setPriceFilter(e.target.value)}><option>Any price</option><option>Under ₹500</option><option>₹500–₹1,000</option><option>Over ₹1,000</option></select><span className="result-count">{filtered.length} tests</span></div><div className="table-wrap"><table><thead><tr><th>Test</th><th>Category</th><th>Parameters</th><th>Normal price</th><th>Offer price</th><th>Status</th><th/></tr></thead><tbody>{filtered.map(t=><tr key={t.code}><td><div><strong>{t.name}</strong><small className="cell-sub">{t.code}</small></div></td><td>{t.category}</td><td>{t.parameters}</td><td>{money(t.price)}</td><td><strong>{money(t.offer)}</strong></td><td><span className={`status-pill ${t.active===false?'status-draft':'status-issued'}`}><i/>{t.active===false?'Inactive':'Active'}</span></td><td><Link className="row-link" href={`/tests/${t.code}`} aria-label={`View ${t.name}`}><ArrowRight size={16}/></Link></td></tr>)}</tbody></table></div></section></div></>}
 function FormPage({path,tests,selectedTests,setSelectedTests,onAction}:{path:string;tests:typeof import('@/lib/demo-data').tests;selectedTests:string[];setSelectedTests:(s:string[])=>void;onAction:(s:string)=>void}) {const cleanPath=path.replace(/\/+$/,'');const router=useRouter();const searchParams=useSearchParams();const reportParamId=searchParams.get('id')||(cleanPath.startsWith('/reports/')&&cleanPath.endsWith('/edit')?cleanPath.split('/')[2]:undefined);const isReportEditMode=(cleanPath.startsWith('/reports/')&&cleanPath.endsWith('/edit'))||cleanPath==='/reports/edit';const reportToEdit=isReportEditMode&&reportParamId?reports.find(entry=>entry.id===reportParamId):undefined;const [draftTestNames,setDraftTestNames]=useState<string[]>(reportToEdit?.testNames??[]);const selectedTestNames=reportToEdit?draftTestNames:selectedTests;const patientEdit=(cleanPath.startsWith('/patients/')&&cleanPath.endsWith('/edit'))||cleanPath==='/patients/edit';const patientParamId=searchParams.get('id')||(cleanPath.startsWith('/patients/')&&cleanPath.endsWith('/edit')?cleanPath.split('/')[2]:undefined);const patientRecord=(patientEdit&&patientParamId?patients.find(entry=>entry.id===patientParamId):undefined) as (typeof patients[number]&{dateOfBirth?:string;address?:string;notes?:string})|undefined;const testEdit=cleanPath.startsWith('/tests/')&&cleanPath.endsWith('/edit');const testRecord=testEdit?tests.find(entry=>entry.code===cleanPath.split('/')[2]):undefined;const patient=cleanPath==='/patients/new'||patientEdit, test=cleanPath==='/tests/new'||testEdit;const [name,setName]=useState(patientRecord?.name??reportToEdit?.patient??patients.find(entry=>entry.id===searchParams.get('patient'))?.name??'');const [phone,setPhone]=useState(patientRecord?.phone??'');const [patientAge,setPatientAge]=useState(patientRecord?String(patientRecord.age):'');const [patientDob,setPatientDob]=useState(patientRecord?.dateOfBirth??'');const [patientAddress,setPatientAddress]=useState(patientRecord?.address??'');const [patientNotes,setPatientNotes]=useState(patientRecord?.notes??'');const [patientGender,setPatientGender]=useState(patientRecord?.gender??'');const [patientDoctor,setPatientDoctor]=useState(patientRecord?.doctor??'');const [sampleDate,setSampleDate]=useState(reportToEdit?.sampleDate||new Date().toISOString().slice(0,10));const [sampleTime,setSampleTime]=useState(reportToEdit?.sampleTime||'09:00 AM');const [sampleType,setSampleType]=useState(reportToEdit?.sampleType||'Venous Blood');const [clinicalNotes,setClinicalNotes]=useState(reportToEdit?.notes||'');const [errors,setErrors]=useState('');const [reportSearch,setReportSearch]=useState('');const [selectedPatientId,setSelectedPatientId]=useState(reportToEdit?.patientId??searchParams.get('patient')??'');const [testSearch,setTestSearch]=useState('');const [testName,setTestName]=useState(testRecord?.name??'');const [testCode,setTestCode]=useState(testRecord?.code??'');const [testCategory,setTestCategory]=useState(testRecord?.category??'');const [testPrice,setTestPrice]=useState(testRecord?String(testRecord.price):'');const [testOffer,setTestOffer]=useState(testRecord?String(testRecord.offer):'');const [testActive,setTestActive]=useState(testRecord?.active!==false);const [parameters,setParameters]=useState<Array<TestParameter&{id:number}>>(testRecord?(testRecord.parameterDetails?.map((parameter,index)=>({id:index+1,...parameter}))??testRecord.parameterNames.map((name,index)=>({id:index+1,name,unit:testRecord.units[index]||'',type:'Unconfigured' as const,isVerified:false}))):[]);const [resultValues,setResultValues]=useState<Record<string,string>>(reportToEdit?.results??{});const [previewOpen,setPreviewOpen]=useState(false);const subtotal=tests.filter(t=>selectedTestNames.includes(t.name)).reduce((s,t)=>s+t.offer,0);const [discount,setDiscount]=useState(reportToEdit?String(Math.max(0,subtotal-reportToEdit.amount)):'0');const [initialPayment,setInitialPayment]=useState('0');const [paymentMethod,setPaymentMethod]=useState('Cash');const total=Math.max(0,subtotal-Math.max(0,Number(discount)||0));const paidAmount=reportToEdit?(reportToEdit.payment==='Paid'?reportToEdit.amount:reportToEdit.payment.startsWith('Partial · ')?Number(reportToEdit.payment.split('·')[1]?.trim())||0:0):Number(initialPayment)||0;return <><PageHead eyebrow={patient?'PATIENT MANAGEMENT':test?'LABORATORY SETUP':'REPORT WORKSPACE'} title={reportToEdit?'Edit draft report':patientEdit?'Edit patient':patient?'Register patient':testEdit?'Edit test':test?'Add new test':'Create new report'} subtitle={reportToEdit?'Update this draft while preserving its entered results and pricing.':patientEdit?'Update contact and referral details for this patient.':patient?'Add a patient record to the laboratory registry.':testEdit?'Edit catalogue details and parameters.':test?'Configure a new test for the laboratory catalogue.':'Start a report by selecting a patient and adding tests.'} action={<Button href={patient?'/patients':test?'/tests':'/dashboard'} secondary>Cancel</Button>}/>{errors&&<div className="form-error" role="alert">{errors}</div>}<div className="form-layout"><div className="form-main">{patient?<><section className="panel form-panel"><div className="form-section-head"><span className="section-index">01</span><div><h2>Patient information</h2><p>Fields marked with an asterisk are required.</p></div></div><div className="fields-grid"><Field label="Full name *"><input value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Ananya Sharma"/></Field><Field label="Date of birth"><input type="date" value={patientDob} onChange={e=>{const value=e.target.value;setPatientDob(value);if(value){const birth=new Date(`${value}T00:00:00`);const today=new Date();let age=today.getFullYear()-birth.getFullYear();if(today.getMonth()<birth.getMonth()||(today.getMonth()===birth.getMonth()&&today.getDate()<birth.getDate()))age-=1;setPatientAge(String(age))}}}/></Field><Field label="Age"><input type="number" min="0" max="130" value={patientAge} onChange={e=>setPatientAge(e.target.value)} placeholder="Age in years"/></Field><Field label="Gender"><select value={patientGender} onChange={e=>setPatientGender(e.target.value)}><option value="">Select gender</option><option>Female</option><option>Male</option><option>Other</option><option>Prefer not to say</option></select></Field><Field label="Phone number *"><input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 98765 43210"/></Field><Field label="Address"><input value={patientAddress} onChange={e=>setPatientAddress(e.target.value)} placeholder="Street, city"/></Field></div></section><section className="panel form-panel"><div className="form-section-head"><span className="section-index">02</span><div><h2>Additional information</h2><p>Optional details for this patient record.</p></div></div><div className="fields-grid"><Field label="Referring doctor"><input value={patientDoctor} onChange={e=>setPatientDoctor(e.target.value)} placeholder="Doctor name"/></Field><Field label="Registration date"><input type="date" defaultValue={new Date().toISOString().slice(0,10)}/></Field><Field label="Notes" wide><textarea rows={3} value={patientNotes} onChange={e=>setPatientNotes(e.target.value)} placeholder="Add an internal note…"/></Field></div></section></>:test?<><section className="panel form-panel"><div className="form-section-head"><span className="section-index">01</span><div><h2>Test details</h2><p>Set the catalogue name, category and pricing.</p></div></div><div className="fields-grid"><Field label="Test name *"><input value={testName} onChange={e=>setTestName(e.target.value)} placeholder="e.g. Complete Blood Count"/></Field><Field label="Test code"><input value={testCode} onChange={e=>setTestCode(e.target.value)} placeholder="e.g. CBC-01"/></Field><Field label="Category"><select value={testCategory} onChange={e=>setTestCategory(e.target.value)}><option value="">Select category</option>{['Biochemistry','Clinical Pathology','Haematology','Microbiology','Serology / Immunology','Other'].map(x=><option key={x}>{x}</option>)}</select></Field><Field label="Normal price (₹)"><input type="number" min="0" value={testPrice} onChange={e=>setTestPrice(e.target.value)} placeholder="0"/></Field><Field label="Offer price (₹)"><input type="number" min="0" value={testOffer} onChange={e=>setTestOffer(e.target.value)} placeholder="0"/></Field><Field label="Catalogue status"><select value={testActive?'Active':'Inactive'} onChange={e=>setTestActive(e.target.value==='Active')}><option>Active</option><option>Inactive</option></select></Field></div></section><section className="panel form-panel"><div className="form-section-head"><span className="section-index">02</span><div><h2>Parameters</h2><p>Reference ranges must be reviewed and approved before clinical use.</p></div></div><div className="unverified-note"><span className="footnote-mark">i</span> Reference ranges are not configured here and must be professionally reviewed before clinical use.</div><div className="parameter-builder">{parameters.map((parameter,index)=><div className="parameter-builder-row" key={parameter.id}><label className="field"><span>Parameter name</span><input aria-label={`Parameter ${index+1} name`} value={parameter.name} onChange={event=>setParameters(current=>current.map(item=>item.id===parameter.id?{...item,name:event.target.value}:item))} placeholder="e.g. Haemoglobin"/></label><label className="field"><span>Data type</span><select aria-label={`Parameter ${index+1} data type`} value={parameter.type} onChange={event=>setParameters(current=>current.map(item=>item.id===parameter.id?{...item,type:event.target.value as TestParameter['type']}:item))}><option>Unconfigured</option><option>Numeric</option><option>Qualitative</option><option>Text</option></select></label><label className="field"><span>Unit</span><input aria-label={`Parameter ${index+1} unit`} value={parameter.unit} onChange={event=>setParameters(current=>current.map(item=>item.id===parameter.id?{...item,unit:event.target.value}:item))} placeholder="e.g. g/dL"/></label><label className="field"><span>Decimal precision</span><input aria-label={`Parameter ${index+1} decimal precision`} type="number" min="0" max="6" value={parameter.precision??''} onChange={event=>setParameters(current=>current.map(item=>item.id===parameter.id?{...item,precision:event.target.value===''?undefined:Math.min(6,Math.max(0,Number(event.target.value)||0))}:item))}/></label><div className="parameter-order"><button type="button" className="button button-secondary" aria-label={`Move parameter ${index+1} up`} disabled={index===0} onClick={()=>setParameters(current=>{const next=[...current];[next[index-1],next[index]]=[next[index],next[index-1]];return next})}>↑</button><button type="button" className="button button-secondary" aria-label={`Move parameter ${index+1} down`} disabled={index===parameters.length-1} onClick={()=>setParameters(current=>{const next=[...current];[next[index+1],next[index]]=[next[index],next[index+1]];return next})}>↓</button><button type="button" className="button button-secondary" aria-label={`Remove parameter ${index+1}`} onClick={()=>setParameters(current=>current.filter(item=>item.id!==parameter.id))}><X size={15}/></button></div></div>)}</div><button type="button" className="button button-secondary" onClick={()=>setParameters(current=>[...current,{id:Date.now()+Math.random(),name:'',unit:'',type:'Numeric',precision:2,isVerified:false}])}><Plus size={16}/> Add parameter</button></section></>:<><section className="panel form-panel"><div className="form-section-head"><span className="section-index">01</span><div><h2>Patient details</h2><p>Search for an existing patient or add a new one without losing this draft.</p></div><Button href="/patients/new" secondary><Plus size={15}/> Add patient</Button></div><div className="fields-grid"><Field label="Search patient *" wide><input placeholder="Search by name, patient ID or phone number" onChange={e=>setReportSearch(e.target.value)} /></Field>{reportSearch && <div className="search-results">{patients.filter(p=>`${p.name} ${p.id} ${p.phone}`.toLowerCase().includes(reportSearch.toLowerCase())).slice(0,3).map(p=><button key={p.id} onClick={()=>{setName(p.name);setSelectedPatientId(p.id);setReportSearch('')}}><span className="person-avatar">{p.name.slice(0,1)}</span><span><strong>{p.name}</strong><small>{p.id} · {p.phone}</small></span><Check size={16}/></button>)}</div>}{name&&<div className="selected-patient"><Check size={15}/><strong>{name}</strong><span>Patient selected</span><button onClick={()=>{setName('');setSelectedPatientId('')}} aria-label="Remove selected patient"><X size={15}/></button></div>}</div></section><section className="panel form-panel"><div className="form-section-head"><span className="section-index">02</span><div><h2>Sample &amp; clinical details</h2><p>Collection date, specimen type and clinical observations.</p></div></div><div className="fields-grid"><Field label="Sample collection date"><input type="date" value={sampleDate} onChange={e=>setSampleDate(e.target.value)}/></Field><Field label="Collection time"><input type="text" value={sampleTime} onChange={e=>setSampleTime(e.target.value)} placeholder="09:00 AM"/></Field><Field label="Sample type"><select value={sampleType} onChange={e=>setSampleType(e.target.value)}><option>Venous Blood</option><option>EDTA Whole Blood</option><option>Serum</option><option>Plasma</option><option>Urine (Spot)</option><option>Urine (24hr)</option><option>Other</option></select></Field><Field label="Clinical observations / notes" wide><textarea rows={2} value={clinicalNotes} onChange={e=>setClinicalNotes(e.target.value)} placeholder="Add any clinical observations or sample condition notes..."/></Field></div></section><section className="panel form-panel"><div className="form-section-head"><span className="section-index">03</span><div><h2>Select tests</h2><p>Choose one or more tests from the catalogue.</p></div></div><div className="test-picker"><label className="inline-search"><Search size={15}/><input placeholder="Find a test…" value={testSearch} onChange={e=>setTestSearch(e.target.value)}/></label><div className="test-picker-list">{tests.filter(t=>t.active!==false&&t.name.toLowerCase().includes(testSearch.toLowerCase())).slice(0,12).map(t=><div className="test-option" key={t.code}><div><strong>{t.name}</strong><small>{t.category} · {t.parameters} parameters</small></div><div><strong>{money(t.offer)}</strong><button className={`add-test ${selectedTestNames.includes(t.name)?'added':''}`} aria-label={`${selectedTestNames.includes(t.name)?'Remove':'Add'} ${t.name} ${selectedTestNames.includes(t.name)?'from':'to'} report`} onClick={()=>{const current=reportToEdit?draftTestNames:selectedTests;const setCurrent=reportToEdit?setDraftTestNames:setSelectedTests;setCurrent(current.includes(t.name)?current.filter(x=>x!==t.name):[...current,t.name])}}>{selectedTestNames.includes(t.name)?<Check size={15}/>:<Plus size={15}/>}</button></div></div>)}</div></div></section>{selectedTestNames.length>0&&<section className="panel form-panel"><div className="form-section-head"><span className="section-index">04</span><div><h2>Results</h2><p>Enter observed values. Reference intervals are automatically matched against approved patient criteria.</p></div></div>{selectedTestNames.map(t=>{const selectedPat=patients.find(p=>p.id===selectedPatientId);const effectiveAge=patientAge||selectedPat?.age;const effectiveGender=patientGender||selectedPat?.gender;return <div className="result-test" key={t}><h3><FlaskConical size={16}/>{t}</h3>{tests.find(x=>x.name===t)?.parameterNames.map((p,i)=>{const definition=tests.find(x=>x.name===t);const parameter=definition?.parameterDetails?.find(item=>item.name===p);const value=resultValues[`${t}:${p}`]||'';const evalRes=evaluateResult(t,p,value,{age:effectiveAge,gender:effectiveGender},definition?.units[i],false);return <div className="result-row" key={p}><span>{p}</span>{parameter?.type==='Qualitative'?<select aria-label={`${t} ${p} result`} value={value} onChange={e=>setResultValues(current=>({...current,[`${t}:${p}`]:e.target.value}))}><option value="">Select result</option><option>Negative</option><option>Positive</option><option>Detected</option><option>Not detected</option><option>Reactive</option><option>Non-reactive</option><option>Trace</option></select>:<input aria-label={`${t} ${p} result`} type={parameter?.type==='Numeric'?'number':'text'} step={parameter?.type==='Numeric'?1/10**(parameter.precision??0):undefined} value={value} onChange={e=>setResultValues(current=>({...current,[`${t}:${p}`]:e.target.value}))} placeholder="Enter result"/>}<span>{definition?.units[i]||'—'}</span><span className="range-unverified">{evalRes.referenceDisplay}</span>{value?<span className={`result-eval-badge badge-${evalRes.badgeStyle}`}>{evalRes.arrowSymbol} {evalRes.statusLabel}</span>:<span className="result-eval-badge badge-neutral">Pending</span>}</div>})}</div>})}</section>}</>}</div><aside className="form-aside"><section className="panel summary-card"><h3>{patient?'Registration summary':test?'Test setup':'Billing summary'}</h3>{patient?<><div className="summary-row"><span>Patient ID</span><strong>Assigned on save</strong></div><div className="summary-row"><span>Registration date</span><strong>Today</strong></div><div className="demo-side-note">Record is saved directly to the database and synchronized in real time.</div></>:test?<><div className="summary-row"><span>Clinical review</span><strong>Required</strong></div><div className="demo-side-note">Test parameters and reference intervals must be clinically validated before issuing reports.</div></>:<><div className="summary-row"><span>Selected tests</span><strong>{selectedTestNames.length}</strong></div>{selectedTestNames.map(t=><div className="summary-row" key={t}><span>{t}</span><strong>{money(tests.find(x=>x.name===t)?.offer||0)}</strong></div>)}<div className="summary-row"><span>Subtotal</span><strong>{money(subtotal)}</strong></div><Field label="Discount (₹)"><input type="number" min="0" max={subtotal} value={discount} onChange={e=>setDiscount(e.target.value)}/></Field><div className="summary-total"><span>Final amount</span><strong>{money(total)}</strong></div>{!reportToEdit&&<><Field label="Initial payment (₹)"><input type="number" min="0" max={total} value={initialPayment} onChange={e=>setInitialPayment(e.target.value)}/></Field><Field label="Payment method"><select value={paymentMethod} onChange={e=>setPaymentMethod(e.target.value)}><option>Cash</option><option>UPI</option><option>Card</option><option>Bank transfer</option></select></Field></>}<div className="summary-row"><span>Balance due</span><strong>{money(Math.max(0,total-paidAmount))}</strong></div><div className="demo-side-note">Amounts and ledger balances are derived from configured catalogue prices.</div></>}</section><div className="aside-actions"><Button onClick={async ()=>{setErrors('');if(patient&&(!name.trim()||!phone.trim())){setErrors('Enter a patient name and phone number.');return}if(patientDob&&new Date(`${patientDob}T00:00:00`)>new Date()){setErrors('Date of birth cannot be in the future.');return}if(patientAge&&(Number(patientAge)<0||Number(patientAge)>130)){setErrors('Enter a valid age between 0 and 130.');return}try{if(patient){if(patientEdit&&patientRecord){await syncUpdatePatient(patientRecord.id,{name:name.trim(),phone:phone.trim(),age:Number(patientAge)||0,gender:patientGender||'Not specified',doctor:patientDoctor.trim()||'Not specified',dateOfBirth:patientDob,address:patientAddress.trim(),notes:patientNotes.trim()});onAction('Patient updated successfully.');router.push(`/patients/view?id=${patientRecord.id}`);return}const record=await syncCreatePatient({name,phone,age:Number(patientAge)||undefined,gender:patientGender,doctor:patientDoctor,dateOfBirth:patientDob,address:patientAddress,notes:patientNotes});onAction('Patient registered successfully.');router.push(`/patients/view?id=${record.id}`);return}if(test){if(!testName.trim()||!testCode.trim()||!testCategory||!testPrice){setErrors('Enter a test name, code, category and price.');return}const input={name:testName.trim(),code:testCode.trim(),category:testCategory,price:Number(testPrice),offer:Number(testOffer||testPrice),parameters:parameters.map(({id,...parameter})=>parameter),active:testActive};if(testEdit&&testRecord){const record=await syncUpdateTest(testRecord.code,input);onAction('Test updated successfully.');router.push(`/tests/${record?.code || testRecord.code}`);return}const record=await syncAddTest(input);onAction('Test added to catalogue successfully.');router.push(`/tests/${record.code}`);return}if(reportToEdit){if(!selectedPatientId||!selectedTestNames.length){setErrors('Select a patient and at least one test before saving the draft.');return}if(!Number.isFinite(Number(discount))||Number(discount)<0||Number(discount)>subtotal){setErrors('Enter a discount between zero and the test subtotal.');return}await syncUpdateDraftReport(reportToEdit.id,{patientId:selectedPatientId,testNames:selectedTestNames,amount:total,results:resultValues,discount:Number(discount)||0,notes:clinicalNotes,sampleDate,sampleTime,sampleType});onAction('Draft report updated successfully.');router.push(`/reports/view?id=${reportToEdit.id}`);return}if(path==='/reports/new'){if(!selectedPatientId||!selectedTestNames.length){setErrors('Select a patient and at least one test before saving the draft.');return}const initialAmount=Number(initialPayment)||0;if(!Number.isFinite(Number(discount))||Number(discount)<0||Number(discount)>subtotal){setErrors('Enter a discount between zero and the test subtotal.');return}if(initialAmount<0||initialAmount>total){setErrors('Initial payment cannot exceed the final amount.');return}const report=await syncCreateReport({patientId:selectedPatientId,testNames:selectedTestNames,amount:total,results:resultValues});if(initialAmount>0)await syncRecordPayment({reportId:report.id,patientId:selectedPatientId,amount:initialAmount,paymentMethod,notes:'Initial payment at report creation'});onAction('Report draft saved successfully.');setSelectedTests([]);router.push(`/reports/view?id=${report.id}`);return}onAction('No changes were made.')}catch(error){setErrors(error instanceof Error?error.message:'Unable to save this record.')}}}><Check size={16}/>{reportToEdit?'Update draft':patientEdit?'Save changes':patient?'Save patient':testEdit?'Save changes':test?'Save test':'Save draft'}</Button>{path==='/reports/new'&&<Button secondary onClick={()=>setPreviewOpen(true)}>Preview report</Button>}</div></aside></div>{previewOpen&&<div className="preview-overlay" onMouseDown={event=>{if(event.target===event.currentTarget)setPreviewOpen(false)}}><section className="panel report-preview-modal" role="dialog" aria-modal="true" aria-labelledby="report-preview-title"><div className="panel-head"><div><div className="eyebrow">DRAFT PREVIEW</div><h2 id="report-preview-title">Laboratory report</h2></div><button className="icon-button" aria-label="Close report preview" onClick={()=>setPreviewOpen(false)}><X size={17}/></button></div><div className="report-patient-box"><div><small>Patient name</small><strong>{name||'Select a patient'}</strong></div><div><small>Tests</small><strong>{selectedTestNames.length}</strong></div><div><small>Estimated amount</small><strong>{money(total)}</strong></div></div><div className="preview-test-list">{selectedTestNames.map(testName=><div key={testName}><strong>{testName}</strong>{tests.find(test=>test.name===testName)?.parameterNames.map(parameter=><span key={parameter}>{parameter}: {resultValues[`${testName}:${parameter}`]||'Not entered'}</span>)}</div>)}</div><div className="unverified-note"><span className="footnote-mark">i</span> Draft preview only. Values and ranges have not been clinically verified.</div><div className="settings-save"><span>Not an issued medical report.</span><button className="button button-primary" onClick={()=>setPreviewOpen(false)}>Continue editing</button></div></section></div>}</>}
@@ -689,4 +1104,308 @@ function AuthPage({forgot, onAuthenticated}:{forgot?:boolean; onAuthenticated?:(
 
 function ReportPreviewPage({path,onAction}:{path:string;onAction:(s:string)=>void}){const dataVersion=useSyncExternalStore(subscribeDemoData,getDemoDataVersion,()=>0);const searchParams=useSearchParams();const cleanPath=path.replace(/\/+$/,'');const parts=cleanPath.split('/');const paramId=searchParams.get('id')||searchParams.get('reportId');const id=paramId||(parts[2]==='preview'?'':parts[2])||'';const foundReport=reports.find(r=>r.id===id);const [loading,setLoading]=useState(!foundReport&&Boolean(id));useEffect(()=>{if(!foundReport&&id){syncLoadCloudData().finally(()=>setLoading(false));}else{setLoading(false);}},[foundReport,id]);if(loading&&!foundReport){return <div style={{padding:'60px 20px',textAlign:'center',color:'#08796e'}}><strong>Loading report preview...</strong></div>;}if(!foundReport)return <EmptyState title="Report not found" detail="This report record does not exist in the database." action={<Button href="/reports" secondary>Back to reports</Button>}/>;const report=foundReport;return <><PageHead eyebrow="REPORT PRINT & DOCUMENT PREVIEW" title={`Print Preview — ${report.id}`} subtitle={`${report.patient} · ${report.date} · ${report.status}`} action={<><Button href={`/reports/view?id=${report.id}`} secondary><ArrowLeft size={16}/> Back to report details</Button><Button secondary onClick={async ()=>{try{onAction('Generating downloadable PDF...');await downloadReportPdf(report.id,{filename:`BIO-HI-TECH-${report.id}.pdf`});onAction('Report PDF downloaded successfully.')}catch(e){onAction(e instanceof Error?e.message:'PDF export failed.')}}}><Download size={16}/> Download PDF</Button><Button secondary onClick={()=>window.print()}><Printer size={16}/> Print Report</Button></>}/><div className="report-preview-page-wrap"><ReportPrintSheet report={report} preview={true} showControls={true}/></div></>}
 
-function Details({path,onAction}:{path:string;onAction:(s:string)=>void}){const dataVersion=useSyncExternalStore(subscribeDemoData,getDemoDataVersion,()=>0);const router=useRouter();const searchParams=useSearchParams();const [printPreviewOpen,setPrintPreviewOpen]=useState(false);const cleanPath=path.replace(/\/+$/,'');const isPatient=cleanPath.startsWith('/patients');const lastPart=cleanPath.split('/').pop()||'';const paramId=searchParams.get('id')||searchParams.get('patientId')||searchParams.get('reportId');const id=paramId||(lastPart==='view'?'':lastPart)||'';const foundPatient=patients.find(p=>p.id===id);const foundReport=reports.find(r=>r.id===id);const [loading,setLoading]=useState((isPatient?!foundPatient:!foundReport)&&Boolean(id));useEffect(()=>{if(((isPatient&&!foundPatient)||(!isPatient&&!foundReport))&&id){syncLoadCloudData().finally(()=>setLoading(false));}else{setLoading(false);}},[isPatient,foundPatient,foundReport,id]);if(loading){return <div style={{padding:'60px 20px',textAlign:'center',color:'#08796e'}}><strong>Loading record details...</strong></div>;}if(isPatient&&!foundPatient)return <EmptyState title="Patient not found" detail="This patient record does not exist in the database." action={<Button href="/patients" secondary>Back to patients</Button>}/>;if(!isPatient&&!foundReport)return <EmptyState title="Report not found" detail="This report record does not exist in the database." action={<Button href="/reports" secondary>Back to reports</Button>}/>;const patient=isPatient?foundPatient!:patients.find(p=>p.id===foundReport?.patientId);const report=foundReport!;return <><PageHead eyebrow={isPatient?'PATIENT PROFILE':'REPORT MANAGEMENT'} title={isPatient?(patient?.name||'Patient'):`Report ${report.id}`} subtitle={isPatient?`Patient ID ${patient?.id} · Registered ${patient?.date}`:`${report.patient} · ${report.date} · ${report.status}`} action={isPatient?<><Button href={`/patients/edit?id=${patient?.id}`} secondary>Edit profile</Button><Button href={`/reports/new?patient=${patient?.id}`}><Plus size={16}/> Create report</Button>{(patient as any)?.is_archived?<Button secondary onClick={async ()=>{try{await syncRestorePatient(patient!.id);onAction('Patient restored to active roster.')}catch(e){onAction(e instanceof Error?e.message:'Error restoring patient.')}}}>Restore patient</Button>:<Button secondary onClick={async ()=>{if(!window.confirm('Archive this patient? They will be hidden from active lists.'))return;try{await syncArchivePatient(patient!.id);onAction('Patient archived successfully.');router.push('/patients')}catch(e){onAction(e instanceof Error?e.message:'Error archiving patient.')}}}>Archive patient</Button>}<Button secondary onClick={async ()=>{if(!window.confirm('Permanently delete this patient? Note: Patients with orders, reports or invoices cannot be deleted.'))return;try{await syncDeletePatient(patient!.id);onAction('Patient deleted successfully.');router.push('/patients')}catch(e){alert(e instanceof Error?e.message:'Patient deletion rejected.');onAction(e instanceof Error?e.message:'Patient deletion rejected.')}}}>Delete patient</Button></>:<><Button secondary href={`/reports/preview?id=${report.id}`}><Eye size={16}/> Preview A4</Button><Button secondary onClick={async ()=>{try{onAction('Generating downloadable PDF...');await downloadReportPdf(report.id,{filename:`BIO-HI-TECH-${report.id}.pdf`});onAction('Report PDF downloaded successfully.')}catch(e){onAction(e instanceof Error?e.message:'PDF export failed.')}}}><Download size={16}/> Download PDF</Button><Button secondary onClick={()=>window.print()}><Printer size={16}/> Print Report</Button>{report.status==='Draft'&&<Button secondary href={`/reports/edit?id=${report.id}`}>Edit draft</Button>}{report.status==='Draft'&&<Button onClick={async ()=>{try{await syncIssueReport(report.id);onAction('Report issued successfully.')}catch(error){onAction(error instanceof Error?error.message:'Report could not be issued.')}}}><Check size={16}/> Issue report</Button>}{report.status==='Draft'&&<Button secondary onClick={async ()=>{if(!window.confirm('Are you sure you want to delete this draft report?'))return;try{await syncDeleteDraftReport(report.id);onAction('Draft report deleted.');router.push('/reports')}catch(error){onAction(error instanceof Error?error.message:'Could not delete draft report.')}}}>Delete draft</Button>}{report.status==='Issued'&&<Button onClick={async ()=>{try{const amendment=await syncCreateReportAmendment(report.id);onAction(`Amendment draft ${amendment.id} created; original report remains unchanged.`);router.push(`/reports/edit?id=${amendment.id}`)}catch(error){onAction(error instanceof Error?error.message:'Amendment draft could not be created.')}}}><FilePlus2 size={16}/> Create amendment</Button>}</>}/>{!isPatient&&<ReportPrintSheet report={report} preview={printPreviewOpen}/>}<div className="details-grid"><section className="panel form-panel"><div className="panel-head"><div><h2>{isPatient?'Patient overview':'Laboratory report'}</h2><p>{isPatient?'Personal and registration details':'Report contents and result summary'}</p></div>{!isPatient&&<span className={`status-pill ${report.status==='Issued'?'status-issued':'status-draft'}`}><i/>{report.status}</span>}</div>{isPatient?<div className="profile-details">{[['Patient ID',patient?.id||'—'],['Age / gender',`${patient?.age||'—'} years · ${patient?.gender||'—'}`],['Phone',patient?.phone||'—'],['Referring doctor',patient?.doctor||'—'],['Registration date',patient?.date||'—'],['Reports on file',String(patient?.reports||0)]].map(([a,b])=><div key={a}><small>{a}</small><strong>{b}</strong></div>)}</div>:<> <div className="report-detail-head"><img src="/branding/bio-icon-192.png" alt="BIO HI TECH" className="report-detail-icon" /><div><strong>BIO HI TECH</strong><small>Diagnostic Laboratory · Mumbai, India</small></div><span className="report-id">{report.id}</span></div><div className="report-patient-box"><div><small>Patient name</small><strong>{report.patient}</strong></div><div><small>Patient ID</small><strong>{report.patientId}</strong></div><div><small>Report date</small><strong>{report.date}</strong></div>{reportAmendments[report.id]&&<div><small>Amends report</small><strong>{reportAmendments[report.id]}</strong></div>}<div><small>Bill amount</small><strong>{money(report.amount)}</strong></div><div><small>Payment status</small><strong>{report.payment}</strong></div><div><small>Balance due</small><strong>{money(Math.max(0,report.amount-(report.payment==='Paid'?report.amount:report.payment.startsWith('Partial · ')?Number(report.payment.split('·')[1]?.trim())||0:0)))}</strong></div></div><div className="report-results-head"><h3>Test results</h3><span>{report.tests} tests</span></div>{report.testNames.map(name=>{const test=tests.find(entry=>entry.name===name);return test?.parameterNames.map((parameter,index)=>{const value=report.results[`${name}:${parameter}`];const evalRes=evaluateResult(name,parameter,value,{age:patient?.age,gender:patient?.gender},test?.units[index],false);return <div className="report-result-row" key={`${name}:${parameter}`}><span><strong>{name}</strong><small>{parameter} · {value||'Result not entered'}</small></span><span className="range-unverified">{evalRes.referenceDisplay}</span><span>{value ? `${value} ${evalRes.arrowSymbol}` : '—'}</span><span className={`result-eval-badge badge-${evalRes.badgeStyle}`}>{evalRes.statusLabel}</span></div>})})}<div className="unverified-note"><span className="footnote-mark">i</span> Clinical reference intervals and result interpretations require owner verification.</div></>}</section><section className="panel timeline-panel"><h2>{isPatient?'Patient history':'Report activity'}</h2><p className="panel-subtitle">Chronological activity</p>{(isPatient?[{t:'Patient registered',d:patient?.date||'—'},...reports.filter(entry=>entry.patientId===patient?.id).map(entry=>({t:`${entry.status} report`,d:`${entry.id} · ${entry.date}`}))]:(reportRevisions[report.id]??[{version:1,status:report.status,date:report.date}]).map(revision=>({t:`Revision ${revision.version} · ${revision.status}`,d:revision.date}))).map((a,i)=><div className="timeline-item" key={i}><span className="timeline-dot"/><div><strong>{a.t}</strong><small>{a.d}</small></div></div>)}<div className="demo-side-note">Audited clinical records. All revisions and amendments are immutably logged in the database.</div>{!isPatient&&<Button href="/billing/new" secondary>Record payment</Button>}</section></div>{isPatient&&patient&&<PatientHistoryTabs patient={patient as typeof patient & {dateOfBirth?:string;address?:string;notes?:string}}/>}</>}
+function Details({path,onAction}:{path:string;onAction:(s:string)=>void}){
+  const dataVersion=useSyncExternalStore(subscribeDemoData,getDemoDataVersion,()=>0);
+  const router=useRouter();
+  const searchParams=useSearchParams();
+  const [printPreviewOpen,setPrintPreviewOpen]=useState(false);
+  const [patientModal, setPatientModal]=useState<
+    | { type: 'archive' }
+    | { type: 'restore' }
+    | { type: 'delete'; error?: string }
+    | null
+  >(null);
+
+  const cleanPath=path.replace(/\/+$/,'');
+  const isPatient=cleanPath.startsWith('/patients');
+  const lastPart=cleanPath.split('/').pop()||'';
+  const paramId=searchParams.get('id')||searchParams.get('patientId')||searchParams.get('reportId');
+  const id=paramId||(lastPart==='view'?'':lastPart)||'';
+  const foundPatient=patients.find(p=>p.id===id);
+  const foundReport=reports.find(r=>r.id===id);
+  const [loading,setLoading]=useState((isPatient?!foundPatient:!foundReport)&&Boolean(id));
+
+  useEffect(()=>{
+    if(((isPatient&&!foundPatient)||(!isPatient&&!foundReport))&&id){
+      syncLoadCloudData().finally(()=>setLoading(false));
+    }else{
+      setLoading(false);
+    }
+  },[isPatient,foundPatient,foundReport,id]);
+
+  if(loading){
+    return <div style={{padding:'60px 20px',textAlign:'center',color:'#08796e'}}><strong>Loading record details...</strong></div>;
+  }
+  if(isPatient&&!foundPatient)return <EmptyState title="Patient not found" detail="This patient record does not exist in the database." action={<Button href="/patients" secondary>Back to patients</Button>}/>;
+  if(!isPatient&&!foundReport)return <EmptyState title="Report not found" detail="This report record does not exist in the database." action={<Button href="/reports" secondary>Back to reports</Button>}/>;
+
+  const patient=isPatient?foundPatient!:patients.find(p=>p.id===foundReport?.patientId);
+  const report=foundReport!;
+  const isArchived = (patient as any)?.is_archived;
+  const linkedReports = isPatient && patient ? reports.filter(r => r.patientId === patient.id).length : 0;
+  const linkedPayments = isPatient && patient ? paymentLedger.filter(p => p.patientId === patient.id).length : 0;
+
+  return (
+    <>
+      <PageHead
+        eyebrow={isPatient?'PATIENT PROFILE':'REPORT MANAGEMENT'}
+        title={isPatient?(patient?.name||'Patient'):`Report ${report.id}`}
+        subtitle={isPatient?`Patient ID ${patient?.id} · Registered ${patient?.date}`:`${report.patient} · ${report.date} · ${report.status}`}
+        action={isPatient?(
+          <>
+            <Button href={`/patients/edit?id=${patient?.id}`} secondary>Edit profile</Button>
+            <Button href={`/reports/new?patient=${patient?.id}`}><Plus size={16}/> Create report</Button>
+            {isArchived ? (
+              <Button secondary onClick={() => setPatientModal({ type: 'restore' })}>Restore patient</Button>
+            ) : (
+              <Button secondary onClick={() => setPatientModal({ type: 'archive' })}>Archive patient</Button>
+            )}
+            <Button
+              secondary
+              style={{ color: '#dc2626', borderColor: '#fca5a5' }}
+              onClick={() => setPatientModal({ type: 'delete' })}
+            >
+              <Trash2 size={15} style={{ marginRight: '4px' }} /> Delete patient
+            </Button>
+          </>
+        ):(
+          <>
+            <Button secondary href={`/reports/preview?id=${report.id}`}><Eye size={16}/> Preview A4</Button>
+            <Button secondary onClick={async ()=>{try{onAction('Generating downloadable PDF...');await downloadReportPdf(report.id,{filename:`BIO-HI-TECH-${report.id}.pdf`});onAction('Report PDF downloaded successfully.')}catch(e){onAction(e instanceof Error?e.message:'PDF export failed.')}}}><Download size={16}/> Download PDF</Button>
+            <Button secondary onClick={async ()=>{try{if(typeof document!=='undefined'&&document.fonts?.ready)await document.fonts.ready;const rpt=document.getElementById('printable-report');if(rpt){const imgs=Array.from(rpt.querySelectorAll('img'));await Promise.all(imgs.map(async img=>{if(!img.complete)await new Promise(res=>{img.onload=res;img.onerror=res});if(typeof img.decode==='function'){try{await img.decode()}catch{}}}));}}catch{}window.print();}}><Printer size={16}/> Print Report</Button>
+            {report.status==='Draft'&&<Button secondary href={`/reports/edit?id=${report.id}`}>Edit draft</Button>}
+            {report.status==='Draft'&&<Button onClick={async ()=>{try{await syncIssueReport(report.id);onAction('Report issued successfully.')}catch(error){onAction(error instanceof Error?error.message:'Report could not be issued.')}}}><Check size={16}/> Issue report</Button>}
+            {report.status==='Draft'&&<Button secondary onClick={async ()=>{if(!window.confirm('Are you sure you want to delete this draft report?'))return;try{await syncDeleteDraftReport(report.id);onAction('Draft report deleted.');router.push('/reports')}catch(error){onAction(error instanceof Error?error.message:'Could not delete draft report.')}}}>Delete draft</Button>}
+            {report.status==='Issued'&&<Button onClick={async ()=>{try{const amendment=await syncCreateReportAmendment(report.id);onAction(`Amendment draft ${amendment.id} created; original report remains unchanged.`);router.push(`/reports/edit?id=${amendment.id}`)}catch(error){onAction(error instanceof Error?error.message:'Amendment draft could not be created.')}}}><FilePlus2 size={16}/> Create amendment</Button>}
+          </>
+        )}
+      />
+
+      {!isPatient&&<ReportPrintSheet report={report} preview={printPreviewOpen}/>}
+
+      <div className="details-grid">
+        <section className="panel form-panel">
+          <div className="panel-head">
+            <div>
+              <h2>{isPatient?'Patient overview':'Laboratory report'}</h2>
+              <p>{isPatient?'Personal and registration details':'Report contents and result summary'}</p>
+            </div>
+            {!isPatient&&<span className={`status-pill ${report.status==='Issued'?'status-issued':'status-draft'}`}><i/>{report.status}</span>}
+          </div>
+          {isPatient?(
+            <div className="profile-details">
+              {[
+                ['Patient ID',patient?.id||'—'],
+                ['Age / gender',`${patient?.age||'—'} years · ${patient?.gender||'—'}`],
+                ['Phone',patient?.phone||'—'],
+                ['Referring doctor',patient?.doctor||'—'],
+                ['Registration date',patient?.date||'—'],
+                ['Status', isArchived ? 'Archived' : 'Active'],
+                ['Reports on file',String(patient?.reports||0)]
+              ].map(([a,b])=><div key={a}><small>{a}</small><strong>{b}</strong></div>)}
+            </div>
+          ):(
+            <>
+              <div className="report-detail-head">
+                <img src="/branding/bio-icon-192.png" alt="BIO HI TECH" className="report-detail-icon" />
+                <div><strong>BIO HI TECH</strong><small>Diagnostic Laboratory · Mumbai, India</small></div>
+                <span className="report-id">{report.id}</span>
+              </div>
+              <div className="report-patient-box">
+                <div><small>Patient name</small><strong>{report.patient}</strong></div>
+                <div><small>Patient ID</small><strong>{report.patientId}</strong></div>
+                <div><small>Report date</small><strong>{report.date}</strong></div>
+                {reportAmendments[report.id]&&<div><small>Amends report</small><strong>{reportAmendments[report.id]}</strong></div>}
+                <div><small>Bill amount</small><strong>{money(report.amount)}</strong></div>
+                <div><small>Payment status</small><strong>{report.payment}</strong></div>
+                <div><small>Balance due</small><strong>{money(Math.max(0,report.amount-(report.payment==='Paid'?report.amount:report.payment.startsWith('Partial · ')?Number(report.payment.split('·')[1]?.trim())||0:0)))}</strong></div>
+              </div>
+              <div className="report-results-head"><h3>Test results</h3><span>{report.tests} tests</span></div>
+              {report.testNames.map(name=>{
+                const test=tests.find(entry=>entry.name===name);
+                return test?.parameterNames.map((parameter,index)=>{
+                  const value=report.results[`${name}:${parameter}`];
+                  const evalRes=evaluateResult(name,parameter,value,{age:patient?.age,gender:patient?.gender},test?.units[index],false);
+                  return (
+                    <div className="report-result-row" key={`${name}:${parameter}`}>
+                      <span><strong>{name}</strong><small>{parameter} · {value||'Result not entered'}</small></span>
+                      <span className="range-unverified">{evalRes.referenceDisplay}</span>
+                      <span>{value ? `${value} ${evalRes.arrowSymbol}` : '—'}</span>
+                      <span className={`result-eval-badge badge-${evalRes.badgeStyle}`}>{evalRes.statusLabel}</span>
+                    </div>
+                  );
+                });
+              })}
+              <div className="unverified-note"><span className="footnote-mark">i</span> Clinical reference intervals and result interpretations require owner verification.</div>
+            </>
+          )}
+        </section>
+
+        <section className="panel timeline-panel">
+          <h2>{isPatient?'Patient history':'Report activity'}</h2>
+          <p className="panel-subtitle">Chronological activity</p>
+          {(isPatient?[{t:'Patient registered',d:patient?.date||'—'},...reports.filter(entry=>entry.patientId===patient?.id).map(entry=>({t:`${entry.status} report`,d:`${entry.id} · ${entry.date}`}))]:(reportRevisions[report.id]??[{version:1,status:report.status,date:report.date}]).map(revision=>({t:`Revision ${revision.version} · ${revision.status}`,d:revision.date}))).map((a,i)=><div className="timeline-item" key={i}><span className="timeline-dot"/><div><strong>{a.t}</strong><small>{a.d}</small></div></div>)}
+          <div className="demo-side-note">Audited clinical records. All revisions and amendments are immutably logged in the database.</div>
+          {!isPatient&&<Button href="/billing/new" secondary>Record payment</Button>}
+        </section>
+      </div>
+
+      {isPatient&&patient&&<PatientHistoryTabs patient={patient as typeof patient & {dateOfBirth?:string;address?:string;notes?:string}}/>}
+
+      {/* Patient Archive Modal */}
+      {patientModal?.type === 'archive' && patient && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setPatientModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '480px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#e0f2fe', color: '#0284c7', padding: '8px', borderRadius: '8px' }}><Archive size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Archive Patient</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Move to archived roster</p>
+              </div>
+            </div>
+            <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+              Are you sure you want to archive <strong>{patient.name}</strong> (<code>{patient.id}</code>)?
+            </p>
+            <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px', border: '1px solid #e2e8f0', margin: '12px 0', fontSize: '12px', color: '#475569', lineHeight: '1.6' }}>
+              ✓ Patient will be removed from daily active listings.<br />
+              ✓ Associated lab orders, test reports, and invoices are <strong>fully preserved</strong>.<br />
+              ✓ You can restore this patient anytime from the <em>Archived patients</em> filter.
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+              <button className="button button-secondary" onClick={() => setPatientModal(null)}>Cancel</button>
+              <button className="button button-primary" onClick={async () => {
+                try {
+                  await syncArchivePatient(patient.id);
+                  onAction(`Patient ${patient.name} archived successfully.`);
+                  setPatientModal(null);
+                  router.push('/patients');
+                } catch (err) {
+                  alert(err instanceof Error ? err.message : 'Failed to archive patient.');
+                }
+              }}>Confirm Archive</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Patient Restore Modal */}
+      {patientModal?.type === 'restore' && patient && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setPatientModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '480px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#ecfdf5', color: '#059669', padding: '8px', borderRadius: '8px' }}><RotateCcw size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Restore Patient</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Return to active patient roster</p>
+              </div>
+            </div>
+            <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+              Restore <strong>{patient.name}</strong> (<code>{patient.id}</code>) to the active patient roster?
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+              <button className="button button-secondary" onClick={() => setPatientModal(null)}>Cancel</button>
+              <button className="button button-primary" onClick={async () => {
+                try {
+                  await syncRestorePatient(patient.id);
+                  onAction(`Patient ${patient.name} restored to active roster.`);
+                  setPatientModal(null);
+                } catch (err) {
+                  alert(err instanceof Error ? err.message : 'Failed to restore patient.');
+                }
+              }}>Confirm Restore</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Patient Permanent Delete Modal */}
+      {patientModal?.type === 'delete' && patient && (
+        <div className="preview-overlay" onMouseDown={e => { if (e.target === e.currentTarget) setPatientModal(null); }}>
+          <div className="panel" role="dialog" aria-modal="true" style={{ maxWidth: '520px', width: '90%', margin: 'auto', background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ background: '#fee2e2', color: '#dc2626', padding: '8px', borderRadius: '8px' }}><Trash2 size={20} /></div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: '#991b1b' }}>Permanent Patient Deletion</h3>
+                <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Controlled Clinical Retention Check</p>
+              </div>
+            </div>
+
+            <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '14px', fontSize: '13px' }}>
+              <div><strong>Patient:</strong> {patient.name}</div>
+              <div><strong>Patient ID:</strong> <code>{patient.id}</code></div>
+              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #e2e8f0', display: 'flex', gap: '16px' }}>
+                <div>Associated Reports: <strong>{linkedReports}</strong></div>
+                <div>Associated Payments: <strong>{linkedPayments}</strong></div>
+              </div>
+            </div>
+
+            {patientModal.error ? (
+              <div style={{ background: '#fff1f2', border: '1px solid #fecdd3', color: '#9f1239', padding: '12px', borderRadius: '8px', fontSize: '12px', lineHeight: '1.5', marginBottom: '14px' }}>
+                <strong>Deletion Blocked by Retention Policy:</strong><br />
+                {patientModal.error}
+                <div style={{ marginTop: '8px', fontSize: '12px', color: '#4c0519' }}>
+                  Clinical regulations require preserving historical orders, reports, and invoices. Use <strong>Archive</strong> instead to safely hide this patient while maintaining compliant audit records.
+                </div>
+              </div>
+            ) : linkedReports > 0 || linkedPayments > 0 ? (
+              <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', color: '#92400e', padding: '12px', borderRadius: '8px', fontSize: '12px', lineHeight: '1.5', marginBottom: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, marginBottom: '4px' }}>
+                  <AlertTriangle size={15} /> Clinical Retention Warning
+                </div>
+                This patient has <strong>{linkedReports} linked report(s)</strong> and <strong>{linkedPayments} payment record(s)</strong>.
+                Under laboratory retention regulations, patients with historical clinical or billing records cannot be permanently purged from the database.
+                <div style={{ marginTop: '6px', color: '#78350f' }}>
+                  We recommend using <strong>Archive</strong> instead.
+                </div>
+              </div>
+            ) : (
+              <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#475569' }}>
+                This patient has <strong>0 linked reports</strong> and <strong>0 payments</strong>. This record is eligible for permanent removal.
+                <br /><strong style={{ color: '#dc2626' }}>Warning: This action cannot be undone.</strong>
+              </p>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '16px' }}>
+              <button className="button button-secondary" onClick={() => setPatientModal(null)}>Cancel</button>
+
+              <button
+                className="button button-secondary"
+                style={{ borderColor: '#08796e', color: '#08796e' }}
+                onClick={async () => {
+                  try {
+                    await syncArchivePatient(patient.id);
+                    onAction(`Patient ${patient.name} archived safely.`);
+                    setPatientModal(null);
+                    router.push('/patients');
+                  } catch (err) {
+                    alert(err instanceof Error ? err.message : 'Failed to archive patient.');
+                  }
+                }}
+              >
+                <Archive size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> Archive Instead
+              </button>
+
+              <button
+                className="button"
+                style={{ background: '#dc2626', color: '#fff', borderColor: '#b91c1c' }}
+                onClick={async () => {
+                  try {
+                    await syncDeletePatient(patient.id);
+                    onAction(`Patient ${patient.name} permanently deleted.`);
+                    setPatientModal(null);
+                    router.push('/patients');
+                  } catch (err) {
+                    const msg = err instanceof Error ? err.message : 'Permanent deletion rejected by database.';
+                    setPatientModal({ type: 'delete', error: msg });
+                  }
+                }}
+              >
+                <Trash2 size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> Confirm Permanent Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

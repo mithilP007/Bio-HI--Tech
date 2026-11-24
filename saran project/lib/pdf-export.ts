@@ -39,6 +39,31 @@ export async function downloadReportPdf(
 
     const totalPages = pageElements.length;
 
+    // Ensure all fonts and images are fully decoded and ready before capture
+    if (typeof document !== 'undefined') {
+      if (document.fonts?.ready) {
+        await document.fonts.ready;
+      }
+      const imgs = Array.from(document.querySelectorAll<HTMLImageElement>('#printable-report img, .report-sheet img'));
+      await Promise.all(
+        imgs.map(async (img) => {
+          if (!img.complete) {
+            await new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+            });
+          }
+          if (typeof img.decode === 'function') {
+            try {
+              await img.decode();
+            } catch {
+              // Ignore decode error if already rendered
+            }
+          }
+        })
+      );
+    }
+
     for (let i = 0; i < totalPages; i++) {
       const pageEl = pageElements[i];
       onProgress(`Rendering page ${i + 1} of ${totalPages}...`);

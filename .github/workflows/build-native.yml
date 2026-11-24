@@ -197,7 +197,8 @@ jobs:
             libxdo-dev \
             libssl-dev \
             libayatana-appindicator3-dev \
-            librsvg2-dev
+            librsvg2-dev \
+            patchelf
           sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2 || true
 
       - name: Install Dependencies
@@ -207,7 +208,9 @@ jobs:
         run: pnpm build
 
       - name: Build Tauri Desktop (AppImage & deb)
-        run: pnpm exec tauri build
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+        run: pnpm exec tauri build --no-before-build-command
 
       - name: Collect Linux Installers & Generate Checksums
         run: |
@@ -261,6 +264,7 @@ jobs:
         shell: pwsh
         run: |
           choco install wixtoolset --yes --no-progress
+          "C:\Program Files (x86)\WiX Toolset v3.11\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -269,7 +273,10 @@ jobs:
         run: pnpm build
 
       - name: Build Tauri Desktop (.exe / .msi)
-        run: pnpm exec tauri build
+        shell: pwsh
+        run: |
+          $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
+          pnpm exec tauri build --no-before-build-command
 
       - name: Sign Windows Installers (Authenticode)
         shell: pwsh

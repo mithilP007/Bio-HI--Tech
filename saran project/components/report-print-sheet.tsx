@@ -330,7 +330,39 @@ export function ReportPrintSheet({
                 type="button"
                 className="mode-btn"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                onClick={() => window.print()}
+                onClick={async () => {
+                  try {
+                    if (typeof document !== 'undefined') {
+                      if (document.fonts?.ready) {
+                        await document.fonts.ready;
+                      }
+                      const reportContainer = document.getElementById('printable-report');
+                      if (reportContainer) {
+                        const imgs = Array.from(reportContainer.querySelectorAll('img'));
+                        await Promise.all(
+                          imgs.map(async (img) => {
+                            if (!img.complete) {
+                              await new Promise((resolve) => {
+                                img.onload = resolve;
+                                img.onerror = resolve;
+                              });
+                            }
+                            if (typeof img.decode === 'function') {
+                              try {
+                                await img.decode();
+                              } catch {
+                                // continue
+                              }
+                            }
+                          })
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    console.warn('[Print] Pre-print asset preparation:', e);
+                  }
+                  window.print();
+                }}
               >
                 <Printer size={14} /> Print Report
               </button>
@@ -357,13 +389,13 @@ export function ReportPrintSheet({
           >
             {/* Top Header: Genuine Letterhead or Blank Margin */}
             {mode === 'with-letterhead' ? (
-              <header className="sheet-letterhead-banner">
+              <div className="sheet-letterhead-banner">
                 <img
                   src="/branding/letterhead-original.jpeg"
                   alt="BIO HI TECH Diagnostic Laboratory Letterhead"
                   className="letterhead-image"
                 />
-              </header>
+              </div>
             ) : (
               <div className="sheet-blank-letterhead-margin" style={{ height: '45mm' }} />
             )}

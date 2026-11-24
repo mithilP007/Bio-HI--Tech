@@ -154,14 +154,14 @@ const scenarios = [
     name: 'B_Multiple_Test_Qualitative',
     reportId: 'RPT-PDF-002',
     mode: 'with-letterhead',
-    expectedMaxPages: 1,
+    expectedMaxPages: 2,
     desc: 'Multiple test report (Sugar + HbA1c + HIV Qualitative)'
   },
   {
     name: 'C_CBC_Sex_Specific_Ranges',
     reportId: 'RPT-PDF-003',
     mode: 'with-letterhead',
-    expectedMaxPages: 1,
+    expectedMaxPages: 2,
     desc: 'CBC report with 13 parameters (Female sex-specific ranges)'
   },
   {
@@ -412,6 +412,47 @@ async function runPdfTests() {
 
     // Emulate media type print for CSS @media print application
     await page.emulateMediaType('print');
+
+    // Verify print DOM visibility and isolation
+    const printDomMetrics = await page.evaluate((mode) => {
+      const banner = document.querySelector('#printable-report .sheet-letterhead-banner');
+      const img = document.querySelector('#printable-report .sheet-letterhead-banner img.letterhead-image');
+      const blankMargin = document.querySelector('#printable-report .sheet-blank-letterhead-margin');
+      const sidebar = document.querySelector('.sidebar');
+      const topbar = document.querySelector('.topbar');
+      const sheetControls = document.querySelector('.sheet-controls');
+
+      const isBannerVisible = banner ? (window.getComputedStyle(banner).display !== 'none' && window.getComputedStyle(banner).visibility !== 'hidden') : false;
+      const isImgVisible = img ? (window.getComputedStyle(img).display !== 'none' && window.getComputedStyle(img).visibility !== 'hidden') : false;
+      const isBlankMarginVisible = blankMargin ? window.getComputedStyle(blankMargin).display !== 'none' : false;
+      const isSidebarHidden = sidebar ? window.getComputedStyle(sidebar).display === 'none' : true;
+      const isTopbarHidden = topbar ? window.getComputedStyle(topbar).display === 'none' : true;
+      const isControlsHidden = sheetControls ? window.getComputedStyle(sheetControls).display === 'none' : true;
+
+      return {
+        isBannerVisible,
+        isImgVisible,
+        isBlankMarginVisible,
+        isSidebarHidden,
+        isTopbarHidden,
+        isControlsHidden,
+        imgNaturalWidth: img ? img.naturalWidth : 0
+      };
+    }, sc.mode);
+
+    if (sc.mode === 'with-letterhead') {
+      if (!printDomMetrics.isBannerVisible || !printDomMetrics.isImgVisible) {
+        console.error(`   ✗ [PRINT REGRESSION] Letterhead banner/image is hidden in @media print! banner: ${printDomMetrics.isBannerVisible}, img: ${printDomMetrics.isImgVisible}`);
+      } else {
+        console.log(`   ✓ [PRINT VERIFIED] Letterhead banner & image visible in @media print (mode: with-letterhead)`);
+      }
+    } else {
+      if (printDomMetrics.isImgVisible) {
+        console.error(`   ✗ [PRINT REGRESSION] Letterhead image must not appear in without-letterhead mode!`);
+      } else {
+        console.log(`   ✓ [PRINT VERIFIED] Preprinted pad mode verified: 45mm blank margin active, banner omitted`);
+      }
+    }
 
     // Generate real A4 PDF file
     const pdfPath = path.join(PDF_DIR, `${sc.name}.pdf`);

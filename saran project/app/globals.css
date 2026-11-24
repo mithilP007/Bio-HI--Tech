@@ -373,14 +373,17 @@ button { cursor: pointer; }
 
 @media print {
   @page { size:A4 portrait; margin:0; }
-  html,body { width:100%!important;background:#fff!important;margin:0!important;padding:0!important; }
+  html,body { width:100%!important;background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
   body * { visibility:hidden; }
   #printable-report, #printable-report * { visibility:visible; }
-  #printable-report { position:absolute;left:0;top:0;width:210mm!important;margin:0!important;padding:0!important; }
-  .sidebar,.topbar,.mobile-bottom,.demo-banner,.page-head,.details-grid,.patient-history,.toast,.no-print,.dedicated-preview-topbar,.sheet-controls,header,nav { display:none!important; }
+  #printable-report { position:absolute;left:0;top:0;width:210mm!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
+  .sidebar,.topbar,.mobile-bottom,.demo-banner,.page-head,.details-grid,.patient-history,.toast,.no-print,.dedicated-preview-topbar,.sheet-controls,header.topbar,nav { display:none!important; }
+  #printable-report .sheet-letterhead-banner { display:block!important;visibility:visible!important;width:100%!important;height:45mm!important;overflow:hidden!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
+  #printable-report .sheet-letterhead-banner img.letterhead-image { display:block!important;visibility:visible!important;width:100%!important;height:45mm!important;object-fit:cover!important;object-position:top center!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
+  #printable-report .sheet-blank-letterhead-margin { display:block!important;width:100%!important;height:45mm!important; }
   .lab-shell,.workspace,.main-content,.dedicated-preview-page { display:block!important;width:100%!important;margin:0!important;padding:0!important;background:#fff!important;box-shadow:none!important;border:none!important;position:static!important; }
   .report-sheet-container { padding:0!important;margin:0!important;width:100%!important;display:block!important; }
-  .report-sheet { margin:0!important;border:none!important;box-shadow:none!important;width:210mm!important;min-height:296.8mm!important;page-break-after:always!important;break-after:page!important; }
+  .report-sheet { margin:0!important;border:none!important;box-shadow:none!important;width:210mm!important;min-height:296.8mm!important;page-break-after:always!important;break-after:page!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
   .report-sheet:last-child { page-break-after:auto!important;break-after:auto!important; }
 }
 
