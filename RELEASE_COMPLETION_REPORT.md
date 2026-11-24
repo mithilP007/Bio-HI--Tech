@@ -190,25 +190,35 @@ CAPACITOR ANDROID SYNC (`cap sync android`)  :   5 PLUGINS SYNCED
 
 The root [README.md](file:///home/mithil/Downloads/BIO-HI-TECH-LIMS/README.md) has been updated with verified direct download links targeting QA release `v1.0.0-qa.4`:
 
-| Platform | Target Artifact | Download URL | Signing Status |
-| :--- | :--- | :--- | :--- |
-| **Android Phone / Tablet** | `BIO-HI-TECH-LIMS-Android.apk` | [Download Android APK](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Android.apk) | QA Debug-Signed (Installable) |
-| **Android Google Play** | `BIO-HI-TECH-LIMS-Android.aab` | [Download Android AAB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Android.aab) | QA Debug-Signed (Store Bundle) |
-| **Windows Laptop / PC** | `BIO-HI-TECH-LIMS-Windows-Setup.exe` | [Download Windows EXE](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Windows-Setup.exe) | QA Unsigned (Run Anyway) |
-| **Windows Enterprise** | `BIO-HI-TECH-LIMS-Windows.msi` | [Download Windows MSI](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Windows.msi) | QA Unsigned (Enterprise MSI) |
-| **Linux Desktop** | `BIO-HI-TECH-LIMS.AppImage` | [Download Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS.AppImage) | Portable x86_64 ELF |
-| **Linux Debian / Ubuntu** | `BIO-HI-TECH-LIMS.deb` | [Download Linux DEB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS.deb) | Standard dpkg package |
-| **Integrity Verification** | `SHA256SUMS.txt` | [Download Checksums](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/SHA256SUMS.txt) | SHA-256 Hashes |
+| Platform | Target Artifact | Download URL | Signing Status | Size | SHA-256 Checksum |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Android Phone / Tablet** | `BIO-HI-TECH-LIMS-Android.apk` | [Download Android APK](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Android.apk) | QA Debug-Signed (Installable) | 6.28 MB (6,587,685 B) | `00b15f16a5a7af3194c2fe5d5ab23d196d5a801dfe7737a932ffb569ef82be13` |
+| **Android Google Play** | `BIO-HI-TECH-LIMS-Android.aab` | [Download Android AAB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Android.aab) | QA Debug-Signed (Store Bundle) | 6.12 MB (6,419,020 B) | `c28dd4a5a7c63ff91cc39b4bb055cfc83d55f802c3d3d398521f6c9ce152f3d6` |
+| **Windows Laptop / PC** | `BIO-HI-TECH-LIMS-Windows-Setup.exe` | [Download Windows EXE](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Windows-Setup.exe) | QA Unsigned (Run Anyway) | 3.76 MB (3,938,099 B) | `86a33ed049f65a7fde0d2e92acc823b238c2d468b6f0f8406cb98be55a592ec6` |
+| **Windows Enterprise** | `BIO-HI-TECH-LIMS-Windows.msi` | [Download Windows MSI](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS-Windows.msi) | QA Unsigned (Enterprise MSI) | 5.02 MB (5,267,456 B) | `359dd5144ab664d5d53774c73f6e9a817bf6d0bebea5994e90ff2ff3eda207bc` |
+| **Linux Desktop** | `BIO-HI-TECH-LIMS.AppImage` | [Download Linux AppImage](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS.AppImage) | Portable x86_64 ELF | 84.64 MB (88,746,488 B) | `35c368d67a061d8c6308759fcc966eb68485e8ca294fe54855f1c2ff7b1a8fc1` |
+| **Linux Debian / Ubuntu** | `BIO-HI-TECH-LIMS.deb` | [Download Linux DEB](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/BIO-HI-TECH-LIMS.deb) | Standard dpkg package | 5.03 MB (5,272,288 B) | `7fb5e7617ef252f719abc88e4e5ef1e0b59d1f5fbf68d31e071c6cfcef28bb77` |
+| **Integrity Verification** | `SHA256SUMS.txt` | [Download Checksums](https://github.com/mithilP007/Bio-HI--Tech/releases/download/v1.0.0-qa.4/SHA256SUMS.txt) | SHA-256 Hashes | 565 Bytes | `e08b0b5e69589374e34bddb70ae48d15e40dc8ddaf8492cfc38155d64545165d` |
 
 *Note: Because the repository is private, authorized GitHub read access is required to access the release downloads.*
 
 ---
 
-## 7. FINAL PRODUCTION HANDOVER STATUS
+## 7. GITHUB ACTIONS WORKFLOW VERIFICATION MATRIX
+
+| Workflow Stage | Run ID | Trigger Event | Commit / Tag | Job Breakdown & Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Master CI Validation** | [`45372735382`](https://github.com/mithilP007/Bio-HI--Tech/actions/runs/45372735382) | `push` (master) | `97a2b9b` | • Android Packages: **SUCCESS**<br>• Linux Packages: **SUCCESS**<br>• Windows Packages: **SUCCESS**<br>• Publish Release: **SKIPPED** (standard for non-tag push) |
+| **QA Release Deployment** | [`45374636912`](https://github.com/mithilP007/Bio-HI--Tech/actions/runs/45374636912) | `push` (tag) | `v1.0.0-qa.4` | • Android Packages: **SUCCESS**<br>• Linux Packages: **SUCCESS**<br>• Windows Packages: **SUCCESS**<br>• Publish Release: **SUCCESS** (all 6 assets attached) |
+
+---
+
+## 8. FINAL PRODUCTION HANDOVER STATUS
 
 - **Application & Clinical Logic**: **COMPLETE** (Report population, test-wise billing, letterhead printing, and patient retention verified).
 - **Patient Management & Deletion**: **COMPLETE** (Action menu, archive/restore filters, retention RPC enforcement, and bulk archiving fully tested).
 - **Static Export & Routing**: **COMPLETE** (137 routes prerendered cleanly via Next.js App Router).
 - **Multi-Platform Native Config**: **COMPLETE** (Capacitor 8 Android and Tauri 2 Desktop verified with valid `Healthcare and Fitness` category).
 - **CI/CD Workflow Engineering**: **COMPLETE** (All root causes resolved across Android, Windows, and Linux).
+- **Automated Downloads & Release Delivery**: **COMPLETE** (All 6 binaries published on GitHub Release `v1.0.0-qa.4`, downloaded, and verified against SHA-256 manifest).
 - **Production Keystore Provisioning**: **BLOCKED** (Optional: requires laboratory owner to input production Google Play `.jks` and Windows Authenticode `.pfx` secrets when ready for public commercial release).
