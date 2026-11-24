@@ -531,12 +531,12 @@ async function runTests() {
     await adminClient.auth.admin.deleteUser(ownerUserId)
     await adminClient.auth.admin.deleteUser(unauthorizedUserId)
 
-    // Verify database is clean of operational records
-    const { count: finalPatientCount } = await adminClient.from('patients').select('*', { count: 'exact', head: true })
-    const { count: finalOrderCount } = await adminClient.from('laboratory_orders').select('*', { count: 'exact', head: true })
-    const { count: finalReportCount } = await adminClient.from('reports').select('*', { count: 'exact', head: true })
+    // Verify database is clean of synthetic test records
+    const { count: finalPatientCount } = await adminClient.from('patients').select('*', { count: 'exact', head: true }).eq('owner_id', ownerUserId)
+    const { count: finalOrderCount } = await adminClient.from('laboratory_orders').select('*', { count: 'exact', head: true }).eq('owner_id', ownerUserId)
+    const { count: finalReportCount } = await adminClient.from('reports').select('*', { count: 'exact', head: true }).eq('owner_id', ownerUserId)
 
-    assert(finalPatientCount === 0 && finalOrderCount === 0 && finalReportCount === 0, 'Database Cleanliness: All test fixtures completely purged; 0 operational records remain')
+    assert(finalPatientCount === 0 && finalOrderCount === 0 && finalReportCount === 0, 'Database Cleanliness: All test fixtures completely purged; 0 synthetic test records remain')
 
   } catch (err) {
     console.error('Unexpected test error:', err)

@@ -189,6 +189,7 @@ BEGIN
 
     -- Temporarily deactivate production/pre-provisioned owner during isolated test simulation
     UPDATE public.owner_access SET is_active = FALSE WHERE is_active = TRUE;
+    UPDATE public.test_catalogue SET owner_id = NULL;
 
     -- Insert synthetic test users in auth.users
     INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
@@ -377,13 +378,13 @@ BEGIN
         END IF;
     END;
 
+    -- Reactivate pre-provisioned owner and restore catalogue ownership
+    UPDATE public.owner_access SET is_active = TRUE WHERE email = 'owner@biohitech.com';
+    UPDATE public.test_catalogue SET owner_id = (SELECT id FROM public.owner_access WHERE email = 'owner@biohitech.com' LIMIT 1);
+
     -- Clean up synthetic test records
-    UPDATE public.test_catalogue SET owner_id = NULL WHERE owner_id = test_owner_id;
     DELETE FROM public.owner_access WHERE id IN (test_owner_id, test_unauth_id);
     DELETE FROM auth.users WHERE id IN (test_owner_id, test_unauth_id);
-
-    -- Reactivate pre-provisioned owner
-    UPDATE public.owner_access SET is_active = TRUE WHERE email = 'owner@biohitech.com';
 
     RAISE NOTICE '================================================================';
     IF all_passed THEN

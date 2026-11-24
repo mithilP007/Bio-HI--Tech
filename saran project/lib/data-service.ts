@@ -7,6 +7,8 @@ import {
   type Patient,
   type Report,
   type ActivityItem,
+  type BilledTestItem,
+  type BillingSummaryData,
 } from './demo-data';
 import {
   paymentLedger as localLedger,
@@ -108,10 +110,10 @@ export async function syncLoadCloudData(): Promise<boolean> {
     console.log('[syncLoadCloudData] getUser:', user ? user.id : 'NO USER', userErr ? userErr.message : 'no error');
     if (!user) return false;
 
-    // 1. Fetch Reports & Results first to accurately link to patients
+    // 1. Fetch Reports, Results & Laboratory Orders (with order tests)
     const { data: dbReports, error: rptErr } = await supabase
       .from('reports')
-      .select('*, report_results(*)')
+      .select('*, report_results(*), laboratory_orders(*, order_tests(*))')
       .order('created_at', { ascending: false });
     console.log('[syncLoadCloudData] dbReports:', dbReports ? dbReports.length : 'null', rptErr ? rptErr.message : 'no error');
 
@@ -127,16 +129,69 @@ export async function syncLoadCloudData(): Promise<boolean> {
         const resultFlagsMap: Record<string, string> = {};
         const resultIntervalsMap: Record<string, string> = {};
         const testNamesSet = new Set<string>();
+        const billedItems: BilledTestItem[] = [];
 
+        // 1. Populate from laboratory_orders.order_tests (authoritative for selected tests & prices)
+        if (dbR.laboratory_orders && Array.isArray(dbR.laboratory_orders.order_tests)) {
+          dbR.laboratory_orders.order_tests.forEach((ot: any) => {
+            if (ot.test_name) {
+              testNamesSet.add(ot.test_name);
+              billedItems.push({
+                testCode: ot.test_code || 'LEG-001',
+                testName: ot.test_name,
+                quantity: 1,
+                unitPrice: Number(ot.price) || 0,
+                discount: 0,
+                amount: Number(ot.price) || 0,
+              });
+            }
+          });
+        }
+
+        // 2. Populate from report_results (ensures entered parameters and amendments are captured)
         if (Array.isArray(dbR.report_results)) {
           dbR.report_results.forEach((res: any) => {
-            testNamesSet.add(res.test_name);
+            if (res.test_name) testNamesSet.add(res.test_name);
             const k = `${res.test_name}:${res.parameter_name}`;
             resultsMap[k] = res.result_value || '';
             if (res.flag) resultFlagsMap[k] = res.flag;
             if (res.reference_interval) resultIntervalsMap[k] = res.reference_interval;
           });
         }
+
+        // 3. Fallback for billedItems if order_tests was empty but tests were assigned
+        if (billedItems.length === 0 && testNamesSet.size > 0) {
+          testNamesSet.forEach((tName) => {
+            const cat = localTests.find((x) => x.name === tName);
+            const price = cat?.offer ?? cat?.price ?? 0;
+            billedItems.push({
+              testCode: cat?.code || 'LEG-001',
+              testName: tName,
+              quantity: 1,
+              unitPrice: price,
+              discount: 0,
+              amount: price,
+            });
+          });
+        }
+
+        const subtotal = Number(dbR.subtotal_amount) || billedItems.reduce((acc, it) => acc + it.amount, 0);
+        const discount = Number(dbR.discount_amount) || 0;
+        const total = Number(dbR.final_amount) || Math.max(0, subtotal - discount);
+        const paid = Number(dbR.paid_amount) || 0;
+        const balance = Math.max(0, total - paid);
+        const paymentStatus = dbR.payment_status === 'Paid' ? 'Paid' : paid >= total && total > 0 ? 'Paid' : paid > 0 ? 'Partially Paid' : 'Pending';
+
+        const billingSummary: BillingSummaryData = {
+          subtotal,
+          discount,
+          taxes: 0,
+          additionalCharges: 0,
+          total,
+          paid,
+          balance,
+          paymentStatus,
+        };
 
         if (dbR.amends_report_id) {
           reportAmendments[dbR.id] = dbR.amends_report_id;
@@ -152,6 +207,7 @@ export async function syncLoadCloudData(): Promise<boolean> {
 
         const mappedReport: Report = {
           id: dbR.id,
+          orderId: dbR.order_id || dbR.laboratory_orders?.id,
           patient: '', // Linked after patients load
           patientId: dbR.patient_id,
           date: new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dbR.created_at || dbR.report_date)),
@@ -160,9 +216,14 @@ export async function syncLoadCloudData(): Promise<boolean> {
           results: resultsMap,
           resultFlags: resultFlagsMap,
           resultIntervals: resultIntervalsMap,
-          amount: Number(dbR.final_amount || 0),
+          amount: total,
           status: dbR.status || 'Draft',
-          payment: dbR.payment_status === 'Paid' ? 'Paid' : dbR.paid_amount > 0 ? `Partial · ${dbR.paid_amount}` : 'Pending',
+          payment: paymentStatus === 'Paid' ? 'Paid' : paid > 0 ? `Partial · ${paid}` : 'Pending',
+          subtotalAmount: subtotal,
+          discountAmount: discount,
+          paidAmount: paid,
+          billedItems,
+          billingSummary,
         };
         localReports.push(mappedReport);
       });
@@ -515,19 +576,32 @@ export async function syncCreateReport(input: {
   });
 
   // 2. Insert order tests with historical price snapshots
+  const billedItems: BilledTestItem[] = [];
   const orderTestRows = input.testNames.map((name) => {
     const t = localTests.find((x) => x.name === name);
+    const unitPrice = t?.offer || 0;
+    billedItems.push({
+      testCode: t?.code || 'LEG-001',
+      testName: name,
+      quantity: 1,
+      unitPrice,
+      discount: 0,
+      amount: unitPrice,
+    });
     return {
       order_id: orderId,
       test_code: t?.code || 'LEG-001',
       test_name: name,
-      price: t?.offer || 0,
+      price: unitPrice,
       status: 'Completed' as const,
     };
   });
   if (orderTestRows.length > 0) {
     await supabase.from('order_tests').insert(orderTestRows);
   }
+
+  const subtotal = billedItems.reduce((acc, it) => acc + it.amount, 0);
+  const discount = Math.max(0, subtotal - input.amount);
 
   // 3. Insert report
   const { data: reportRecord, error: rptError } = await supabase
@@ -538,8 +612,8 @@ export async function syncCreateReport(input: {
       patient_id: input.patientId,
       order_id: orderId,
       report_date: new Date().toISOString().slice(0, 10),
-      subtotal_amount: input.amount,
-      discount_amount: 0,
+      subtotal_amount: subtotal,
+      discount_amount: discount,
       final_amount: input.amount,
       status: 'Draft',
       payment_status: 'Pending',
@@ -550,26 +624,37 @@ export async function syncCreateReport(input: {
 
   if (rptError) throw rptError;
 
-  // 4. Insert test results with clinical evaluation snapshot
+  // 4. Insert test results with clinical evaluation snapshot for all test parameters
   const patient = localPatients.find((p) => p.id === input.patientId);
-  const resultRows = Object.entries(input.results).map(([key, val]) => {
-    const parts = key.split(':');
-    const testName = parts[0] || '';
-    const paramName = parts.slice(1).join(':') || testName;
-    const evalRes = evaluateResult(testName, paramName, val, { age: patient?.age, gender: patient?.gender }, undefined, false);
-    return {
-      owner_id: user.id,
-      report_id: reportId,
-      test_name: testName,
-      parameter_name: paramName,
-      result_value: val || '',
-      unit: evalRes.unit || '',
-      reference_interval: evalRes.referenceDisplay,
-      applied_reference_interval: evalRes.referenceDisplay,
-      reference_interval_version: evalRes.matchedInterval?.referenceVersion || 1,
-      flag: evalRes.dbFlag,
-      is_abnormal: evalRes.isAbnormal,
-    };
+  const resultRows: any[] = [];
+  const resultsMap: Record<string, string> = { ...input.results };
+
+  input.testNames.forEach((testName) => {
+    const tDef = localTests.find((x) => x.name === testName);
+    const params = tDef?.parameterDetails || [
+      { name: testName, unit: '', type: 'Text' as const, isVerified: false },
+    ];
+
+    params.forEach((param) => {
+      const paramName = param.name;
+      const paramKey = `${testName}:${paramName}`;
+      const val = input.results[paramKey] !== undefined ? input.results[paramKey] : '';
+      resultsMap[paramKey] = val;
+      const evalRes = evaluateResult(testName, paramName, val, { age: patient?.age, gender: patient?.gender }, param.unit, false);
+      resultRows.push({
+        owner_id: user.id,
+        report_id: reportId,
+        test_name: testName,
+        parameter_name: paramName,
+        result_value: val,
+        unit: evalRes.unit || param.unit || '',
+        reference_interval: evalRes.referenceDisplay,
+        applied_reference_interval: evalRes.referenceDisplay,
+        reference_interval_version: evalRes.matchedInterval?.referenceVersion || 1,
+        flag: evalRes.dbFlag,
+        is_abnormal: evalRes.isAbnormal,
+      });
+    });
   });
 
   if (resultRows.length > 0) {
@@ -580,17 +665,34 @@ export async function syncCreateReport(input: {
     patient.reports = (patient.reports || 0) + 1;
   }
 
+  const billingSummary: BillingSummaryData = {
+    subtotal,
+    discount,
+    taxes: 0,
+    additionalCharges: 0,
+    total: input.amount,
+    paid: 0,
+    balance: input.amount,
+    paymentStatus: 'Pending',
+  };
+
   const mapped: Report = {
     id: reportId,
+    orderId,
     patient: patient?.name || 'Patient',
     patientId: input.patientId,
     date: new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()),
     tests: input.testNames.length,
     testNames: [...input.testNames],
-    results: { ...input.results },
+    results: resultsMap,
     amount: input.amount,
     status: 'Draft',
     payment: 'Pending',
+    subtotalAmount: subtotal,
+    discountAmount: discount,
+    paidAmount: 0,
+    billedItems,
+    billingSummary,
   };
 
   localReports.unshift(mapped);
@@ -608,7 +710,17 @@ export async function syncCreateReport(input: {
  */
 export async function syncUpdateDraftReport(
   id: string,
-  input: { patientId: string; testNames: string[]; amount: number; results: Record<string, string> }
+  input: {
+    patientId: string;
+    testNames: string[];
+    amount: number;
+    results: Record<string, string>;
+    discount?: number;
+    notes?: string;
+    sampleDate?: string;
+    sampleTime?: string;
+    sampleType?: string;
+  }
 ): Promise<Report> {
   if (!isSupabaseConfigured || !supabase) {
     throw new Error('Database service is not configured.');
@@ -624,12 +736,30 @@ export async function syncUpdateDraftReport(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Authentication required.');
 
+  // Build billed items and calculate subtotal/discount
+  const billedItems: BilledTestItem[] = [];
+  input.testNames.forEach((name) => {
+    const t = localTests.find((x) => x.name === name);
+    const unitPrice = t?.offer || 0;
+    billedItems.push({
+      testCode: t?.code || 'LEG-001',
+      testName: name,
+      quantity: 1,
+      unitPrice,
+      discount: 0,
+      amount: unitPrice,
+    });
+  });
+  const subtotal = billedItems.reduce((acc, it) => acc + it.amount, 0);
+  const discount = input.discount !== undefined ? input.discount : Math.max(0, subtotal - input.amount);
+
   // Update report metadata
   const { error: rptError } = await supabase
     .from('reports')
     .update({
       patient_id: input.patientId,
-      subtotal_amount: input.amount,
+      subtotal_amount: subtotal,
+      discount_amount: discount,
       final_amount: input.amount,
       updated_at: new Date().toISOString(),
     })
@@ -638,47 +768,109 @@ export async function syncUpdateDraftReport(
 
   if (rptError) throw rptError;
 
-  // Replace results with clinical evaluation snapshot
+  // Update laboratory order & order tests if order exists
+  if (report.orderId) {
+    await supabase
+      .from('laboratory_orders')
+      .update({
+        patient_id: input.patientId,
+        total_amount: input.amount,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', report.orderId);
+
+    await supabase.from('order_tests').delete().eq('order_id', report.orderId);
+    const newOrderTests = input.testNames.map((name) => {
+      const t = localTests.find((x) => x.name === name);
+      return {
+        order_id: report.orderId!,
+        test_code: t?.code || 'LEG-001',
+        test_name: name,
+        price: t?.offer || 0,
+        status: 'Completed' as const,
+      };
+    });
+    if (newOrderTests.length > 0) {
+      await supabase.from('order_tests').insert(newOrderTests);
+    }
+  }
+
+  // Replace results with clinical evaluation snapshot for all test parameters
   await supabase.from('report_results').delete().eq('report_id', id);
 
   const patient = localPatients.find((p) => p.id === input.patientId);
-  const resultRows = Object.entries(input.results).map(([key, val]) => {
-    const parts = key.split(':');
-    const testName = parts[0] || '';
-    const paramName = parts.slice(1).join(':') || testName;
-    const evalRes = evaluateResult(testName, paramName, val, { age: patient?.age, gender: patient?.gender }, undefined, false);
-    return {
-      owner_id: user.id,
-      report_id: id,
-      test_name: testName,
-      parameter_name: paramName,
-      result_value: val || '',
-      unit: evalRes.unit || '',
-      reference_interval: evalRes.referenceDisplay,
-      applied_reference_interval: evalRes.referenceDisplay,
-      reference_interval_version: evalRes.matchedInterval?.referenceVersion || 1,
-      flag: evalRes.dbFlag,
-      is_abnormal: evalRes.isAbnormal,
-    };
+  const resultRows: any[] = [];
+  const resultsMap: Record<string, string> = { ...input.results };
+
+  input.testNames.forEach((testName) => {
+    const tDef = localTests.find((x) => x.name === testName);
+    const params = tDef?.parameterDetails || [
+      { name: testName, unit: '', type: 'Text' as const, isVerified: false },
+    ];
+
+    params.forEach((param) => {
+      const paramName = param.name;
+      const paramKey = `${testName}:${paramName}`;
+      const val = input.results[paramKey] !== undefined ? input.results[paramKey] : '';
+      resultsMap[paramKey] = val;
+      const evalRes = evaluateResult(testName, paramName, val, { age: patient?.age, gender: patient?.gender }, param.unit, false);
+      resultRows.push({
+        owner_id: user.id,
+        report_id: id,
+        test_name: testName,
+        parameter_name: paramName,
+        result_value: val,
+        unit: evalRes.unit || param.unit || '',
+        reference_interval: evalRes.referenceDisplay,
+        applied_reference_interval: evalRes.referenceDisplay,
+        reference_interval_version: evalRes.matchedInterval?.referenceVersion || 1,
+        flag: evalRes.dbFlag,
+        is_abnormal: evalRes.isAbnormal,
+      });
+    });
   });
 
   if (resultRows.length > 0) {
     await supabase.from('report_results').insert(resultRows);
   }
 
+  const paid = report.paidAmount || (report.payment === 'Paid' ? input.amount : report.payment.startsWith('Partial') ? Number(report.payment.split('·')[1]?.trim()) || 0 : 0);
+  const balance = Math.max(0, input.amount - paid);
+  const paymentStatus = report.payment === 'Paid' ? 'Paid' : paid >= input.amount && input.amount > 0 ? 'Paid' : paid > 0 ? 'Partially Paid' : 'Pending';
+
+  const billingSummary: BillingSummaryData = {
+    subtotal,
+    discount,
+    taxes: 0,
+    additionalCharges: 0,
+    total: input.amount,
+    paid,
+    balance,
+    paymentStatus,
+  };
+
   Object.assign(report, {
-    patient: patient?.name || 'Patient',
+    patient: patient?.name || report.patient || 'Patient',
     patientId: input.patientId,
     tests: input.testNames.length,
     testNames: [...input.testNames],
-    results: { ...input.results },
+    results: resultsMap,
     amount: input.amount,
+    subtotalAmount: subtotal,
+    discountAmount: discount,
+    paidAmount: paid,
+    notes: input.notes !== undefined ? input.notes : report.notes,
+    sampleDate: input.sampleDate || report.sampleDate,
+    sampleTime: input.sampleTime || report.sampleTime,
+    sampleType: input.sampleType || report.sampleType,
+    billedItems,
+    billingSummary,
   });
 
   const revisions = (reportRevisions[report.id] ??= []);
   revisions.push({
     version: revisions.length + 1,
-    status: 'Draft',
+    status: 'Draft (Updated)',
     date: new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()),
   });
 
@@ -700,6 +892,12 @@ export async function syncIssueReport(reportId: string): Promise<Report> {
     throw new Error('Internet connection required to issue reports.');
   }
 
+  const report = localReports.find((r) => r.id === reportId);
+  if (!report) throw new Error('Report was not found.');
+  if (report.tests === 0 || report.testNames.length === 0) {
+    throw new Error('Cannot issue report: No tests have been assigned to this laboratory report.');
+  }
+
   const { data, error } = await supabase
     .from('reports')
     .update({
@@ -712,16 +910,13 @@ export async function syncIssueReport(reportId: string): Promise<Report> {
 
   if (error) throw error;
 
-  const report = localReports.find((r) => r.id === reportId);
-  if (report) {
-    report.status = 'Issued';
-    const revisions = (reportRevisions[report.id] ??= []);
-    revisions.push({
-      version: revisions.length + 1,
-      status: 'Issued',
-      date: new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()),
-    });
-  }
+  report.status = 'Issued';
+  const revisions = (reportRevisions[report.id] ??= []);
+  revisions.push({
+    version: revisions.length + 1,
+    status: 'Issued',
+    date: new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()),
+  });
 
   addNotification('Report finalized & issued', reportId, `/reports/${reportId}`);
   currentNetworkState.lastSyncTime = new Date();
@@ -791,8 +986,10 @@ export async function syncCreateReportAmendment(sourceReportId: string): Promise
       id: amendmentId,
       owner_id: user.id,
       patient_id: source.patientId,
+      order_id: source.orderId,
       report_date: new Date().toISOString().slice(0, 10),
-      subtotal_amount: source.amount,
+      subtotal_amount: source.subtotalAmount ?? source.amount,
+      discount_amount: source.discountAmount ?? 0,
       final_amount: source.amount,
       status: 'Draft',
       payment_status: source.payment === 'Paid' ? 'Paid' : 'Pending',
@@ -835,6 +1032,7 @@ export async function syncCreateReportAmendment(sourceReportId: string): Promise
 
   const mapped: Report = {
     id: amendmentId,
+    orderId: source.orderId,
     patient: source.patient,
     patientId: source.patientId,
     date: new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()),
@@ -844,6 +1042,11 @@ export async function syncCreateReportAmendment(sourceReportId: string): Promise
     amount: source.amount,
     status: 'Draft',
     payment: source.payment,
+    subtotalAmount: source.subtotalAmount,
+    discountAmount: source.discountAmount,
+    paidAmount: source.paidAmount,
+    billedItems: source.billedItems ? [...source.billedItems] : undefined,
+    billingSummary: source.billingSummary ? { ...source.billingSummary } : undefined,
   };
 
   localReports.unshift(mapped);

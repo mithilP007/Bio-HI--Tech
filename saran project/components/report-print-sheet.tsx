@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { Download, Printer } from 'lucide-react'
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { Download, Printer, AlertCircle } from 'lucide-react'
 import { labProfile, appPreferences, defaultSignatures } from '@/lib/app-settings'
-import { patients, reports, tests } from '@/lib/demo-data'
+import { patients, reports, tests, type Patient, type BilledTestItem, type BillingSummaryData } from '@/lib/demo-data'
+import { subscribeDemoData, getDemoDataVersion } from '@/lib/demo-store'
 import { generateCode128Svg } from '@/lib/barcode-128'
 import { generateQrCodeSvg } from '@/lib/qr-generator'
 import { evaluateResult } from '@/lib/clinical-engine'
@@ -15,6 +16,7 @@ export type LetterheadMode = 'with-letterhead' | 'without-letterhead'
 
 interface ReportPrintSheetProps {
   report: Report
+  patient?: Patient
   preview?: boolean
   initialMode?: LetterheadMode
   showControls?: boolean
@@ -37,14 +39,31 @@ interface TestRow {
 
 export function ReportPrintSheet({
   report,
+  patient: propPatient,
   preview = false,
   initialMode = 'with-letterhead',
   showControls = true,
 }: ReportPrintSheetProps) {
   const [mode, setMode] = useState<LetterheadMode>(initialMode)
   const [qrSvg, setQrSvg] = useState<string>('')
+  const dataVersion = useSyncExternalStore(subscribeDemoData, getDemoDataVersion, () => 0)
 
-  const patient = useMemo(() => patients.find((entry) => entry.id === report.patientId), [report.patientId])
+  // Robust reactive patient lookup
+  const patient = useMemo(() => {
+    if (propPatient) return propPatient
+    const found = patients.find((entry) => entry.id === report.patientId)
+    if (found) return found
+    return {
+      id: report.patientId,
+      name: report.patient || 'Patient',
+      age: 0,
+      gender: 'Not specified',
+      phone: '',
+      doctor: 'SELF',
+      date: report.date,
+      reports: 1,
+    }
+  }, [propPatient, report.patientId, report.patient, report.date, dataVersion])
 
   // Opaque verification token without patient PII
   const verificationUrl = useMemo(
@@ -73,19 +92,31 @@ export function ReportPrintSheet({
     const rows: TestRow[] = []
     let lastDept = ''
 
+    if (!Array.isArray(report.testNames) || report.testNames.length === 0) {
+      return rows
+    }
+
     report.testNames.forEach((name) => {
-      const catalogueEntry = tests.find((t) => t.name === name)
+      const catalogueEntry = tests.find(
+        (t) => t.name.toLowerCase() === name.toLowerCase() || t.code.toLowerCase() === name.toLowerCase()
+      )
       const dept = catalogueEntry?.category?.toUpperCase() || 'BIOCHEMISTRY'
       const isFirstInDept = dept !== lastDept
       lastDept = dept
 
       const params = catalogueEntry?.parameterDetails || [
-        { name: 'Result', unit: '', type: 'Text' as const, isVerified: false },
+        { name: catalogueEntry?.name || name, unit: '', type: 'Text' as const, isVerified: false },
       ]
 
       params.forEach((param, pIdx) => {
         const paramKey = `${name}:${param.name}`
-        const rawVal = report.results[paramKey]
+        const rawVal =
+          report.results[paramKey] !== undefined
+            ? report.results[paramKey]
+            : catalogueEntry
+            ? report.results[`${catalogueEntry.name}:${param.name}`]
+            : undefined
+
         const val = rawVal !== undefined && rawVal !== '' ? rawVal : '—'
         const evalRes = evaluateResult(
           name,
@@ -96,11 +127,9 @@ export function ReportPrintSheet({
           false
         )
 
-        // Historical report snapshot preservation:
-        // If report has an immutable applied snapshot from when it was saved/issued, preserve it exactly
+        // Historical report snapshot preservation
         const savedRange = report.resultIntervals?.[paramKey]
         const savedFlag = report.resultFlags?.[paramKey]
-
         const note = pIdx === params.length - 1 && catalogueEntry?.notes?.[0] ? catalogueEntry.notes[0] : undefined
 
         rows.push({
@@ -121,11 +150,64 @@ export function ReportPrintSheet({
     })
 
     return rows
-  }, [report, patient])
+  }, [report.testNames, report.results, report.resultIntervals, report.resultFlags, patient])
 
-  // Content-aware pagination algorithm:
-  // Dynamically calculates heights based on parameter rows, section banners,
-  // multi-line interpretation notes, and keeps grouped tests intact without awkward splitting.
+  // Test-wise billing items resolution
+  const billedItems: BilledTestItem[] = useMemo(() => {
+    if (report.billedItems && report.billedItems.length > 0) {
+      return report.billedItems
+    }
+    if (!Array.isArray(report.testNames) || report.testNames.length === 0) {
+      return []
+    }
+    return report.testNames.map((tName, i) => {
+      const cat = tests.find(
+        (t) => t.name.toLowerCase() === tName.toLowerCase() || t.code.toLowerCase() === tName.toLowerCase()
+      )
+      const price = cat?.offer ?? cat?.price ?? 0
+      return {
+        testCode: cat?.code || `TEST-${i + 1}`,
+        testName: tName,
+        quantity: 1,
+        unitPrice: price,
+        discount: 0,
+        amount: price,
+      }
+    })
+  }, [report.billedItems, report.testNames])
+
+  // Billing summary reconciliation
+  const billingSummary: BillingSummaryData = useMemo(() => {
+    if (report.billingSummary) {
+      return report.billingSummary
+    }
+    const subtotal = report.subtotalAmount ?? billedItems.reduce((acc, it) => acc + it.amount, 0)
+    const discount = report.discountAmount ?? 0
+    const total = report.amount ?? Math.max(0, subtotal - discount)
+    const paid =
+      report.paidAmount ??
+      (report.payment === 'Paid'
+        ? total
+        : report.payment?.startsWith('Partial')
+        ? Number(report.payment.split('·')[1]?.trim()) || 0
+        : 0)
+    const balance = Math.max(0, total - paid)
+    const paymentStatus =
+      report.payment === 'Paid' ? 'Paid' : paid >= total && total > 0 ? 'Paid' : paid > 0 ? 'Partially Paid' : 'Pending'
+
+    return {
+      subtotal,
+      discount,
+      taxes: 0,
+      additionalCharges: 0,
+      total,
+      paid,
+      balance,
+      paymentStatus,
+    }
+  }, [report.billingSummary, report.subtotalAmount, report.discountAmount, report.amount, report.paidAmount, report.payment, billedItems])
+
+  // Content-aware pagination algorithm
   const pages = useMemo(() => {
     // Printable height limits in mm (excluding margins, patient table / continuation header, and footer)
     const PAGE_1_MAX_HEIGHT_MM = 158
@@ -136,13 +218,16 @@ export function ReportPrintSheet({
       if (row.isFirstInDept) h += 7.5 // department banner
       else if (row.isFirstInTest) h += 5.5 // test title
       if (row.note) {
-        // Multi-line interpretation advisory note
         const noteLen = row.note.length
         if (noteLen > 240) h += 24
         else if (noteLen > 120) h += 16
         else h += 10
       }
       return h
+    }
+
+    if (allRows.length === 0) {
+      return [[]]
     }
 
     const pageList: TestRow[][] = []
@@ -162,8 +247,6 @@ export function ReportPrintSheet({
           testTotalH += calcRowHeightMm(allRows[j])
         }
 
-        // If the entire test fits on a fresh page and does not fit in remaining space,
-        // break to next page so the test panel is preserved together
         const remainingSpace = currentPageLimit - currentHeight
         if (currentPageRows.length > 0 && testTotalH > remainingSpace && testTotalH <= PAGE_N_MAX_HEIGHT_MM) {
           pageList.push(currentPageRows)
@@ -194,13 +277,19 @@ export function ReportPrintSheet({
 
   const totalPages = pages.length
 
-  const patientTitle = patient?.gender === 'Female' ? 'Ms. ' : 'Mr. '
-  const patientDisplayName = `${patientTitle}${report.patient.toUpperCase()}`
+  const resolvedPatientName = (patient?.name || report.patient || 'Patient').trim()
+  const patientTitle = patient?.gender === 'Female' ? 'Ms. ' : patient?.gender === 'Male' ? 'Mr. ' : ''
+  const patientDisplayName = `${patientTitle}${resolvedPatientName.toUpperCase()}`
   const ageGenderStr = `${patient?.age ? `${patient.age} Y / ` : ''}${patient?.gender || 'Not specified'}`
-  const billNumber = report.id.replace(/\D/g, '').slice(-5) || '31045'
+  const billNumber = report.orderId || report.id.replace(/\D/g, '').slice(-5) || '31045'
+  const sampleDateTimeStr = report.sampleDate
+    ? `${report.sampleDate}${report.sampleTime ? ` ${report.sampleTime}` : ''}`
+    : `${report.date} 09:30 AM`
+
+  const money = (n: number) => `₹${Number(n || 0).toLocaleString('en-IN')}`
 
   return (
-    <div className={`report-sheet-container ${preview ? 'is-preview' : ''}`}>
+    <div id="printable-report" className={`report-sheet-container ${preview ? 'is-preview' : ''}`}>
       {showControls && (
         <aside className="sheet-controls no-print" aria-label="Report printing configuration">
           <div className="sheet-mode-selector">
@@ -231,7 +320,8 @@ export function ReportPrintSheet({
                 className="mode-btn"
                 style={{ background: '#08796e', color: '#fff', borderColor: '#065f57', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 onClick={async () => {
-                  await downloadReportPdf(report.id, { filename: `BIO_HI_TECH_Report_${report.id}.pdf` })
+                  const filename = report.id.startsWith('RPT-') ? `BIO-HI-TECH-${report.id}.pdf` : `BIO-HI-TECH-RPT-${report.id}.pdf`
+                  await downloadReportPdf(report.id, { filename })
                 }}
               >
                 <Download size={14} /> Download PDF
@@ -242,7 +332,7 @@ export function ReportPrintSheet({
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 onClick={() => window.print()}
               >
-                <Printer size={14} /> Print
+                <Printer size={14} /> Print Report
               </button>
             </div>
           </div>
@@ -308,17 +398,17 @@ export function ReportPrintSheet({
                     <tr>
                       <td className="lbl">Patient ID</td>
                       <td className="val">: <strong>{report.patientId}</strong></td>
-                      <td className="lbl">Reported Date</td>
-                      <td className="val">: <strong>{report.date}</strong></td>
+                      <td className="lbl">Sample Collected</td>
+                      <td className="val">: <strong>{sampleDateTimeStr}</strong></td>
                     </tr>
                     <tr>
                       <td className="lbl">Age / Gender</td>
                       <td className="val">: <strong>{ageGenderStr}</strong></td>
-                      <td className="lbl">Printed Date</td>
-                      <td className="val">: <strong>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date())}</strong></td>
+                      <td className="lbl">Reported Date</td>
+                      <td className="val">: <strong>{report.date}</strong></td>
                     </tr>
                     <tr>
-                      <td className="lbl">Bill No</td>
+                      <td className="lbl">Bill / Order No</td>
                       <td className="val">: <strong>{billNumber}</strong></td>
                       <td colSpan={2} rowSpan={2} className="barcode-cell">
                         <div
@@ -331,7 +421,7 @@ export function ReportPrintSheet({
                     </tr>
                     <tr>
                       <td className="lbl">Referred By</td>
-                      <td className="val">: <strong>{(patient?.doctor || 'SELF').toUpperCase()}</strong></td>
+                      <td className="val">: <strong>{(patient?.doctor || 'SELF / DIRECT').toUpperCase()}</strong></td>
                     </tr>
                   </tbody>
                 </table>
@@ -345,67 +435,182 @@ export function ReportPrintSheet({
                 </div>
               )}
 
-              {/* Investigation Results Table */}
-              <table className="sheet-results-table">
-                <colgroup>
-                  <col style={{ width: '34%' }} />
-                  <col style={{ width: '16%' }} />
-                  <col style={{ width: '14%' }} />
-                  <col style={{ width: '20%' }} />
-                  <col style={{ width: '16%' }} />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>Test / Parameter</th>
-                    <th className="align-right">RESULT</th>
-                    <th>UNITS</th>
-                    <th>Reference Interval</th>
-                    <th>Interpretation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pageRows.map((row, idx) => (
-                    <tr key={`${row.testName}-${row.parameter}-${idx}`}>
-                      <td>
-                        {row.isFirstInDept && (
-                          <div className="table-dept-header">{row.department}</div>
-                        )}
-                        {row.isFirstInTest && (
-                          <div className="table-test-header">{row.testName.toUpperCase()}</div>
-                        )}
-                        <span className="param-name">{row.parameter}</span>
-                        {row.note && (
-                          <div className="table-note-box">
-                            <span className="note-badge">Legacy Advisory:</span> {row.note}
-                          </div>
-                        )}
-                      </td>
-                      <td className="align-right">
-                        <strong className="result-value">
-                          {row.value} {row.arrowSymbol && <span className={`arrow-${row.badgeStyle}`}>{row.arrowSymbol}</span>}
-                        </strong>
-                      </td>
-                      <td className="unit-text">{row.unit}</td>
-                      <td>
-                        <span className="unverified-interval">{row.range}</span>
-                      </td>
-                      <td>
-                        <span className={`interp-badge interp-badge-${row.badgeStyle}`}>
-                          {row.status}
-                        </span>
-                      </td>
+              {/* Zero-test empty state handling */}
+              {allRows.length === 0 ? (
+                <div className="sheet-empty-draft-notice">
+                  <AlertCircle size={26} style={{ color: '#d97706', marginBottom: '8px' }} />
+                  <h3>Incomplete Draft — No Tests Assigned</h3>
+                  <p>This laboratory order currently has 0 tests selected. Please add tests and enter results to generate a complete clinical report.</p>
+                  <div className="no-print" style={{ marginTop: '12px' }}>
+                    <a href={`/reports/edit?id=${report.id}`} className="mode-btn" style={{ background: '#08796e', color: '#fff', textDecoration: 'none', display: 'inline-block' }}>
+                      Edit Draft & Add Tests
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                /* Investigation Results Table */
+                <table className="sheet-results-table">
+                  <colgroup>
+                    <col style={{ width: '34%' }} />
+                    <col style={{ width: '16%' }} />
+                    <col style={{ width: '14%' }} />
+                    <col style={{ width: '20%' }} />
+                    <col style={{ width: '16%' }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>Test / Parameter</th>
+                      <th className="align-right">RESULT</th>
+                      <th>UNITS</th>
+                      <th>Reference Interval</th>
+                      <th>Interpretation</th>
                     </tr>
-                  ))}
+                  </thead>
+                  <tbody>
+                    {pageRows.map((row, idx) => (
+                      <tr key={`${row.testName}-${row.parameter}-${idx}`}>
+                        <td>
+                          {row.isFirstInDept && (
+                            <div className="table-dept-header">{row.department}</div>
+                          )}
+                          {row.isFirstInTest && (
+                            <div className="table-test-header">{row.testName.toUpperCase()}</div>
+                          )}
+                          <span className="param-name">{row.parameter}</span>
+                          {row.note && (
+                            <div className="table-note-box">
+                              <span className="note-badge">Legacy Advisory:</span> {row.note}
+                            </div>
+                          )}
+                        </td>
+                        <td className="align-right">
+                          <strong className="result-value">
+                            {row.value} {row.arrowSymbol && <span className={`arrow-${row.badgeStyle}`}>{row.arrowSymbol}</span>}
+                          </strong>
+                        </td>
+                        <td className="unit-text">{row.unit}</td>
+                        <td>
+                          <span className="unverified-interval">{row.range}</span>
+                        </td>
+                        <td>
+                          <span className={`interp-badge interp-badge-${row.badgeStyle}`}>
+                            {row.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
 
-                  {isLastPage && (
-                    <tr className="end-of-report-row">
-                      <td colSpan={5} className="end-of-report-text">
-                        **** END OF REPORT ****
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                    {isLastPage && (
+                      <tr className="end-of-report-row">
+                        <td colSpan={5} className="end-of-report-text">
+                          **** END OF CLINICAL TEST RESULTS ****
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
+
+              {/* On Last Page: Render Test-Wise Pricing & Billing Summary */}
+              {isLastPage && (
+                <div className="sheet-financial-container">
+                  {/* Phase 4.A: TEST-WISE BILLING DETAILS */}
+                  <div className="sheet-billing-section">
+                    <div className="sheet-section-title">TEST-WISE BILLING DETAILS</div>
+                    <table className="sheet-billing-table">
+                      <thead>
+                        <tr>
+                          <th style={{ width: '8%', textAlign: 'center' }}>S. No.</th>
+                          <th style={{ width: '46%' }}>Test Name</th>
+                          <th style={{ width: '11%', textAlign: 'center' }}>Quantity</th>
+                          <th style={{ width: '12%', textAlign: 'right' }}>Unit Price</th>
+                          <th style={{ width: '11%', textAlign: 'right' }}>Discount</th>
+                          <th style={{ width: '12%', textAlign: 'right' }}>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {billedItems.length > 0 ? (
+                          billedItems.map((item, idx) => (
+                            <tr key={`${item.testCode}-${idx}`}>
+                              <td style={{ textAlign: 'center' }}>{idx + 1}</td>
+                              <td>
+                                <strong>{item.testName}</strong>
+                                {item.testCode && <span className="cell-sub"> ({item.testCode})</span>}
+                              </td>
+                              <td style={{ textAlign: 'center' }}>{item.quantity || 1}</td>
+                              <td style={{ textAlign: 'right' }}>{money(item.unitPrice)}</td>
+                              <td style={{ textAlign: 'right' }}>{item.discount > 0 ? money(item.discount) : '—'}</td>
+                              <td style={{ textAlign: 'right' }}><strong>{money(item.amount)}</strong></td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={6} style={{ textAlign: 'center', color: '#666', fontStyle: 'italic', padding: '6px' }}>
+                              Billing not generated for this order.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Phase 4.B: BILLING SUMMARY */}
+                  <div className="sheet-billing-summary-wrap">
+                    <div className="sheet-section-title">BILLING SUMMARY</div>
+                    <div className="sheet-billing-summary-layout">
+                      <div className="billing-status-block">
+                        <div className="billing-status-line">
+                          <span className="lbl-status">Payment Status:</span>
+                          <span className={`status-pill ${billingSummary.paymentStatus === 'Paid' ? 'status-issued' : 'status-draft'}`}>
+                            <i></i>{billingSummary.paymentStatus}
+                          </span>
+                        </div>
+                        <p className="billing-receipt-note">
+                          Official computer-generated diagnostic invoice receipt. Reconciled with laboratory order and payment ledger.
+                        </p>
+                      </div>
+                      <table className="sheet-billing-summary-table">
+                        <tbody>
+                          <tr>
+                            <td className="sum-desc">Test Subtotal</td>
+                            <td className="sum-val">{money(billingSummary.subtotal)}</td>
+                          </tr>
+                          {billingSummary.discount > 0 && (
+                            <tr>
+                              <td className="sum-desc">Discount</td>
+                              <td className="sum-val" style={{ color: '#0b7a2b' }}>- {money(billingSummary.discount)}</td>
+                            </tr>
+                          )}
+                          {billingSummary.taxes ? (
+                            <tr>
+                              <td className="sum-desc">Taxes</td>
+                              <td className="sum-val">{money(billingSummary.taxes)}</td>
+                            </tr>
+                          ) : null}
+                          {billingSummary.additionalCharges ? (
+                            <tr>
+                              <td className="sum-desc">Additional Charges</td>
+                              <td className="sum-val">{money(billingSummary.additionalCharges)}</td>
+                            </tr>
+                          ) : null}
+                          <tr className="sum-total-row">
+                            <td className="sum-desc"><strong>Total Bill</strong></td>
+                            <td className="sum-val"><strong>{money(billingSummary.total)}</strong></td>
+                          </tr>
+                          <tr>
+                            <td className="sum-desc">Amount Paid</td>
+                            <td className="sum-val">{money(billingSummary.paid)}</td>
+                          </tr>
+                          <tr className="sum-balance-row">
+                            <td className="sum-desc"><strong>Balance Due</strong></td>
+                            <td className="sum-val"><strong>{money(billingSummary.balance)}</strong></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sheet Footer with Signatures */}

@@ -340,16 +340,45 @@ button { cursor: pointer; }
 .footer-disclaimer { margin:0;font-size:7.5px;color:#666;max-width:80%; }
 .footer-pagination { font-weight:600;font-size:8.5px;color:#333; }
 
-/* DEDICATED PREVIEW VIEW */
-.dedicated-preview-page { width:100%;max-width:1100px;margin:0 auto;padding:12px 16px 40px; }
-.dedicated-preview-topbar { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:10px 16px;background:#fff;border:1px solid #dce8e6;border-radius:6px; }
-.dedicated-preview-actions { display:flex;gap:8px;align-items:center; }
+/* TEST-WISE PRICING & BILLING SUMMARY STYLES IN A4 REPORT */
+.sheet-financial-container { margin-top:4mm;page-break-inside:avoid;break-inside:avoid; }
+.sheet-billing-section { margin-bottom:3.5mm; }
+.sheet-section-title { font-family:Arial,sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#08796e;border-bottom:1.5px solid #08796e;padding-bottom:2px;margin-bottom:2mm; }
+.sheet-billing-table { width:100%;border-collapse:collapse;border:1.5px solid #000;font-size:10.5px;line-height:1.3; }
+.sheet-billing-table thead tr { background:#f0f7f5; }
+.sheet-billing-table th { border:1px solid #000;padding:4px 6px;font-weight:700;font-size:9.5px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:0.03em; }
+.sheet-billing-table th.align-right,.sheet-billing-table td.align-right { text-align:right; }
+.sheet-billing-table td { border:1px solid #ccc;padding:3.5px 6px;vertical-align:middle; }
+.sheet-billing-summary-wrap { margin-top:2mm;page-break-inside:avoid;break-inside:avoid; }
+.sheet-billing-summary-layout { display:flex;gap:12px;align-items:flex-start;justify-content:space-between; }
+.billing-status-block { flex:1;background:#f8fbfa;border:1px solid #dce8e6;border-radius:4px;padding:6px 10px;font-family:Arial,sans-serif; }
+.status-row { display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:#444; }
+.billing-status-badge { display:inline-block;padding:2px 8px;border-radius:3px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;border:1px solid transparent; }
+.billing-status-badge.status-paid { background:#eaf7ed;color:#0b7a2b;border-color:#bce5c5; }
+.billing-status-badge.status-partially_paid { background:#fff8e6;color:#b36b00;border-color:#ffe099; }
+.billing-status-badge.status-pending { background:#fdeeee;color:#c00000;border-color:#f8c8c8; }
+.billing-status-badge.status-refunded { background:#f0f0f0;color:#555;border-color:#ccc; }
+.status-reconcile-note { margin:4px 0 0;font-size:8.5px;color:#777;line-height:1.3; }
+.sheet-billing-summary-table { width:240px;border-collapse:collapse;border:1.5px solid #000;font-size:10.5px; }
+.sheet-billing-summary-table td { border:1px solid #ccc;padding:3px 6px;vertical-align:middle; }
+.sheet-billing-summary-table td.desc-cell { color:#333;font-weight:500; }
+.sheet-billing-summary-table td.amt-cell { text-align:right;color:#111;font-weight:600; }
+.sheet-billing-summary-table tr.sum-total-row { background:#eaf5f2;font-weight:700;border-top:1.5px solid #000; }
+.sheet-billing-summary-table tr.sum-total-row td { border-top:1.5px solid #000;color:#08796e;font-size:11px; }
+.sheet-billing-summary-table tr.sum-balance-row { background:#fff5f5;font-weight:700; }
+.sheet-billing-summary-table tr.sum-balance-row td { color:#c00000;font-size:11px; }
+.sheet-empty-state { padding:16px;text-align:center;font-family:Arial,sans-serif;border:1px dashed #dce8e6;border-radius:4px;background:#fbfdfc;margin:8px 0; }
+.sheet-empty-state p { font-size:11px;color:#666;margin:4px 0 8px; }
+.sheet-empty-action { display:inline-block;padding:4px 10px;background:#0f9d8c;color:#fff;border-radius:4px;font-size:10px;font-weight:600;text-decoration:none; }
 
 @media print {
   @page { size:A4 portrait; margin:0; }
   html,body { width:100%!important;background:#fff!important;margin:0!important;padding:0!important; }
-  .sidebar,.topbar,.mobile-bottom,.demo-banner,.page-head,.details-grid,.patient-history,.toast,.no-print,.dedicated-preview-topbar,.sheet-controls { display:none!important; }
-  .lab-shell,.workspace,.main-content,.dedicated-preview-page { display:block!important;width:100%!important;margin:0!important;padding:0!important;background:#fff!important;box-shadow:none!important;border:none!important; }
+  body * { visibility:hidden; }
+  #printable-report, #printable-report * { visibility:visible; }
+  #printable-report { position:absolute;left:0;top:0;width:210mm!important;margin:0!important;padding:0!important; }
+  .sidebar,.topbar,.mobile-bottom,.demo-banner,.page-head,.details-grid,.patient-history,.toast,.no-print,.dedicated-preview-topbar,.sheet-controls,header,nav { display:none!important; }
+  .lab-shell,.workspace,.main-content,.dedicated-preview-page { display:block!important;width:100%!important;margin:0!important;padding:0!important;background:#fff!important;box-shadow:none!important;border:none!important;position:static!important; }
   .report-sheet-container { padding:0!important;margin:0!important;width:100%!important;display:block!important; }
   .report-sheet { margin:0!important;border:none!important;box-shadow:none!important;width:210mm!important;min-height:296.8mm!important;page-break-after:always!important;break-after:page!important; }
   .report-sheet:last-child { page-break-after:auto!important;break-after:auto!important; }

@@ -70,7 +70,8 @@ export async function downloadReportPdf(
       doc.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
     }
 
-    const outputName = options?.filename || `BIO_HI_TECH_Report_${reportId}.pdf`;
+    const defaultName = reportId.startsWith('RPT-') ? `BIO-HI-TECH-${reportId}.pdf` : `BIO-HI-TECH-RPT-${reportId}.pdf`;
+    const outputName = options?.filename || defaultName;
     onProgress('Saving PDF file...');
     doc.save(outputName);
     onProgress('Download complete.');

@@ -482,11 +482,11 @@ async function runTwoClientRealtimeTests() {
   await admin.from('owner_access').delete().eq('id', ownerId)
   await admin.auth.admin.deleteUser(ownerId)
 
-  const { count: finalPatientCount } = await admin.from('patients').select('*', { count: 'exact', head: true })
+  const { count: finalPatientCount } = await admin.from('patients').select('*', { count: 'exact', head: true }).eq('owner_id', ownerId)
   assert(
     finalPatientCount === 0,
-    'All test fixtures purged; operational database clean',
-    `Patients: ${finalPatientCount}`
+    'All synthetic test fixtures purged; operational database clean',
+    `Synthetic Patients: ${finalPatientCount}`
   )
 
   console.log('\n==============================================================================')

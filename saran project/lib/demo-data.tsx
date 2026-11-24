@@ -19,8 +19,29 @@ export interface Patient {
   notes?: string
 }
 
+export interface BilledTestItem {
+  testCode: string
+  testName: string
+  quantity: number
+  unitPrice: number
+  discount: number
+  amount: number
+}
+
+export interface BillingSummaryData {
+  subtotal: number
+  discount: number
+  taxes?: number
+  additionalCharges?: number
+  total: number
+  paid: number
+  balance: number
+  paymentStatus: 'Paid' | 'Partially Paid' | 'Pending' | 'Refunded' | string
+}
+
 export interface Report {
   id: string
+  orderId?: string
   patient: string
   patientId: string
   date: string
@@ -32,6 +53,15 @@ export interface Report {
   amount: number
   status: string
   payment: string
+  subtotalAmount?: number
+  discountAmount?: number
+  paidAmount?: number
+  sampleDate?: string
+  sampleTime?: string
+  sampleType?: string
+  notes?: string
+  billedItems?: BilledTestItem[]
+  billingSummary?: BillingSummaryData
 }
 
 export interface ActivityItem {
