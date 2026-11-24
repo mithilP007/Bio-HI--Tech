@@ -1,0 +1,12 @@
+# ==============================================================================
+# BIO HI TECH — LINUX DESKTOP PACKAGE CHECKSUMS (SHA-256)
+# Application ID: com.biohitech.lims | Version: 1.0.0 | Architecture: amd64 / x86_64
+# ==============================================================================
+# Verification Command: sha256sum -c SHA256SUMS.txt
+#
+# Release Artifacts:
+# 1. BIO-HI-TECH-LIMS.AppImage (Portable Linux Executable)
+# 2. BIO-HI-TECH-LIMS.deb      (Debian/Ubuntu Native Package)
+#
+# Note: Binaries are generated via GitHub Actions (.github/workflows/build-native.yml)
+# on ubuntu-latest runner with Rust stable and WebKit2GTK 4.1 toolchains.

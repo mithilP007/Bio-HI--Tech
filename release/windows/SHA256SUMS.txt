@@ -5,8 +5,8 @@
 # Verification Command: Get-FileHash -Algorithm SHA256 <filename>
 #
 # Release Artifacts:
-# 1. bio-hi-tech_1.0.0_x64-setup.exe (NSIS Native Windows Installer)
-# 2. bio-hi-tech_1.0.0_x64_en-US.msi (WiX Enterprise MSI Package)
+# 1. BIO-HI-TECH-LIMS-Windows-Setup.exe (NSIS Native Windows Installer)
+# 2. BIO-HI-TECH-LIMS-Windows.msi (WiX Enterprise MSI Package)
 #
 # Note: Binaries are generated via GitHub Actions (.github/workflows/build-native.yml)
 # on windows-latest runner or via `npx tauri build` with Rust/WiX toolchains.

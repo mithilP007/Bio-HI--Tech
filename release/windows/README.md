@@ -21,13 +21,13 @@
 
 Checksums are recorded in `SHA256SUMS.txt` after binary generation:
 ```powershell
-Get-FileHash -Algorithm SHA256 bio-hi-tech_1.0.0_x64-setup.exe
+Get-FileHash -Algorithm SHA256 BIO-HI-TECH-LIMS-Windows-Setup.exe
 ```
 
 ## Installation Instructions (Windows Reception PC)
 
 ### Option A: Standard Setup (`.exe`)
-1. Download `bio-hi-tech_1.0.0_x64-setup.exe`.
+1. Download `BIO-HI-TECH-LIMS-Windows-Setup.exe`.
 2. Double-click the installer.
 3. If Windows SmartScreen displays "Windows protected your PC", click **More info** and select **Run anyway** (standard for privately distributed signed/unsigned enterprise software).
 4. Follow the setup wizard prompts.
@@ -37,7 +37,7 @@ Get-FileHash -Algorithm SHA256 bio-hi-tech_1.0.0_x64-setup.exe
 ### Option B: Enterprise MSI Installation
 Run PowerShell or Command Prompt as Administrator:
 ```cmd
-msiexec /i bio-hi-tech_1.0.0_x64_en-US.msi /quiet /norestart
+msiexec /i BIO-HI-TECH-LIMS-Windows.msi /quiet /norestart
 ```
 
 ## Runtime Requirements

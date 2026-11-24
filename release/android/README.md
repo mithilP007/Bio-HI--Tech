@@ -30,16 +30,16 @@ sha256sum -c SHA256SUMS.txt
 ## Installation Instructions (Android Device)
 
 ### Option A: Direct Sideloading (Recommended for Lab Owner)
-1. Transfer `bio-hi-tech-1.0.0-release.apk` to the Android tablet or smartphone via USB cable, Google Drive, or local network.
+1. Transfer `BIO-HI-TECH-LIMS-Android.apk` to the Android tablet or smartphone via USB cable, Google Drive, or direct download.
 2. On Android, navigate to **Settings > Security > Install unknown apps** and enable permission for your file manager or browser.
-3. Tap `bio-hi-tech-1.0.0-release.apk` and tap **Install**.
+3. Tap `BIO-HI-TECH-LIMS-Android.apk` and tap **Install**.
 4. Once installed, tap **Open**. The BIO HI TECH icon appears on your home screen and app launcher.
 5. Log in using your Owner Supabase credentials.
 
 ### Option B: ADB Command-Line Installation
 Connect the tablet via USB with Developer Mode and USB Debugging enabled:
 ```bash
-adb install -r bio-hi-tech-1.0.0-release.apk
+adb install -r BIO-HI-TECH-LIMS-Android.apk
 ```
 
 ## Security Note

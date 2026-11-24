@@ -103,6 +103,9 @@ jobs:
             echo "Building signed Release APK and AAB..."
             ./gradlew assembleRelease
             ./gradlew bundleRelease
+            mkdir -p ../release/android
+            echo "STATUS=SIGNED" > ../release/android/SIGNING_STATUS.txt
+            echo "KEY_ALIAS=$KEY_ALIAS" >> ../release/android/SIGNING_STATUS.txt
           else
             if [ "$ENFORCE_SIGNING" = "true" ]; then
               echo "::error::CRITICAL: Android release signing secrets missing! All 4 secrets (ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD) are strictly required for production release. Unsigned release generation is rejected."
@@ -123,7 +126,7 @@ jobs:
             for apk in android/app/build/outputs/apk/release/*.apk; do
               if [ -f "$apk" ]; then
                 echo "Verifying APK: $apk"
-                $APKSIGNER verify --verbose "$apk"
+                $APKSIGNER verify --verbose --print-certs "$apk"
               fi
             done
           fi
@@ -149,7 +152,7 @@ jobs:
       - name: Upload Android Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: bio-hitech-android-packages
+          name: BIO-HI-TECH-LIMS-ANDROID
           path: |
             release/android/*.apk
             release/android/*.aab
@@ -220,7 +223,7 @@ jobs:
       - name: Upload Linux Desktop Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: bio-hitech-linux-desktop-packages
+          name: BIO-HI-TECH-LIMS-LINUX
           path: |
             release/linux/*.AppImage
             release/linux/*.deb
@@ -340,7 +343,7 @@ jobs:
       - name: Upload Windows Desktop Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: bio-hitech-windows-desktop-packages
+          name: BIO-HI-TECH-LIMS-WINDOWS
           path: |
             release/windows/*.exe
             release/windows/*.msi
@@ -362,19 +365,19 @@ jobs:
       - name: Download Android Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: bio-hitech-android-packages
+          name: BIO-HI-TECH-LIMS-ANDROID
           path: release-all/android
 
       - name: Download Linux Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: bio-hitech-linux-desktop-packages
+          name: BIO-HI-TECH-LIMS-LINUX
           path: release-all/linux
 
       - name: Download Windows Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: bio-hitech-windows-desktop-packages
+          name: BIO-HI-TECH-LIMS-WINDOWS
           path: release-all/windows
 
       - name: Collate Release Assets & Generate Unified Checksums

@@ -57,15 +57,30 @@ fi
 
 echo "Generating RSA 2048-bit release keystore with ${VALIDITY_DAYS} days validity..."
 
-keytool -genkeypair -v \
-  -keystore "${KEYSTORE_FILE}" \
-  -alias "${KEY_ALIAS}" \
-  -keyalg RSA \
-  -keysize 2048 \
-  -validity "${VALIDITY_DAYS}" \
-  -storepass "${KEYSTORE_PASSWORD}" \
-  -keypass "${KEYSTORE_PASSWORD}" \
-  -dname "CN=Dr. Arun Kumar, OU=Laboratory Services, O=BIO HI TECH, L=Mumbai, ST=Maharashtra, C=IN"
+if command -v keytool >/dev/null 2>&1; then
+  keytool -genkeypair -v \
+    -keystore "${KEYSTORE_FILE}" \
+    -alias "${KEY_ALIAS}" \
+    -keyalg RSA \
+    -keysize 2048 \
+    -validity "${VALIDITY_DAYS}" \
+    -storepass "${KEYSTORE_PASSWORD}" \
+    -keypass "${KEYSTORE_PASSWORD}" \
+    -dname "CN=Dr. Arun Kumar, OU=Laboratory Services, O=BIO HI TECH, L=Mumbai, ST=Maharashtra, C=IN"
+elif command -v docker >/dev/null 2>&1; then
+  docker run --rm -v "$(pwd):/work" -w /work eclipse-temurin:21-jdk keytool -genkeypair -v \
+    -keystore "${KEYSTORE_FILE}" \
+    -alias "${KEY_ALIAS}" \
+    -keyalg RSA \
+    -keysize 2048 \
+    -validity "${VALIDITY_DAYS}" \
+    -storepass "${KEYSTORE_PASSWORD}" \
+    -keypass "${KEYSTORE_PASSWORD}" \
+    -dname "CN=Dr. Arun Kumar, OU=Laboratory Services, O=BIO HI TECH, L=Mumbai, ST=Maharashtra, C=IN"
+else
+  echo "ERROR: Neither 'keytool' nor 'docker' was found on your system."
+  exit 1
+fi
 
 echo ""
 echo "=============================================================================="

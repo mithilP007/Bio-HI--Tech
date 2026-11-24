@@ -27,22 +27,22 @@ sha256sum -c SHA256SUMS.txt
 ## Installation Instructions (Linux Workstation)
 
 ### Option A: AppImage (Portable — No Root Required)
-1. Download or copy `bio-hi-tech_1.0.0_amd64.AppImage`.
+1. Download or copy `BIO-HI-TECH-LIMS.AppImage`.
 2. Make it executable:
    ```bash
-   chmod +x bio-hi-tech_1.0.0_amd64.AppImage
+   chmod +x BIO-HI-TECH-LIMS.AppImage
    ```
 3. Run the application:
    ```bash
-   ./bio-hi-tech_1.0.0_amd64.AppImage
+   ./BIO-HI-TECH-LIMS.AppImage
    ```
 4. Optional: Integrate into the system menu with `appimaged` or [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher).
 
 ### Option B: Native Debian/Ubuntu Package (`.deb`)
-1. Download or copy `bio-hi-tech_1.0.0_amd64.deb`.
+1. Download or copy `BIO-HI-TECH-LIMS.deb`.
 2. Install via APT or dpkg:
    ```bash
-   sudo apt install ./bio-hi-tech_1.0.0_amd64.deb
+   sudo apt install ./BIO-HI-TECH-LIMS.deb
    ```
 3. The application is now installed system-wide in `/usr/bin/bio-hi-tech`.
 4. Launch BIO HI TECH directly from your desktop Application Menu or Super/Windows key search.
