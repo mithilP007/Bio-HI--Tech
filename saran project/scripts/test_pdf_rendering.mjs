@@ -197,8 +197,12 @@ const scenarios = [
 
 async function setupDatabaseFixtures() {
   console.log('--- Provisioning Isolated Synthetic Test Data ---');
-  // Clean up any stale active owners
+  // Clean up any stale active owners or residual test data from previous runs
+  await adminClient.from('report_results').delete().in('report_id', testReports.map(r => r.id));
+  await adminClient.from('reports').delete().in('id', testReports.map(r => r.id));
+  await adminClient.from('patients').delete().eq('id', testPatientId);
   await adminClient.from('owner_access').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await adminClient.from('owner_profile').delete().neq('id', '00000000-0000-0000-0000-000000000000');
 
   // 1. Create owner in Supabase Auth
   const { data: ownerUser, error: ownerErr } = await adminClient.auth.admin.createUser({

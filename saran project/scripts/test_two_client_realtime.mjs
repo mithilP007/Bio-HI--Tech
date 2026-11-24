@@ -28,17 +28,30 @@ function assert(condition, message, details = '') {
   }
 }
 
-// Helper to wait for a realtime event with a timeout
-function waitForEvent(eventBox, timeoutMs = 5000) {
+// Helper to wait for a realtime event with a timeout and optional filter predicate
+function waitForEvent(eventBox, predicate = null, timeoutMs = 5000) {
+  if (typeof predicate === 'number') {
+    timeoutMs = predicate
+    predicate = null
+  }
   const start = Date.now()
   return new Promise((resolve) => {
     const interval = setInterval(() => {
-      if (eventBox.received) {
+      if (predicate) {
+        const found = eventBox.list.find(predicate)
+        if (found) {
+          clearInterval(interval)
+          resolve(found)
+          return
+        }
+      } else if (eventBox.received) {
         clearInterval(interval)
         resolve(eventBox.payload)
-      } else if (Date.now() - start > timeoutMs) {
+        return
+      }
+      if (Date.now() - start > timeoutMs) {
         clearInterval(interval)
-        resolve(null)
+        resolve(predicate ? (eventBox.list.find(predicate) || null) : eventBox.payload)
       }
     }, 50)
   })
@@ -51,7 +64,10 @@ async function runTwoClientRealtimeTests() {
   console.log(`Target: ${SUPABASE_URL}`)
   console.log(`Timestamp: ${new Date().toISOString()}`)
 
-  // 1. Setup authenticated owner identity
+  // 1. Setup authenticated owner identity (clearing any residual active owner from previous test runs)
+  await admin.from('owner_access').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+  await admin.from('owner_profile').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+
   const ownerEmail = `realtime-owner-${Date.now()}@biohitech.test`
   const ownerPassword = 'RealtimeOwnerPassword123!'
 
@@ -102,6 +118,7 @@ async function runTwoClientRealtimeTests() {
   function resetBox(box) {
     box.received = false
     box.payload = null
+    box.list = []
   }
 
   // Client A Channel: Listen to all public tables
@@ -128,8 +145,10 @@ async function runTwoClientRealtimeTests() {
     new Promise(res => channelB.subscribe(status => status === 'SUBSCRIBED' && res()))
   ])
 
-  // Allow Realtime broker to finish channel registration
-  await new Promise(r => setTimeout(r, 300))
+  // Allow Realtime broker to finish channel registration and flush initial notifications
+  await new Promise(r => setTimeout(r, 600))
+  resetBox(eventsA)
+  resetBox(eventsB)
 
   console.log('  Client A WebSocket channel: SUBSCRIBED ✓')
   console.log('  Client B WebSocket channel: SUBSCRIBED ✓')
@@ -156,7 +175,7 @@ async function runTwoClientRealtimeTests() {
   })
   if (pInsertErr) throw pInsertErr
 
-  const pEventB = await waitForEvent(eventsB)
+  const pEventB = await waitForEvent(eventsB, e => e.table === 'patients' && e.eventType === 'INSERT')
   assert(
     pEventB && pEventB.eventType === 'INSERT' && pEventB.table === 'patients' && pEventB.new.id === testPatientId,
     'Client A creates patient → Client B receives real-time INSERT',
@@ -175,7 +194,7 @@ async function runTwoClientRealtimeTests() {
   }).eq('id', testPatientId)
   if (pUpdateErr) throw pUpdateErr
 
-  const pEventA = await waitForEvent(eventsA)
+  const pEventA = await waitForEvent(eventsA, e => e.table === 'patients' && e.eventType === 'UPDATE')
   assert(
     pEventA && pEventA.eventType === 'UPDATE' && pEventA.new.phone === '+91 99999 11111',
     'Client B edits patient → Client A receives real-time UPDATE',
@@ -192,7 +211,7 @@ async function runTwoClientRealtimeTests() {
   const { error: archiveErr } = await clientA.rpc('archive_patient', { p_id: testPatientId })
   if (archiveErr) throw archiveErr
 
-  const archiveEventB = await waitForEvent(eventsB)
+  const archiveEventB = await waitForEvent(eventsB, e => e.table === 'patients' && e.new?.is_archived === true)
   assert(
     archiveEventB && archiveEventB.eventType === 'UPDATE' && archiveEventB.new.is_archived === true,
     'Client A archives patient → Client B receives real-time is_archived: true',
@@ -204,7 +223,7 @@ async function runTwoClientRealtimeTests() {
   const { error: restoreErr } = await clientB.rpc('restore_patient', { p_id: testPatientId })
   if (restoreErr) throw restoreErr
 
-  const restoreEventA = await waitForEvent(eventsA)
+  const restoreEventA = await waitForEvent(eventsA, e => e.table === 'patients' && e.new?.is_archived === false)
   assert(
     restoreEventA && restoreEventA.eventType === 'UPDATE' && restoreEventA.new.is_archived === false,
     'Client B restores patient → Client A receives real-time is_archived: false',
@@ -226,7 +245,7 @@ async function runTwoClientRealtimeTests() {
   })
   if (ordErr) throw ordErr
 
-  const ordEventB = await waitForEvent(eventsB)
+  const ordEventB = await waitForEvent(eventsB, e => e.table === 'laboratory_orders' && e.eventType === 'INSERT')
   assert(
     ordEventB && ordEventB.eventType === 'INSERT' && ordEventB.table === 'laboratory_orders' && ordEventB.new.id === testOrderId,
     'Client A creates laboratory order → Client B receives real-time INSERT',
@@ -240,7 +259,7 @@ async function runTwoClientRealtimeTests() {
   }).eq('id', testOrderId)
   if (ordUpErr) throw ordUpErr
 
-  const ordEventA = await waitForEvent(eventsA)
+  const ordEventA = await waitForEvent(eventsA, e => e.table === 'laboratory_orders' && e.eventType === 'UPDATE')
   assert(
     ordEventA && ordEventA.eventType === 'UPDATE' && ordEventA.new.status === 'Processing',
     'Client B updates order status → Client A receives real-time UPDATE',
@@ -278,7 +297,7 @@ async function runTwoClientRealtimeTests() {
   })
   if (resErr) throw resErr
 
-  const resEventB = await waitForEvent(eventsB)
+  const resEventB = await waitForEvent(eventsB, e => e.table === 'report_results' || e.table === 'reports')
   assert(
     resEventB !== null && (resEventB.table === 'report_results' || resEventB.table === 'reports'),
     'Client A enters test result → Client B receives real-time result event',
@@ -296,7 +315,7 @@ async function runTwoClientRealtimeTests() {
   }).eq('id', testReportId)
   if (issueErr) throw issueErr
 
-  const rptEventA = await waitForEvent(eventsA)
+  const rptEventA = await waitForEvent(eventsA, e => e.table === 'reports' && e.new?.status === 'Issued')
   assert(
     rptEventA && rptEventA.eventType === 'UPDATE' && rptEventA.table === 'reports' && rptEventA.new.status === 'Issued',
     'Client B issues report → Client A receives real-time status: Issued',
@@ -320,7 +339,7 @@ async function runTwoClientRealtimeTests() {
   })
   if (payErr) throw payErr
 
-  const payEventB = await waitForEvent(eventsB)
+  const payEventB = await waitForEvent(eventsB, e => e.table === 'payment_transactions' && e.eventType === 'INSERT')
   assert(
     payEventB && payEventB.eventType === 'INSERT' && payEventB.table === 'payment_transactions' && payEventB.new.id === testReceiptId,
     'Client A records payment → Client B receives real-time ledger INSERT',
@@ -339,7 +358,7 @@ async function runTwoClientRealtimeTests() {
   }).eq('code', 'LEG-001')
   if (catErr) throw catErr
 
-  const catEventA = await waitForEvent(eventsA)
+  const catEventA = await waitForEvent(eventsA, e => e.table === 'test_catalogue' && e.eventType === 'UPDATE')
   assert(
     catEventA && catEventA.eventType === 'UPDATE' && catEventA.table === 'test_catalogue',
     'Client B updates catalogue price → Client A receives real-time UPDATE',
@@ -422,7 +441,7 @@ async function runTwoClientRealtimeTests() {
     phone: '+91 91122 33445'
   })
 
-  const postReconnectEvent = await waitForEvent(eventsB)
+  const postReconnectEvent = await waitForEvent(eventsB, e => e.table === 'patients' && e.new?.id === postReconnectPatientId)
   assert(
     postReconnectEvent && postReconnectEvent.new.id === postReconnectPatientId,
     'Reconnected Client B immediately receives live events without restart',
@@ -456,11 +475,12 @@ async function runTwoClientRealtimeTests() {
   await admin.from('reports').delete().eq('owner_id', ownerId)
   await admin.from('laboratory_orders').delete().eq('owner_id', ownerId)
   await admin.from('audit_logs').delete().eq('owner_id', ownerId)
+  await admin.from('patients').delete().in('id', [testPatientId, offlineTestPatientId, postReconnectPatientId])
   await admin.from('patients').delete().eq('owner_id', ownerId)
+  await admin.from('test_catalogue').update({ owner_id: null }).neq('code', '')
   await admin.from('owner_profile').delete().eq('id', ownerId)
   await admin.from('owner_access').delete().eq('id', ownerId)
   await admin.auth.admin.deleteUser(ownerId)
-  await admin.from('test_catalogue').update({ owner_id: null }).neq('code', '')
 
   const { count: finalPatientCount } = await admin.from('patients').select('*', { count: 'exact', head: true })
   assert(
@@ -473,7 +493,11 @@ async function runTwoClientRealtimeTests() {
   console.log(`REALTIME TEST EXECUTION SUMMARY: ${passCount} PASSED, ${failCount} FAILED (TOTAL: ${testCount})`)
   console.log('==============================================================================')
 
-  if (failCount > 0) process.exit(1)
+  if (failCount > 0) {
+    process.exit(1)
+  } else {
+    process.exit(0)
+  }
 }
 
 runTwoClientRealtimeTests().catch(err => {
