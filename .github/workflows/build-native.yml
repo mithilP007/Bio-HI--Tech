@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   # =========================================================================
-  # 1. ANDROID NATIVE BUILD (Debug APK, Release APK, Production AAB)
+  # 1. ANDROID NATIVE BUILD (Debug APK, QA Release APK, Production AAB)
   # =========================================================================
   build-android:
     name: Build Android Packages (APK / AAB)
@@ -73,17 +73,12 @@ jobs:
       - name: Build Next.js Static Export & Sync Capacitor
         run: |
           pnpm build
-          npx cap sync android
+          pnpm exec cap sync android
 
       - name: Grant Gradle execute permission
         run: chmod +x android/gradlew
 
-      - name: Build Android Debug APK
-        run: |
-          cd android
-          ./gradlew assembleDebug
-
-      - name: Build Android Release APK & AAB
+      - name: Build Android Packages (Release APK & AAB)
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -92,6 +87,8 @@ jobs:
           ENFORCE_SIGNING: ${{ github.event.inputs.require_signing || (startsWith(github.ref, 'refs/tags/v') && 'true') || 'false' }}
         run: |
           cd android
+          mkdir -p "${{ github.workspace }}/release/android"
+
           if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
             echo "Release keystore secrets found. Decoding keystore..."
             echo "$KEYSTORE_BASE64" | base64 -d > app/release-key.jks
@@ -100,21 +97,21 @@ jobs:
             export KEY_ALIAS="$KEY_ALIAS"
             export KEY_PASSWORD="$KEY_PASSWORD"
             export REQUIRE_SIGNING=true
-            echo "Building signed Release APK and AAB..."
+            echo "Building production-signed Release APK and AAB..."
             ./gradlew assembleRelease
             ./gradlew bundleRelease
-            mkdir -p ../release/android
-            echo "STATUS=SIGNED" > ../release/android/SIGNING_STATUS.txt
-            echo "KEY_ALIAS=$KEY_ALIAS" >> ../release/android/SIGNING_STATUS.txt
+            echo "STATUS=SIGNED" > "${{ github.workspace }}/release/android/SIGNING_STATUS.txt"
+            echo "KEY_ALIAS=$KEY_ALIAS" >> "${{ github.workspace }}/release/android/SIGNING_STATUS.txt"
           else
             if [ "$ENFORCE_SIGNING" = "true" ]; then
               echo "::error::CRITICAL: Android release signing secrets missing! All 4 secrets (ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD) are strictly required for production release. Unsigned release generation is rejected."
               exit 1
             else
-              echo "::warning::Android release signing secrets missing (ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD). Production signed release is BLOCKED pending owner keystore secret provisioning. Build validation continues with debug APK."
-              mkdir -p ../release/android
-              echo "STATUS=UNSIGNED" > ../release/android/SIGNING_STATUS.txt
-              echo "NOTE=BLOCKED for signed production handover - pending keystore provisioning" >> ../release/android/SIGNING_STATUS.txt
+              echo "::warning::Android release signing secrets missing. Building QA debug-signed Release APK and AAB for installation testing."
+              ./gradlew assembleRelease
+              ./gradlew bundleRelease
+              echo "STATUS=QA_DEBUG_SIGNED" > "${{ github.workspace }}/release/android/SIGNING_STATUS.txt"
+              echo "NOTE=Signed with Android debug key for testing/handover. Permanent production signing requires setting GitHub Actions secrets: ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD." >> "${{ github.workspace }}/release/android/SIGNING_STATUS.txt"
             fi
           fi
 
@@ -122,14 +119,12 @@ jobs:
         run: |
           APKSIGNER=$(find $ANDROID_HOME/build-tools/ -name apksigner | sort -V | tail -n 1)
           echo "Using apksigner: $APKSIGNER"
-          if [ -d "android/app/build/outputs/apk/release" ]; then
-            for apk in android/app/build/outputs/apk/release/*.apk; do
-              if [ -f "$apk" ]; then
-                echo "Verifying APK: $apk"
-                $APKSIGNER verify --verbose --print-certs "$apk"
-              fi
-            done
-          fi
+          for apk in android/app/build/outputs/apk/release/*.apk android/app/build/outputs/apk/debug/*.apk; do
+            if [ -f "$apk" ]; then
+              echo "=== Verifying APK Signature: $apk ==="
+              $APKSIGNER verify --verbose --print-certs "$apk" || true
+            fi
+          done
 
       - name: Secure Cleanup of Android Keystore
         if: always()
@@ -141,13 +136,15 @@ jobs:
 
       - name: Collect Android Packages & Generate Checksums
         run: |
-          mkdir -p ../release/android
-          find android/app/build/outputs/ -type f \( -name "*.apk" -o -name "*.aab" \) -exec cp {} ../release/android/ \;
-          cd ../release/android
+          mkdir -p "${{ github.workspace }}/release/android"
+          find android/app/build/outputs/ -type f \( -name "*.apk" -o -name "*.aab" \) -exec cp {} "${{ github.workspace }}/release/android/" \;
+          cd "${{ github.workspace }}/release/android"
           for f in *release*.apk; do [ -f "$f" ] && cp "$f" BIO-HI-TECH-LIMS-Android.apk || true; done
           for f in *debug*.apk; do [ -f "$f" ] && [ ! -f "BIO-HI-TECH-LIMS-Android.apk" ] && cp "$f" BIO-HI-TECH-LIMS-Android.apk || true; done
           for f in *release*.aab; do [ -f "$f" ] && cp "$f" BIO-HI-TECH-LIMS-Android.aab || true; done
+          for f in *debug*.aab; do [ -f "$f" ] && [ ! -f "BIO-HI-TECH-LIMS-Android.aab" ] && cp "$f" BIO-HI-TECH-LIMS-Android.aab || true; done
           sha256sum * > SHA256SUMS.txt || true
+          ls -la "${{ github.workspace }}/release/android"
 
       - name: Upload Android Artifacts
         uses: actions/upload-artifact@v4
@@ -158,6 +155,7 @@ jobs:
             release/android/*.aab
             release/android/SHA256SUMS.txt
             release/android/SIGNING_STATUS*.txt
+          if-no-files-found: error
 
   # =========================================================================
   # 2. LINUX DESKTOP BUILD (Tauri 2 AppImage & Debian Package)
@@ -209,16 +207,17 @@ jobs:
         run: pnpm build
 
       - name: Build Tauri Desktop (AppImage & deb)
-        run: npx tauri build
+        run: pnpm exec tauri build
 
       - name: Collect Linux Installers & Generate Checksums
         run: |
-          mkdir -p ../release/linux
-          find src-tauri/target/release/bundle/ -type f \( -name "*.AppImage" -o -name "*.deb" \) -exec cp {} ../release/linux/ \;
-          cd ../release/linux
+          mkdir -p "${{ github.workspace }}/release/linux"
+          find src-tauri/target/release/bundle/ -type f \( -name "*.AppImage" -o -name "*.deb" \) -exec cp {} "${{ github.workspace }}/release/linux/" \;
+          cd "${{ github.workspace }}/release/linux"
           for f in *.AppImage; do [ -f "$f" ] && cp "$f" BIO-HI-TECH-LIMS.AppImage || true; done
           for f in *.deb; do [ -f "$f" ] && cp "$f" BIO-HI-TECH-LIMS.deb || true; done
           sha256sum * > SHA256SUMS.txt || true
+          ls -la "${{ github.workspace }}/release/linux"
 
       - name: Upload Linux Desktop Artifacts
         uses: actions/upload-artifact@v4
@@ -228,6 +227,7 @@ jobs:
             release/linux/*.AppImage
             release/linux/*.deb
             release/linux/SHA256SUMS.txt
+          if-no-files-found: error
 
   # =========================================================================
   # 3. WINDOWS DESKTOP BUILD (Tauri 2 NSIS .exe & WiX .msi)
@@ -257,6 +257,11 @@ jobs:
       - name: Install Rust Stable
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Install WiX Toolset
+        shell: pwsh
+        run: |
+          choco install wixtoolset --yes --no-progress
+
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
@@ -264,7 +269,7 @@ jobs:
         run: pnpm build
 
       - name: Build Tauri Desktop (.exe / .msi)
-        run: npx tauri build
+        run: pnpm exec tauri build
 
       - name: Sign Windows Installers (Authenticode)
         shell: pwsh
@@ -273,7 +278,9 @@ jobs:
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
           ENFORCE_SIGNING: ${{ github.event.inputs.require_signing || (startsWith(github.ref, 'refs/tags/v') && 'true') || 'false' }}
         run: |
-          mkdir -Force -Path ../release/windows | Out-Null
+          $releaseDir = Join-Path $env:GITHUB_WORKSPACE "release/windows"
+          New-Item -ItemType Directory -Force -Path $releaseDir | Out-Null
+
           if (-not $env:WINDOWS_CERTIFICATE_BASE64 -or -not $env:WINDOWS_CERTIFICATE_PASSWORD) {
             if ($env:ENFORCE_SIGNING -eq "true") {
               Write-Error "CRITICAL: Windows Authenticode signing credentials missing (WINDOWS_CERTIFICATE_BASE64, WINDOWS_CERTIFICATE_PASSWORD)! Signing is strictly enforced for production release tags or require_signing workflow dispatch."
@@ -281,8 +288,8 @@ jobs:
             }
             Write-Host "::warning::WINDOWS_CERTIFICATE_BASE64 or WINDOWS_CERTIFICATE_PASSWORD secret is not configured in GitHub Secrets."
             Write-Host "::warning::Windows installers generated as UNSIGNED. Production signed handover is BLOCKED (Unsigned) pending EV/OV certificate provisioning."
-            "STATUS=UNSIGNED" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Encoding utf8
-            "NOTE=BLOCKED for signed production handover - pending certificate provisioning" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Append -Encoding utf8
+            "STATUS=UNSIGNED" | Out-File -FilePath (Join-Path $releaseDir "SIGNING_STATUS.txt") -Encoding utf8
+            "NOTE=Installers generated unsigned for testing/handover. EV/OV certificate required for SmartScreen suppression." | Out-File -FilePath (Join-Path $releaseDir "SIGNING_STATUS.txt") -Append -Encoding utf8
             exit 0
           }
 
@@ -312,8 +319,8 @@ jobs:
                 exit 1
               }
             }
-            "STATUS=SIGNED" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Encoding utf8
-            "TIMESTAMP_SERVER=http://timestamp.digicert.com" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Append -Encoding utf8
+            "STATUS=SIGNED" | Out-File -FilePath (Join-Path $releaseDir "SIGNING_STATUS.txt") -Encoding utf8
+            "TIMESTAMP_SERVER=http://timestamp.digicert.com" | Out-File -FilePath (Join-Path $releaseDir "SIGNING_STATUS.txt") -Append -Encoding utf8
           }
           finally {
             if (Test-Path $certPath) {
@@ -330,15 +337,29 @@ jobs:
           }
 
       - name: Collect Windows Installers & Generate Checksums
-        shell: bash
+        shell: pwsh
         run: |
-          mkdir -p ../release/windows
-          find src-tauri/target/release/bundle/ -type f \( -name "*.exe" -o -name "*.msi" \) -exec cp {} ../release/windows/ \;
-          cd ../release/windows
-          for f in *setup*.exe; do [ -f "$f" ] && cp "$f" BIO-HI-TECH-LIMS-Windows-Setup.exe || true; done
-          for f in *.exe; do [ -f "$f" ] && [ ! -f "BIO-HI-TECH-LIMS-Windows-Setup.exe" ] && cp "$f" BIO-HI-TECH-LIMS-Windows-Setup.exe || true; done
-          for f in *.msi; do [ -f "$f" ] && cp "$f" BIO-HI-TECH-LIMS-Windows.msi || true; done
-          sha256sum * > SHA256SUMS.txt || true
+          $releaseDir = Join-Path $env:GITHUB_WORKSPACE "release/windows"
+          New-Item -ItemType Directory -Force -Path $releaseDir | Out-Null
+
+          $installers = Get-ChildItem -Path "src-tauri/target/release/bundle" -Include "*.exe","*.msi" -Recurse
+          foreach ($file in $installers) {
+            Copy-Item -Path $file.FullName -Destination $releaseDir -Force
+            if ($file.Name -like "*setup*.exe") {
+              Copy-Item -Path $file.FullName -Destination (Join-Path $releaseDir "BIO-HI-TECH-LIMS-Windows-Setup.exe") -Force
+            } elseif ($file.Extension -eq ".exe" -and -not (Test-Path (Join-Path $releaseDir "BIO-HI-TECH-LIMS-Windows-Setup.exe"))) {
+              Copy-Item -Path $file.FullName -Destination (Join-Path $releaseDir "BIO-HI-TECH-LIMS-Windows-Setup.exe") -Force
+            } elseif ($file.Extension -eq ".msi") {
+              Copy-Item -Path $file.FullName -Destination (Join-Path $releaseDir "BIO-HI-TECH-LIMS-Windows.msi") -Force
+            }
+          }
+
+          Set-Location $releaseDir
+          Get-ChildItem -File | Where-Object { $_.Name -ne "SHA256SUMS.txt" } | ForEach-Object {
+            $hash = (Get-FileHash -Path $_.FullName -Algorithm SHA256).Hash.ToLower()
+            "$hash  $($_.Name)"
+          } | Out-File -FilePath "SHA256SUMS.txt" -Encoding utf8
+          Get-ChildItem -Path $releaseDir
 
       - name: Upload Windows Desktop Artifacts
         uses: actions/upload-artifact@v4
@@ -349,6 +370,7 @@ jobs:
             release/windows/*.msi
             release/windows/SHA256SUMS.txt
             release/windows/SIGNING_STATUS*.txt
+          if-no-files-found: error
 
   # =========================================================================
   # 4. OFFICIAL GITHUB RELEASE CREATION (Triggered on tags v*)

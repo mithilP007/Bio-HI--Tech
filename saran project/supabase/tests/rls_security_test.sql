@@ -378,11 +378,16 @@ BEGIN
         END IF;
     END;
 
-    -- Reactivate pre-provisioned owner and restore catalogue ownership
-    UPDATE public.owner_access SET is_active = TRUE WHERE email = 'owner@biohitech.com';
+    -- 1. Reassign catalogue ownership to pre-provisioned owner so deleting test_owner_id won't cascade delete test_catalogue
     UPDATE public.test_catalogue SET owner_id = (SELECT id FROM public.owner_access WHERE email = 'owner@biohitech.com' LIMIT 1);
 
-    -- Clean up synthetic test records
+    -- 2. Deactivate synthetic test owner first to satisfy uq_single_active_owner constraint
+    UPDATE public.owner_access SET is_active = FALSE WHERE id = test_owner_id;
+
+    -- 3. Reactivate pre-provisioned owner
+    UPDATE public.owner_access SET is_active = TRUE WHERE email = 'owner@biohitech.com';
+
+    -- 4. Clean up synthetic test records
     DELETE FROM public.owner_access WHERE id IN (test_owner_id, test_unauth_id);
     DELETE FROM auth.users WHERE id IN (test_owner_id, test_unauth_id);
 

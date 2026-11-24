@@ -54,6 +54,8 @@ android {
                 signingConfig signingConfigs.release
             } else if (System.getenv("REQUIRE_SIGNING") == "true") {
                 throw new GradleException("Release signing failed: REQUIRE_SIGNING=true but signing credentials are missing or incomplete.")
+            } else {
+                signingConfig signingConfigs.debug
             }
         }
     }
