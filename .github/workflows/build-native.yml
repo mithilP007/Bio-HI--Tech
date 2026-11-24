@@ -8,6 +8,12 @@ on:
   pull_request:
     branches: [main, master]
   workflow_dispatch:
+    inputs:
+      require_signing:
+        description: 'Enforce release signing (fail if secrets are missing)'
+        required: false
+        default: 'false'
+        type: boolean
 
 permissions:
   contents: write
@@ -53,14 +59,16 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0 platforms;android-34 build-tools;34.0.0'
 
       - name: Build Next.js Static Export & Sync Capacitor
         run: |
@@ -81,16 +89,53 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ENFORCE_SIGNING: ${{ github.event.inputs.require_signing || (startsWith(github.ref, 'refs/tags/v') && 'true') || 'false' }}
         run: |
           cd android
-          if [ -n "$KEYSTORE_BASE64" ]; then
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+            echo "Release keystore secrets found. Decoding keystore..."
             echo "$KEYSTORE_BASE64" | base64 -d > app/release-key.jks
             export KEYSTORE_PATH=release-key.jks
+            export KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD"
+            export KEY_ALIAS="$KEY_ALIAS"
+            export KEY_PASSWORD="$KEY_PASSWORD"
+            export REQUIRE_SIGNING=true
+            echo "Building signed Release APK and AAB..."
+            ./gradlew assembleRelease
+            ./gradlew bundleRelease
+          else
+            if [ "$ENFORCE_SIGNING" = "true" ] || [ "${{ github.ref }}" = "refs/heads/master" ] || [ "${{ github.ref }}" = "refs/heads/main" ]; then
+              if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+                echo "::error::CRITICAL: Android release signing secrets missing! All 4 secrets (ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD) are strictly required for production release. Unsigned release generation is rejected."
+                exit 1
+              fi
+            else
+              echo "::warning::Signing secrets not configured. Skipping signed release build."
+            fi
           fi
-          ./gradlew assembleRelease
-          ./gradlew bundleRelease
 
-      - name: Generate Checksums
+      - name: Verify Android Signatures
+        run: |
+          APKSIGNER=$(find $ANDROID_HOME/build-tools/ -name apksigner | sort -V | tail -n 1)
+          echo "Using apksigner: $APKSIGNER"
+          if [ -d "android/app/build/outputs/apk/release" ]; then
+            for apk in android/app/build/outputs/apk/release/*.apk; do
+              if [ -f "$apk" ]; then
+                echo "Verifying APK: $apk"
+                $APKSIGNER verify --verbose "$apk"
+              fi
+            done
+          fi
+
+      - name: Secure Cleanup of Android Keystore
+        if: always()
+        run: |
+          rm -f 'saran project/android/app/release-key.jks'
+          rm -f android/app/release-key.jks
+          rm -f android/app/*.jks
+          rm -f android/app/*.keystore
+
+      - name: Collect Android Packages & Generate Checksums
         run: |
           mkdir -p ../release/android
           find android/app/build/outputs/ -type f \( -name "*.apk" -o -name "*.aab" \) -exec cp {} ../release/android/ \;
@@ -147,6 +192,7 @@ jobs:
             libssl-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev
+          sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2 || true
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -210,6 +256,64 @@ jobs:
       - name: Build Tauri Desktop (.exe / .msi)
         run: npx tauri build
 
+      - name: Sign Windows Installers (Authenticode)
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          mkdir -Force -Path ../release/windows | Out-Null
+          if (-not $env:WINDOWS_CERTIFICATE_BASE64 -or -not $env:WINDOWS_CERTIFICATE_PASSWORD) {
+            Write-Host "::warning::WINDOWS_CERTIFICATE_BASE64 or WINDOWS_CERTIFICATE_PASSWORD secret is not configured in GitHub Secrets."
+            Write-Host "::warning::Windows installers generated as UNSIGNED. Production signed handover is BLOCKED (Unsigned) pending EV/OV certificate provisioning."
+            "STATUS=UNSIGNED" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Encoding utf8
+            "NOTE=BLOCKED for signed production handover - pending certificate provisioning" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Append -Encoding utf8
+            exit 0
+          }
+
+          Write-Host "Locating signtool.exe in Windows Kits..."
+          $signtool = (Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin" -Filter "signtool.exe" -Recurse | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1).FullName
+          if (-not $signtool) {
+            Write-Error "signtool.exe not found in Windows Kits."
+            exit 1
+          }
+          Write-Host "Using signtool at: $signtool"
+
+          $certPath = Join-Path $PWD "cert.pfx"
+          try {
+            [IO.File]::WriteAllBytes($certPath, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE_BASE64))
+            $installers = Get-ChildItem -Path "src-tauri/target/release/bundle" -Include "*.exe","*.msi" -Recurse
+            foreach ($file in $installers) {
+              Write-Host "Signing $($file.FullName) with Authenticode SHA256 and RFC3161 timestamp..."
+              & $signtool sign /f $certPath /p $env:WINDOWS_CERTIFICATE_PASSWORD /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 $file.FullName
+              if ($LASTEXITCODE -ne 0) {
+                Write-Error "Signing failed for $($file.FullName)"
+                exit 1
+              }
+              Write-Host "Verifying Authenticode signature for $($file.FullName)..."
+              & $signtool verify /pa /v $file.FullName
+              if ($LASTEXITCODE -ne 0) {
+                Write-Error "Signature verification failed for $($file.FullName)"
+                exit 1
+              }
+            }
+            "STATUS=SIGNED" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Encoding utf8
+            "TIMESTAMP_SERVER=http://timestamp.digicert.com" | Out-File -FilePath ../release/windows/SIGNING_STATUS.txt -Append -Encoding utf8
+          }
+          finally {
+            if (Test-Path $certPath) {
+              Remove-Item -Force $certPath
+            }
+          }
+
+      - name: Secure Cleanup of Windows Certificate
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path "cert.pfx") {
+            Remove-Item -Force "cert.pfx"
+          }
+
       - name: Collect Windows Installers & Generate Checksums
         shell: bash
         run: |
@@ -226,3 +330,51 @@ jobs:
             release/windows/*.exe
             release/windows/*.msi
             release/windows/SHA256SUMS.txt
+            release/windows/SIGNING_STATUS.txt
+
+  # =========================================================================
+  # 4. OFFICIAL GITHUB RELEASE CREATION (Triggered on tags v*)
+  # =========================================================================
+  publish-release:
+    name: Publish Official GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-android, build-linux, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Android Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bio-hitech-android-packages
+          path: release-all/android
+
+      - name: Download Linux Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bio-hitech-linux-desktop-packages
+          path: release-all/linux
+
+      - name: Download Windows Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bio-hitech-windows-desktop-packages
+          path: release-all/windows
+
+      - name: Collate Release Assets & Generate Unified Checksums
+        run: |
+          mkdir -p release-bundle
+          find release-all/ -type f \( -name "*.apk" -o -name "*.aab" -o -name "*.AppImage" -o -name "*.deb" -o -name "*.exe" -o -name "*.msi" -o -name "SIGNING_STATUS.txt" \) -exec cp {} release-bundle/ \;
+          cd release-bundle
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create GitHub Release v1.0.0
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-bundle/*
+          name: "BIO HI TECH LIMS v1.0.0 — Production Release"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
