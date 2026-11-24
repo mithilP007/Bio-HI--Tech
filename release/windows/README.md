@@ -12,10 +12,10 @@
 
 ## Distribution Artifacts
 
-| Artifact Name | Format | Target | Intended Use |
-| :--- | :--- | :--- | :--- |
-| `bio-hi-tech_1.0.0_x64-setup.exe` | NSIS Executable Installer | Windows 10/11 Workstations | User-friendly wizard installer creating Desktop & Start Menu shortcuts |
-| `bio-hi-tech_1.0.0_x64_en-US.msi` | WiX MSI Enterprise Package | Windows Active Directory / IT | Automated group policy or silent installation across lab reception PCs |
+| Artifact Name | Owner Handover Name | Format | Target | Intended Use |
+| :--- | :--- | :--- | :--- | :--- |
+| `bio-hi-tech_1.0.0_x64-setup.exe` | `BIO-HI-TECH-LIMS-Windows-Setup.exe` | NSIS Executable Installer | Windows 10/11 Workstations | User-friendly wizard installer creating Desktop & Start Menu shortcuts |
+| `bio-hi-tech_1.0.0_x64_en-US.msi` | `BIO-HI-TECH-LIMS-Windows.msi` | WiX MSI Enterprise Package | Windows Active Directory / IT | Automated group policy or silent installation across lab reception PCs |
 
 ## Checksums (SHA-256)
 

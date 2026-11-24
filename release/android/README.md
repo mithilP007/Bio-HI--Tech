@@ -7,17 +7,18 @@
 - **Version**: `1.0.0`
 - **Build Date**: 2026-11-21
 - **Platform**: Android
-- **Target SDK**: Android 14+ (API Level 34)
+- **Target SDK**: Android 16 (API Level 36)
 - **Minimum SDK**: Android 7.0 (API Level 24)
+- **Compiler**: JDK 21
 - **Architecture**: Universal (`arm64-v8a`, `armeabi-v7a`, `x86_64`)
 
 ## Distribution Artifacts
 
-| Artifact Name | Format | Target | Intended Use |
-| :--- | :--- | :--- | :--- |
-| `bio-hi-tech-1.0.0-debug.apk` | APK | Sideload / Development | Testing on developer Android devices via USB / ADB |
-| `bio-hi-tech-1.0.0-release.apk` | APK | Direct Lab Owner Install | Independent lab tablet/phone installation (no Play Store needed) |
-| `bio-hi-tech-1.0.0-release.aab` | AAB | Google Play Console | Future private internal app sharing or closed testing track |
+| Artifact Name | Owner Handover Name | Format | Target | Intended Use |
+| :--- | :--- | :--- | :--- | :--- |
+| `app-release.apk` | `BIO-HI-TECH-LIMS-Android.apk` | APK | Direct Lab Owner Install | Independent lab tablet/phone installation (no Play Store needed) |
+| `app-release.aab` | `BIO-HI-TECH-LIMS-Android.aab` | AAB | Google Play Console | Future private internal app sharing or closed testing track |
+| `app-debug.apk` | `BIO-HI-TECH-LIMS-Android-debug.apk` | APK | Sideload / Development | Testing on developer Android devices via USB / ADB |
 
 ## Checksums (SHA-256)
 

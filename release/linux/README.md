@@ -12,10 +12,10 @@
 
 ## Distribution Artifacts
 
-| Artifact Name | Format | Target | Intended Use |
-| :--- | :--- | :--- | :--- |
-| `bio-hi-tech_1.0.0_amd64.AppImage` | AppImage | Any Linux Distribution | Standalone zero-install portable executable |
-| `bio-hi-tech_1.0.0_amd64.deb` | Debian Package | Ubuntu / Debian / Mint | Native system package manager install with launcher icon |
+| Artifact Name | Owner Handover Name | Format | Target | Intended Use |
+| :--- | :--- | :--- | :--- | :--- |
+| `bio-hi-tech_1.0.0_amd64.AppImage` | `BIO-HI-TECH-LIMS.AppImage` | AppImage | Any Linux Distribution | Standalone zero-install portable executable |
+| `bio-hi-tech_1.0.0_amd64.deb` | `BIO-HI-TECH-LIMS.deb` | Debian Package | Ubuntu / Debian / Mint | Native system package manager install with launcher icon |
 
 ## Checksums (SHA-256)
 
