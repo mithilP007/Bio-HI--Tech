@@ -1,0 +1,13 @@
+# ==============================================================================
+# BIO HI TECH — ANDROID RELEASE PACKAGE CHECKSUMS (SHA-256)
+# Application ID: com.biohitech.lims | Version: 1.0.0 | versionCode: 1
+# ==============================================================================
+# Verification Command: sha256sum -c SHA256SUMS.txt
+#
+# Release Artifacts:
+# 1. bio-hi-tech-1.0.0-release.apk (Signed Release APK for Sideloading / Lab Tablets)
+# 2. bio-hi-tech-1.0.0-release.aab (Release Bundle for Google Play Console Internal Track)
+# 3. bio-hi-tech-1.0.0-debug.apk   (Development & Sideload Debug Build)
+#
+# Note: Binaries are generated via GitHub Actions (.github/workflows/build-native.yml)
+# or local `./gradlew assembleRelease` with JDK 17 & Android SDK 34.

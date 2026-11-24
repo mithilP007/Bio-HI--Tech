@@ -1,0 +1,4 @@
+-- ==============================================================================
+-- BIO HI TECH LIMS — LOCAL SEED FILE (supabase/seed.sql)
+-- 120 legacy tests are already seeded in 20261121000004_realtime_and_catalogue_seed.sql
+-- ==============================================================================

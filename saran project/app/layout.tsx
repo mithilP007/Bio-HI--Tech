@@ -5,9 +5,12 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'BIO HI TECH | Laboratory Management',
   description: 'Private laboratory management workspace for patient records, reports, test catalogue and billing.',
-  generator: 'v0.app',
   icons: {
     icon: [
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
       {
         url: '/icon-light-32x32.png',
         media: '(prefers-color-scheme: light)',
@@ -17,12 +20,12 @@ export const metadata: Metadata = {
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/favicon.ico',
       },
     ],
     apple: '/apple-icon.png',
   },
+  manifest: '/manifest.json',
 }
 
 export const viewport: Viewport = {

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Check } from 'lucide-react'
 import { reports } from '@/lib/demo-data'
-import { recordPayment } from '@/lib/demo-store'
+import { syncRecordPayment } from '@/lib/data-service'
 
 type Props = { onAction: (message: string) => void }
 
@@ -30,7 +30,7 @@ export function RecordPayment({ onAction }: Props) {
     </div>
     <div className="form-layout">
       <section className="panel form-panel">
-        <div className="form-section-head"><span className="section-index">01</span><div><h2>Payment details</h2><p>Changes are held in this frontend demo session only.</p></div></div>
+        <div className="form-section-head"><span className="section-index">01</span><div><h2>Payment details</h2><p>Recorded to the laboratory ledger.</p></div></div>
         {error && <div className="form-error" role="alert">{error}</div>}
         <div className="fields-grid">
           <label className="field field-wide"><span>Report / bill *</span><select value={reportId} onChange={(event) => setReportId(event.target.value)}><option value="">Select an outstanding report</option>{reports.filter((report) => report.payment !== 'Paid').map((report) => <option key={report.id} value={report.id}>{report.id} · {report.patient} · Balance ₹{report.amount - (report.payment.startsWith('Partial · ') ? Number(report.payment.split('·')[1]?.trim()) || 0 : 0)}</option>)}</select></label>
@@ -40,9 +40,9 @@ export function RecordPayment({ onAction }: Props) {
           <label className="field"><span>Payment date *</span><input type="date" value={date} onChange={(event) => setDate(event.target.value)}/></label>
           <label className="field field-wide"><span>Notes</span><textarea rows={3} value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Optional payment note"/></label>
         </div>
-        <div className="settings-save"><span>Payment method: {method} · {date}</span><button className="button button-primary" disabled={!selectedReport || !amount} onClick={() => { setError(''); try { recordPayment(reportId, Number(amount), { method, date, notes }); onAction('Payment recorded in this demo session; no database is connected.'); router.push('/billing') } catch (cause) { setError(cause instanceof Error ? cause.message : 'Payment could not be recorded.') } }}>Save payment</button></div>
+        <div className="settings-save"><span>Payment method: {method} · {date}</span><button className="button button-primary" disabled={!selectedReport || !amount} onClick={async () => { setError(''); try { await syncRecordPayment({ reportId, patientId: selectedReport?.patientId || '', amount: Number(amount), paymentMethod: method, notes }); onAction('Payment recorded successfully in laboratory ledger.'); router.push('/billing'); } catch (cause) { setError(cause instanceof Error ? cause.message : 'Payment could not be recorded.'); } }}>Save payment</button></div>
       </section>
-      <aside className="panel summary-card"><h3>Balance summary</h3><div className="summary-row"><span>Bill total</span><strong>₹{selectedReport?.amount ?? 0}</strong></div><div className="summary-row"><span>Previously paid</span><strong>₹{paidSoFar}</strong></div><div className="summary-total"><span>Outstanding</span><strong>₹{balance}</strong></div><div className="demo-side-note">Payment is capped at the current outstanding balance.</div></aside>
+      <aside className="panel summary-card"><h3>Balance summary</h3><div className="summary-row"><span>Bill total</span><strong>₹{selectedReport?.amount ?? 0}</strong></div><div className="summary-row"><span>Previously paid</span><strong>₹{paidSoFar}</strong></div><div className="summary-total"><span>Outstanding</span><strong>₹{balance}</strong></div><div className="demo-side-note">Payment cannot exceed current outstanding balance.</div></aside>
     </div>
   </>
 }

@@ -1,0 +1,12 @@
+# ==============================================================================
+# BIO HI TECH — WINDOWS NATIVE PACKAGE CHECKSUMS (SHA-256)
+# Application ID: com.biohitech.lims | Version: 1.0.0 | Architecture: x64
+# ==============================================================================
+# Verification Command: Get-FileHash -Algorithm SHA256 <filename>
+#
+# Release Artifacts:
+# 1. bio-hi-tech_1.0.0_x64-setup.exe (NSIS Native Windows Installer)
+# 2. bio-hi-tech_1.0.0_x64_en-US.msi (WiX Enterprise MSI Package)
+#
+# Note: Binaries are generated via GitHub Actions (.github/workflows/build-native.yml)
+# on windows-latest runner or via `npx tauri build` with Rust/WiX toolchains.

@@ -5,6 +5,7 @@ import { labProfile, appPreferences, defaultSignatures } from '@/lib/app-setting
 import { patients, reports, tests } from '@/lib/demo-data'
 import { generateCode128Svg } from '@/lib/barcode-128'
 import { generateQrCodeSvg } from '@/lib/qr-generator'
+import { evaluateResult } from '@/lib/clinical-engine'
 
 type Report = typeof reports[number]
 
@@ -27,6 +28,9 @@ interface TestRow {
   isFirstInTest: boolean
   isFirstInDept: boolean
   note?: string
+  status: string
+  badgeStyle: 'low' | 'high' | 'normal' | 'borderline' | 'critical' | 'unverified' | 'neutral'
+  arrowSymbol: '↑' | '↓' | ''
 }
 
 export function ReportPrintSheet({
@@ -78,19 +82,22 @@ export function ReportPrintSheet({
       ]
 
       params.forEach((param, pIdx) => {
-        const val = report.results[`${name}:${param.name}`] || '—'
-        let rangeStr = 'Range not verified'
-        if (param.type === 'Qualitative') {
-          rangeStr = 'Negative (Unverified)'
-        } else if (param.type === 'Numeric') {
-          if (param.maleLow != null && param.maleHigh != null) {
-            rangeStr = `${param.maleLow} - ${param.maleHigh} (Unverified)`
-          } else if (param.maleLow != null) {
-            rangeStr = `> ${param.maleLow} (Unverified)`
-          } else if (param.maleHigh != null) {
-            rangeStr = `< ${param.maleHigh} (Unverified)`
-          }
-        }
+        const paramKey = `${name}:${param.name}`
+        const rawVal = report.results[paramKey]
+        const val = rawVal !== undefined && rawVal !== '' ? rawVal : '—'
+        const evalRes = evaluateResult(
+          name,
+          param.name,
+          rawVal,
+          { age: patient?.age, gender: patient?.gender },
+          param.unit,
+          false
+        )
+
+        // Historical report snapshot preservation:
+        // If report has an immutable applied snapshot from when it was saved/issued, preserve it exactly
+        const savedRange = report.resultIntervals?.[paramKey]
+        const savedFlag = report.resultFlags?.[paramKey]
 
         const note = pIdx === params.length - 1 && catalogueEntry?.notes?.[0] ? catalogueEntry.notes[0] : undefined
 
@@ -99,8 +106,11 @@ export function ReportPrintSheet({
           department: dept,
           parameter: param.name,
           value: val,
-          unit: param.unit || '—',
-          range: rangeStr,
+          unit: param.unit || evalRes.unit || '—',
+          range: savedRange || evalRes.referenceDisplay,
+          status: savedFlag || evalRes.statusLabel,
+          badgeStyle: evalRes.badgeStyle,
+          arrowSymbol: evalRes.arrowSymbol,
           isFirstInTest: pIdx === 0,
           isFirstInDept: isFirstInDept && pIdx === 0,
           note,
@@ -109,7 +119,7 @@ export function ReportPrintSheet({
     })
 
     return rows
-  }, [report])
+  }, [report, patient])
 
   // Content-aware pagination algorithm:
   // Dynamically calculates heights based on parameter rows, section banners,
@@ -265,7 +275,7 @@ export function ReportPrintSheet({
                       <td rowSpan={5} className="qr-cell">
                         <div
                           className="qr-container"
-                          aria-label="Demonstration Verification QR Code"
+                          aria-label="Report Verification QR Code"
                           dangerouslySetInnerHTML={{ __html: qrSvg }}
                         />
                         <span className="qr-caption">Scan to verify</span>
@@ -316,17 +326,19 @@ export function ReportPrintSheet({
               {/* Investigation Results Table */}
               <table className="sheet-results-table">
                 <colgroup>
-                  <col style={{ width: '40%' }} />
-                  <col style={{ width: '18%' }} />
-                  <col style={{ width: '17%' }} />
-                  <col style={{ width: '25%' }} />
+                  <col style={{ width: '34%' }} />
+                  <col style={{ width: '16%' }} />
+                  <col style={{ width: '14%' }} />
+                  <col style={{ width: '20%' }} />
+                  <col style={{ width: '16%' }} />
                 </colgroup>
                 <thead>
                   <tr>
-                    <th>Test Description</th>
+                    <th>Test / Parameter</th>
                     <th className="align-right">RESULT</th>
                     <th>UNITS</th>
-                    <th>Reference Range</th>
+                    <th>Reference Interval</th>
+                    <th>Interpretation</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -347,18 +359,25 @@ export function ReportPrintSheet({
                         )}
                       </td>
                       <td className="align-right">
-                        <strong className="result-value">{row.value}</strong>
+                        <strong className="result-value">
+                          {row.value} {row.arrowSymbol && <span className={`arrow-${row.badgeStyle}`}>{row.arrowSymbol}</span>}
+                        </strong>
                       </td>
                       <td className="unit-text">{row.unit}</td>
                       <td>
                         <span className="unverified-interval">{row.range}</span>
+                      </td>
+                      <td>
+                        <span className={`interp-badge interp-badge-${row.badgeStyle}`}>
+                          {row.status}
+                        </span>
                       </td>
                     </tr>
                   ))}
 
                   {isLastPage && (
                     <tr className="end-of-report-row">
-                      <td colSpan={4} className="end-of-report-text">
+                      <td colSpan={5} className="end-of-report-text">
                         **** END OF REPORT ****
                       </td>
                     </tr>
@@ -411,7 +430,7 @@ export function ReportPrintSheet({
 
               <div className="footer-meta">
                 <p className="footer-disclaimer">
-                  Demonstration report only. Results and reference intervals require qualified medical review. Facsimile signatures are non-cryptographic demo assets. Not a verified clinical document.
+                  Results and unverified reference intervals require qualified medical review. Facsimile signatures are digitized visual assets, not cryptographic digital signatures.
                 </p>
                 <div className="footer-pagination">
                   Page {pageNum} of {totalPages}

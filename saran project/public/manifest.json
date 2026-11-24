@@ -1,0 +1,24 @@
+{
+  "name": "BIO HI TECH Laboratory Management",
+  "short_name": "BIO HI TECH",
+  "description": "Private diagnostic laboratory information management system",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#08796e",
+  "theme_color": "#08796e",
+  "icons": [
+    {
+      "src": "/branding/bio-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/branding/bio-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
